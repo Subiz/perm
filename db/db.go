@@ -23,7 +23,7 @@ type PermDB struct {
 	repfactor int
 }
 
-// NewAccRepo create new AccRepo object
+// NewPermDB create new PermDB object
 func NewPermDB(seeds []string, keyspaceprefix string, repfactor int) *PermDB {
 	var db = &PermDB{
 		init: false,
@@ -82,7 +82,7 @@ func (me *PermDB) Update(accid, userid string, method *pb.Method) {
 	}
 }
 
-// Update update or create method for user
+// UpdateState update state for user
 func (me *PermDB) UpdateState(accid, userid string, isactive bool) {
 	me.connect()
 	err := me.session.Query(fmt.Sprintf(`UPDATE %s SET is_inactive=? WHERE account_id=? AND user_id=?`, tablePermissions), !isactive, accid, userid).Exec()

@@ -5,6 +5,7 @@ import (
 	"bitbucket.org/subiz/servicespec/proto/auth"
 	"bitbucket.org/subiz/gocommon"
 	scope "bitbucket.org/subiz/scopemgr"
+	"bitbucket.org/subiz/perm/db"
 )
 
 // Perm manage user permission and provide some method for quick checking permission
@@ -143,7 +144,7 @@ func filterAgentMethod(method *auth.Method) *auth.Method {
 	return scope.SubstractMethod(method, filterAccMethod(method))
 }
 
-func (me *Perm) Config(prefix string, replicafactor int, broker []string) *Perm {
-	return &Perm{
-	}
+// Config config perm
+func (me *Perm) Config(cassseeds []string, prefix string, replicafactor int) {
+	me.db = db.NewPermDB(cassseeds, prefix, replicafactor)
 }
