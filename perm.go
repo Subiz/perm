@@ -1,11 +1,12 @@
 package perm
 
 import (
-	"golang.org/x/net/context"
+	"context"
 	"bitbucket.org/subiz/servicespec/proto/auth"
 	"bitbucket.org/subiz/gocommon"
 	scope "bitbucket.org/subiz/scopemgr"
 	"bitbucket.org/subiz/perm/db"
+	"bitbucket.org/subiz/servicespec/proto/lang"
 )
 
 // Perm manage user permission and provide some method for quick checking permission
@@ -36,106 +37,140 @@ func (me *Perm) ListUsersByMethod(accid string, method *auth.Method, startid str
 	return me.db.ListUsersByMethod(accid, method, startid, limit)
 }
 
-// Allow allow context wich credential have right to do accmethod OR usermethod on userid
-// It will panic if credential doesn't have enough permission
-// Allow only return success when either *acc check* or *agent check* is passed.
-// *acc check* is the process to make sure the invoker has enough *acc method* (*acc methods* are
-// methods act on all agents, ex: UpdateAgents, ResetAgentsPassword).
-// *agent check* is the process to make sure invoker has enough *agent method* (*agent  method*
-// are method act on one agent, ex: UpdateAgent, ResetAgentPassword)
+// Allow allow context which credential have right to do accmethod OR usermethod on userid
+// It MUST panic if the credential doesn't have enough permission
+// It ONLY return success either when *acc check* or when *agent check* passed.
+//   *acc check* is the process of making sure that the invoker has enough
+//     *acc method* (*acc methods* are methods act on all agents, ex: UpdateAgents,
+//     ResetAgentsPassword).
+//   *agent check* is the process of making sure that the invoker has enough *agent
+//     method* (*agent  method* are method act on one agent, ex: UpdateAgent,
+//     ResetAgentPassword)
 //
-// There are 3 type of method: client methods, user methods, real methods:
-// user methods are methods granted to user by the owner (storing in our database)
-// client methods are methods granted to client (app) by an user. (storing in context)
-// real methods is the intersection of user methods and real methods
+// let:
+// user methods are methods granted to user by the owner (stored in our database)
+// client methods are methods granted to app by an user. (stored in access token)
+// real methods are the intersection of user methods and real methods
 //
-// *acc check* pass if real methods have every method in accmethod
+// *acc check* pass only if real methods have every methods in acc method
 // *agent check* pass when credential is credential of userid, and real methods have every method
 // in agentmethod
-// The reason we nee *real methods* is that we cannot simply rely on client methods to determind
-// whether the client have enought right to execute an action, since user may grant client any
-// methods which its don't have (e.g: DeleteAccount). Or may be, it used to have but doesn't have
-// it now. We can't just rely on user methods neither, since user may disallow client to do some
-// action. Intersecting client method and user method remove all illegal above illegal (or stale)
-// methods.
+// The reason we need *real methods* is that we cannot simply rely on client
+// methods to determind whether the client have enought right to execute an action,
+// since user may grant client any methods its currently don't have, such as:
+// DeleteAccount. Or may be, user were having the permission when granted to client
+// and now being revoke by owner. Also, we can't just rely on user methods neither,
+// since user may disallow client to do some action. Intersecting client method and
+// user method remove all illegal (or stale) cases above.
 //
-// Updated: there are some special methods, like CreateAccount, DeleteAccount, ... No users have
-// those, even account owners. Only some internal clients are granted those methods
-func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Method) {
-	cred := common.ExtractCredFromCtx(ctx)
-	if accid != "" && cred.AccountId != accid {
-		panic(common.NewForbiddenErr("wrong account"))
+// Updated: there are some special methods, like CreateAccount, DeleteAccount, ...
+// There is none users have those, even account owners. Only some internal clients
+// are granted those methods
+func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Method) error {
+	cred := common.GetCredential(ctx)
+	if cred == nil {
+		if !scope.IsNilMethod(method) {
+			return nil
+		}
+		return common.New400(lang.T_credential_not_set)
 	}
-	me.checkSpecialMethod(cred.Method, method)
-	clientmethod := cred.Method
-	usermethod := me.db.Read(cred.AccountId, cred.UserId)
-	realmethod := scope.IntersectMethod(clientmethod, usermethod)
+	if accid != "" && cred.GetAccountId() != accid {
+		return common.New400(lang.T_wrong_account_in_credential)
+	}
 
 	accmethod := filterAccMethod(method)
-	if scope.RequireMethod(realmethod, accmethod) {
-		return
+	usermethod := me.db.Read(cred.GetAccountId(), cred.GetUserId())
+	clientmethod := cred.Method
+	realmethod := scope.IntersectMethod(clientmethod, usermethod)
+
+	if !scope.IsNilMethod(accmethod) && scope.RequireMethod(realmethod, accmethod) {
+		return nil
 	}
 
-	if userid != cred.UserId {
-		panic(common.NewForbiddenErr())
+	err := me.checkSpecialMethod(clientmethod, method)
+	if err != nil {
+		return err
+	}
+
+	if userid != cred.GetUserId() {
+		return common.New400(lang.T_wrong_user_in_credential)
 	}
 	agentmethod := filterAgentMethod(method)
 	if !scope.RequireMethod(realmethod, agentmethod) {
-		panic(common.NewForbiddenErr())
+		common.New400(lang.T_access_deny)
 	}
+	return nil
 }
 
-func (me *Perm) checkSpecialMethod(clientmethod *auth.Method, requiredmethod *auth.Method) {
-	if requiredmethod.CreateAccount && !clientmethod.CreateAccount {
-		panic(common.NewForbiddenErr())
+// checkSpecialMethod returns error if client method don't have enought
+// rquired method
+func (me *Perm) checkSpecialMethod(clientmethod, requiredmethod *auth.Method) error {
+	if requiredmethod.GetCreateAccount() && !clientmethod.GetCreateAccount() {
+		return common.New400(lang.T_access_deny)
 	}
-	if requiredmethod.DeleteAccount && !clientmethod.DeleteAccount {
-		panic(common.NewForbiddenErr())
+	if requiredmethod.GetDeleteAccount() && !clientmethod.GetDeleteAccount() {
+		return common.New400(lang.T_access_deny)
 	}
-	if requiredmethod.ResetPassword && !clientmethod.ResetPassword {
-		panic(common.NewForbiddenErr())
+	if requiredmethod.GetResetPassword() && !clientmethod.GetResetPassword() {
+		return common.New400(lang.T_access_deny)
 	}
+	return nil
 }
 
-func (me *Perm) AllowByUser(accid, userid string, method *auth.Method) {
+func (me *Perm) AllowByUser(accid, userid string, method *auth.Method) error {
 	usermethod := me.db.Read(accid, userid)
 	accmethod := filterAccMethod(method)
 	if scope.RequireMethod(usermethod, accmethod) {
-		return
+		return nil
 	}
-	panic(common.NewForbiddenErr())
+	return common.New400(lang.T_access_deny)
 }
 
 // AllowOnlyAcc allow only account method to pass
-func (me *Perm) AllowOnlyAcc(ctx context.Context, accid string, method *auth.Method) {
-	cred := common.ExtractCredFromCtx(ctx)
-	if accid != "" && cred.AccountId != accid {
-		panic(common.NewForbiddenErr("wrong account"))
+func (me *Perm) AllowOnlyAcc(ctx context.Context, accid string, method *auth.Method) error {
+	cred := common.GetCredential(ctx)
+	if accid != "" && cred.GetAccountId() != accid {
+		return common.New400(lang.T_wrong_account_in_credential)
 	}
-	me.checkSpecialMethod(cred.Method, method)
 	clientmethod := cred.Method
-	usermethod := me.db.Read(cred.AccountId, cred.UserId)
+	err := me.checkSpecialMethod(clientmethod, method)
+	if err != nil {
+		return err
+	}
+
+	usermethod := me.db.Read(cred.GetAccountId(), cred.GetUserId())
 	realmethod := scope.IntersectMethod(clientmethod, usermethod)
 
 	accmethod := filterAccMethod(method)
 	if scope.RequireMethod(realmethod, accmethod) {
-		return
+		return nil
 	}
-	panic(common.NewForbiddenErr())
+	return common.New400(lang.T_access_deny)
 }
 
+// True return pointer to true
+func True() *bool {
+	return common.AmpB(true)
+}
+
+// False return pointer to false
+func False() *bool {
+	return common.AmpB(false)
+}
+
+// filterAccMethod return only acc method
 func filterAccMethod(method *auth.Method) *auth.Method {
 	accmethod := &auth.Method{
-		InviteAgents: true,
-		UpdateAgents: true,
-		ReadAgents: true,
-		ReadAccount: true,
-		UpdateAgentsPermission: true,
-		UpdateAgentsState: true,
-		CreateAgentGroups: true,
-		DeleteAgentGroups: true,
-		ReadAgentGroups: true,
-		UpdateAgentGroups: true,
+		InviteAgents: True(),
+		UpdateAgents: True(),
+		ReadAgents: True(),
+		ReadAccount: True(),
+		UpdateAgentsPermission: True(),
+		UpdateAgentsState: True(),
+		CreateAgentGroups: True(),
+		DeleteAgentGroups: True(),
+		ReadAgentGroups: True(),
+		UpdateAgentGroups: True(),
 	}
 	return scope.IntersectMethod(method, accmethod)
 }
@@ -146,5 +181,7 @@ func filterAgentMethod(method *auth.Method) *auth.Method {
 
 // Config config perm
 func (me *Perm) Config(cassseeds []string, prefix string, replicafactor int) {
-	me.db = db.NewPermDB(cassseeds, prefix, replicafactor)
+	db := &db.PermDB{}
+	db.Config(cassseeds, prefix, replicafactor)
+	me.db = db
 }
