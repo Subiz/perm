@@ -12,6 +12,7 @@ import (
 	"strings"
 	"strconv"
 	scope "bitbucket.org/subiz/scopemgr"
+	"bitbucket.org/subiz/gocommon"
 )
 
 func skipPermTest(t *testing.T) {
@@ -20,7 +21,9 @@ func skipPermTest(t *testing.T) {
 
 var db *PermDB
 func tearUpPermTest(t *testing.T) {
-	db = NewPermDB([]string{"127.0.0.1:9042"}, "testperm", 1)
+	seed := common.StartCassandraDev("")
+	db = &PermDB{}
+	db.Config([]string{seed}, "testperm_2_", 1)
 }
 
 func TestPermCrud(t *testing.T) {
@@ -28,8 +31,8 @@ func TestPermCrud(t *testing.T) {
 	tearUpPermTest(t)
 
 	testmethod := &pb.Method{
-		ReadAccount: true,
-		ReadAgents: true,
+		ReadAccount: common.AmpB(true),
+		ReadAgents: common.AmpB(true),
 	}
 	db.Update("acc_permcrud", "user_permcrud", testmethod)
 	method := db.Read("acc_permcrud", "user_permcrud")
@@ -51,7 +54,7 @@ func TestListPerms(t *testing.T) {
 			continue
 		}
 		db.Update(accid, fmt.Sprintf("user_listperm_%d", i), &pb.Method{
-			ReadAgents: true,
+			ReadAgents: common.AmpB(true),
 		})
 	}
 	// disable 1500 account
@@ -59,7 +62,7 @@ func TestListPerms(t *testing.T) {
 		db.UpdateState(accid, fmt.Sprintf("user_listperm_%d", i), false)
 	}
 	ids := db.ListUsersByMethod(accid, &pb.Method{
-		ReadAgents: true,
+		ReadAgents: common.AmpB(true),
 	}, "", N)
 
 	if len(ids) != N - Ndisabled - Nwrong {

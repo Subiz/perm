@@ -7,47 +7,34 @@ import (
 	"fmt"
 	scope "bitbucket.org/subiz/scopemgr"
 	"bitbucket.org/subiz/gocommon"
+	"github.com/cenkalti/backoff"
 )
 
 const (
-	keyspacePerm = "perms"
+	keyspace = "perms"
 	tablePermissions = "perms"
 )
 
 // PermDB manage permissions
 type PermDB struct {
-	init bool
 	seeds []string
 	session *gocql.Session
 	keyspace string
 	repfactor int
 }
 
-func (me *SubDB) createKeyspace(seeds []string, repfactor int) {
-	cluster := gocql.NewCluster(seeds...)
-	cluster.Timeout = 10 * time.Second
-	cluster.Keyspace = "system"
-	var defsession, err = cluster.CreateSession()
-	defer defsession.Close()
-	common.Panicf(err, "failed to connect to cluster: %v", seeds)
-	err = defsession.Query(fmt.Sprintf(`
-		CREATE KEYSPACE IF NOT EXISTS %s WITH replication = {
-			'class': 'SimpleStrategy',
-			'replication_factor': %d
-		}`, me.keyspace, repfactor)).Exec()
-	common.Panicf(err, "failed to create keyspace %s", me.keyspace)
-}
-
 // NewPermDB create new PermDB object
-func (me *PermDB) Config(seeds []string, keyspaceprefix string, repfactor int) *PermDB {
+func (me *PermDB) Config(seeds []string, keyspaceprefix string, repfactor int) {
+	me.seeds = seeds
+	me.repfactor = repfactor
 	me.keyspace = keyspaceprefix + keyspace
-	me.createKeyspace(seeds, repfactor)
-	me.createTables(seeds)
+	cluster := gocql.NewCluster(me.seeds...)
+	cluster.Timeout = 10 * time.Second
+	me.createKeyspace(cluster)
+	me.createTables(cluster)
 }
 
 func (me *PermDB) createTables(cluster *gocql.ClusterConfig) {
-	cluster := gocql.NewCluster(me.seeds...)
-	cluster.Timeout = 10 * time.Second
 	cluster.Keyspace = me.keyspace
 	var err error
 	me.session, err = cluster.CreateSession()
@@ -62,29 +49,39 @@ func (me *PermDB) createTables(cluster *gocql.ClusterConfig) {
 	common.Panicf(err, "failed to create table %s", tablePermissions)
 }
 
-func (me *PermDB) createKeyspace(cluster *gocql.ClusterConfig, repfactor int) {
-	cluster.Keyspace = "system"
-	var defsession, err = cluster.CreateSession()
-	defer defsession.Close()
+func (me *PermDB) createKeyspace(cluster *gocql.ClusterConfig) {
+		cluster.Keyspace = "system"
+	ticker := backoff.NewTicker(backoff.NewExponentialBackOff())
+	var err error
+	var defsession *gocql.Session
+	for range ticker.C {
+		defsession, err = cluster.CreateSession()
+		if err == nil {
+			ticker.Stop()
+			break
+		}
+		common.Log(err, "will retry...")
+	}
 	common.Panicf(err, "failed to connect to cluster: %v", me.seeds)
-	err = defsession.Query(fmt.Sprintf(`
-		CREATE KEYSPACE IF NOT EXISTS %s WITH replication = {
+	defer defsession.Close()
+	err = defsession.Query(fmt.Sprintf(
+		`CREATE KEYSPACE IF NOT EXISTS %s WITH replication = {
 			'class': 'SimpleStrategy',
 			'replication_factor': %d
-		}`, me.keyspace, repfactor)).Exec()
+		}`, me.keyspace, me.repfactor)).Exec()
 	common.Panicf(err, "failed to create keyspace %s", me.keyspace)
 }
 
 // Update update or create method for user
 func (me *PermDB) Update(accid, userid string, method *pb.Method) {
 	err := me.session.Query(fmt.Sprintf(`UPDATE %s SET method=? WHERE account_id=? AND user_id=?`, tablePermissions), common.Protify(method), accid, userid).Exec()
-	common.PanicInternal(err, "unable to update user %s in account %s", userid, accid)
+	common.Panicf(err, "unable to update user %s in account %s", userid, accid)
 }
 
 // UpdateState update state for user
 func (me *PermDB) UpdateState(accid, userid string, isactive bool) {
 	err := me.session.Query(fmt.Sprintf(`UPDATE %s SET is_inactive=? WHERE account_id=? AND user_id=?`, tablePermissions), !isactive, accid, userid).Exec()
-	common.PanicInternal(err, "unable to update state of user %s in account %s", userid, accid)
+	common.Panicf(err, "unable to update state of user %s in account %s", userid, accid)
 }
 
 // Read read method for user, return default pb.Method if not found
@@ -95,7 +92,7 @@ func (me *PermDB) Read(accid, userid string) *pb.Method {
 		if err.Error() == gocql.ErrNotFound.Error() {
 			return &pb.Method{}
 		}
-		common.PanicInternal(err, "unable to select method from account %s and user %s", accid, userid)
+		common.Panicf(err, "unable to select method from account %s and user %s", accid, userid)
 	}
 	method := &pb.Method{}
 	common.ParseProto(met, method)
@@ -127,6 +124,6 @@ func (me *PermDB) ListUsersByMethod(accid string, method *pb.Method, startid str
 		}
 	}
 	var err = iter.Close()
-	common.PanicInternal(err, "failed to close iter for account %s", accid)
+	common.Panicf(err, "failed to close iter for account %s", accid)
 	return ids
 }
