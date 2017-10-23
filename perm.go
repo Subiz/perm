@@ -2,11 +2,11 @@ package perm
 
 import (
 	"context"
-	"bitbucket.org/subiz/servicespec/proto/auth"
+	"bitbucket.org/subiz/header/auth"
 	"bitbucket.org/subiz/gocommon"
-	scope "bitbucket.org/subiz/scopemgr"
+	scope "bitbucket.org/subiz/auth/scope"
 	"bitbucket.org/subiz/perm/db"
-	"bitbucket.org/subiz/servicespec/proto/lang"
+	"bitbucket.org/subiz/header/lang"
 )
 
 // Perm manage user permission and provide some method for quick checking permission

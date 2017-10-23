@@ -6,12 +6,12 @@ package db_test
 import (
 	"testing"
 	. "bitbucket.org/subiz/perm/db"
-	pb "bitbucket.org/subiz/servicespec/proto/auth"
+	pb "bitbucket.org/subiz/header/auth"
 	"time"
 	"fmt"
 	"strings"
 	"strconv"
-	scope "bitbucket.org/subiz/scopemgr"
+	scope "bitbucket.org/subiz/auth/scope"
 	"bitbucket.org/subiz/gocommon"
 )
 
