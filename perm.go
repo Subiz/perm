@@ -79,7 +79,7 @@ func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Me
 	}
 
 	accmethod := filterAccMethod(method)
-	usermethod := me.db.Read(cred.GetAccountId(), cred.GetUserId())
+	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
 	clientmethod := cred.Method
 	realmethod := scope.IntersectMethod(clientmethod, usermethod)
 
@@ -92,7 +92,7 @@ func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Me
 		return err
 	}
 
-	if userid != cred.GetUserId() {
+	if userid != cred.GetIssuer() {
 		return common.New400(lang.T_wrong_user_in_credential)
 	}
 	agentmethod := filterAgentMethod(method)
@@ -138,7 +138,7 @@ func (me *Perm) AllowOnlyAcc(ctx context.Context, accid string, method *auth.Met
 		return err
 	}
 
-	usermethod := me.db.Read(cred.GetAccountId(), cred.GetUserId())
+	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
 	realmethod := scope.IntersectMethod(clientmethod, usermethod)
 
 	accmethod := filterAccMethod(method)
