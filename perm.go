@@ -37,24 +37,50 @@ func (me Perm) ListUsersByMethod(accid string, method auth.Method, startid strin
 	return me.db.ListUsersByMethod(accid, method, startid, limit)
 }
 
-// Allow allow context which credential have right to do accmethod OR usermethod on userid
+func (me Perm) Check(cred auth.Credential, accid, issuer string, methods ...auth.Method) {
+	if len(methods) == 0 {
+		panic(common.New500(lang.T_internal_error, "method should not be empty"))
+	}
+
+	if accid != "" && cred.GetAccountId() != accid {
+		panic(common.New400(lang.T_wrong_account_in_credential))
+	}
+
+	if issuer != "" && issuer != cred.GetIssuer() {
+		panic(common.New400(lang.T_wrong_user_in_credential))
+	}
+
+	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
+	clientmethod := cred.GetMethod()
+	realmethod := scope.IntersectMethod(*clientmethod, usermethod)
+
+	for _, method := range methods {
+		if scope.RequireMethod(realmethod, method) {
+			return
+		}
+	}
+	panic(common.New400(lang.T_access_deny))
+}
+
+// Allow pass if credential have right to do accmethod OR usermethod on userid
 // It MUST panic if the credential doesn't have enough permission
-// It ONLY return success either when *acc check* or when *agent check* passed.
+// Specifically, it ONLY return success either when *acc check* or when *agent check*
+// are passed.
 //   *acc check* is the process of making sure that the invoker has enough
 //     *acc method* (*acc methods* are methods act on all agents, ex: UpdateAgents,
 //     ResetAgentsPassword).
 //   *agent check* is the process of making sure that the invoker has enough *agent
-//     method* (*agent  method* are method act on one agent, ex: UpdateAgent,
+//     method* (*agent method* are methods act on one agent, ex: UpdateAgent,
 //     ResetAgentPassword)
 //
 // let:
 // user methods are methods granted to user by the owner (stored in our database)
-// client methods are methods granted to app by an user. (stored in access token)
+// client methods are methods granted to app by an agent. (stored in access token)
 // real methods are the intersection of user methods and real methods
 //
-// *acc check* pass only if real methods have every methods in acc method
-// *agent check* pass when credential is credential of userid, and real methods have every method
-// in agentmethod
+// *acc check* passed only if real methods have every methods in acc method
+// *agent check* passed when credential is credential of agent, and real methods have
+// every method in agentmethod
 // The reason we need *real methods* is that we cannot simply rely on client
 // methods to determind whether the client have enought right to execute an action,
 // since user may grant client any methods its currently don't have, such as:
