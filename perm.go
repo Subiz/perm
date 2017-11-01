@@ -15,25 +15,25 @@ type Perm struct {
 }
 
 type DB interface {
-	Update(accid, userid string, method *auth.Method)
+	Update(accid, userid string, method auth.Method)
 	UpdateState(accid, userid string, isactive bool)
-	Read(accid, userid string) *auth.Method
-	ListUsersByMethod(accid string, method *auth.Method, startid string, limit int) []string
+	Read(accid, userid string) auth.Method
+	ListUsersByMethod(accid string, method auth.Method, startid string, limit int) []string
 }
 
-func (me *Perm) Update(accid, userid string, method *auth.Method) {
+func (me Perm) Update(accid, userid string, method auth.Method) {
 	me.db.Update(accid, userid, method)
 }
 
-func (me *Perm) Read(accid, userid string) *auth.Method {
+func (me Perm) Read(accid, userid string) auth.Method {
 	return me.db.Read(accid, userid)
 }
 
-func (me *Perm) UpdateState(accid, userid string, isactive bool) {
+func (me Perm) UpdateState(accid, userid string, isactive bool) {
 	me.db.UpdateState(accid, userid, isactive)
 }
 
-func (me *Perm) ListUsersByMethod(accid string, method *auth.Method, startid string, limit int) []string {
+func (me Perm) ListUsersByMethod(accid string, method auth.Method, startid string, limit int) []string {
 	return me.db.ListUsersByMethod(accid, method, startid, limit)
 }
 
@@ -66,7 +66,7 @@ func (me *Perm) ListUsersByMethod(accid string, method *auth.Method, startid str
 // Updated: there are some special methods, like CreateAccount, DeleteAccount, ...
 // There is none users have those, even account owners. Only some internal clients
 // are granted those methods
-func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Method) error {
+func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Method) error {
 	cred := common.GetCredential(ctx)
 	if cred == nil {
 		if !scope.IsNilMethod(method) {
@@ -80,14 +80,14 @@ func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Me
 
 	accmethod := filterAccMethod(method)
 	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
-	clientmethod := cred.Method
-	realmethod := scope.IntersectMethod(clientmethod, usermethod)
+	clientmethod := cred.GetMethod()
+	realmethod := scope.IntersectMethod(*clientmethod, usermethod)
 
 	if !scope.IsNilMethod(accmethod) && scope.RequireMethod(realmethod, accmethod) {
 		return nil
 	}
 
-	err := me.checkSpecialMethod(clientmethod, method)
+	err := me.checkSpecialMethod(*clientmethod, method)
 	if err != nil {
 		return err
 	}
@@ -104,7 +104,7 @@ func (me *Perm) Allow(ctx context.Context, accid, userid string, method *auth.Me
 
 // checkSpecialMethod returns error if client method don't have enought
 // rquired method
-func (me *Perm) checkSpecialMethod(clientmethod, requiredmethod *auth.Method) error {
+func (me Perm) checkSpecialMethod(clientmethod, requiredmethod auth.Method) error {
 	if requiredmethod.GetCreateAccount() && !clientmethod.GetCreateAccount() {
 		return common.New400(lang.T_access_deny)
 	}
@@ -117,7 +117,7 @@ func (me *Perm) checkSpecialMethod(clientmethod, requiredmethod *auth.Method) er
 	return nil
 }
 
-func (me *Perm) AllowByUser(accid, userid string, method *auth.Method) error {
+func (me Perm) AllowByUser(accid, userid string, method auth.Method) error {
 	usermethod := me.db.Read(accid, userid)
 	accmethod := filterAccMethod(method)
 	if scope.RequireMethod(usermethod, accmethod) {
@@ -127,19 +127,19 @@ func (me *Perm) AllowByUser(accid, userid string, method *auth.Method) error {
 }
 
 // AllowOnlyAcc allow only account method to pass
-func (me *Perm) AllowOnlyAcc(ctx context.Context, accid string, method *auth.Method) error {
+func (me Perm) AllowOnlyAcc(ctx context.Context, accid string, method auth.Method) error {
 	cred := common.GetCredential(ctx)
 	if accid != "" && cred.GetAccountId() != accid {
 		return common.New400(lang.T_wrong_account_in_credential)
 	}
-	clientmethod := cred.Method
-	err := me.checkSpecialMethod(clientmethod, method)
+	clientmethod := cred.GetMethod()
+	err := me.checkSpecialMethod(*clientmethod, method)
 	if err != nil {
 		return err
 	}
 
 	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
-	realmethod := scope.IntersectMethod(clientmethod, usermethod)
+	realmethod := scope.IntersectMethod(*clientmethod, usermethod)
 
 	accmethod := filterAccMethod(method)
 	if scope.RequireMethod(realmethod, accmethod) {
@@ -159,23 +159,23 @@ func False() *bool {
 }
 
 // filterAccMethod return only acc method
-func filterAccMethod(method *auth.Method) *auth.Method {
-	accmethod := &auth.Method{
-		InviteAgents: True(),
-		UpdateAgents: True(),
-		ReadAgents: True(),
-		ReadAccount: True(),
-		UpdateAgentsPermission: True(),
-		UpdateAgentsState: True(),
-		CreateAgentGroups: True(),
-		DeleteAgentGroups: True(),
-		ReadAgentGroups: True(),
-		UpdateAgentGroups: True(),
+func filterAccMethod(method auth.Method) auth.Method {
+	accmethod := auth.Method{
+		InviteAgents: true,
+		UpdateAgents: true,
+		ReadAgents: true,
+		ReadAccount: true,
+		UpdateAgentsPermission: true,
+		UpdateAgentsState: true,
+		CreateAgentGroups: true,
+		DeleteAgentGroups: true,
+		ReadAgentGroups: true,
+		UpdateAgentGroups: true,
 	}
 	return scope.IntersectMethod(method, accmethod)
 }
 
-func filterAgentMethod(method *auth.Method) *auth.Method {
+func filterAgentMethod(method auth.Method) auth.Method {
 	return scope.SubstractMethod(method, filterAccMethod(method))
 }
 

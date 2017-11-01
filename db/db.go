@@ -35,7 +35,7 @@ func (me *PermDB) Config(seeds []string, keyspaceprefix string, repfactor int) {
 	me.createTables(cluster)
 }
 
-func (me *PermDB) createTables(cluster *gocql.ClusterConfig) {
+func (me PermDB) createTables(cluster *gocql.ClusterConfig) {
 	cluster.Keyspace = me.keyspace
 	var err error
 	me.session, err = cluster.CreateSession()
@@ -74,34 +74,34 @@ func (me *PermDB) createKeyspace(cluster *gocql.ClusterConfig) {
 }
 
 // Update update or create method for user
-func (me *PermDB) Update(accid, userid string, method *pb.Method) {
-	err := me.session.Query(fmt.Sprintf(`UPDATE %s SET method=? WHERE account_id=? AND user_id=?`, tablePermissions), common.Protify(method), accid, userid).Exec()
+func (me PermDB) Update(accid, userid string, method pb.Method) {
+	err := me.session.Query(fmt.Sprintf(`UPDATE %s SET method=? WHERE account_id=? AND user_id=?`, tablePermissions), common.Protify(&method), accid, userid).Exec()
 	common.DieIf(err, lang.T_database_error, "unable to update user %s in account %s", userid, accid)
 }
 
 // UpdateState update state for user
-func (me *PermDB) UpdateState(accid, userid string, isactive bool) {
+func (me PermDB) UpdateState(accid, userid string, isactive bool) {
 	err := me.session.Query(fmt.Sprintf(`UPDATE %s SET is_inactive=? WHERE account_id=? AND user_id=?`, tablePermissions), !isactive, accid, userid).Exec()
 	common.DieIf(err, lang.T_database_error, "unable to update state of user %s in account %s", userid, accid)
 }
 
 // Read read method for user, return default pb.Method if not found
-func (me *PermDB) Read(accid, userid string) *pb.Method {
+func (me PermDB) Read(accid, userid string) pb.Method {
 	var met []byte
 	err := me.session.Query(fmt.Sprintf(`SELECT method FROM %s WHERE account_id=? AND user_id=?`, tablePermissions), accid, userid).Scan(&met)
 	if err != nil {
 		if err.Error() == gocql.ErrNotFound.Error() {
-			return &pb.Method{}
+			return pb.Method{}
 		}
 		common.DieIf(err, lang.T_database_error, "unable to select method from account %s and user %s", accid, userid)
 	}
-	method := &pb.Method{}
-	common.ParseProto(met, method)
+	method := pb.Method{}
+	common.ParseProto(met, &method)
 	return method
 }
 
 // ListUsersByMethod list active users that statisfy method, limit should less than 3000
-func (me *PermDB) ListUsersByMethod(accid string, method *pb.Method, startid string, limit int) []string {
+func (me PermDB) ListUsersByMethod(accid string, method pb.Method, startid string, limit int) []string {
 	if limit < 0 || limit > 3000 {
 		limit = 3000
 	}
@@ -116,7 +116,7 @@ func (me *PermDB) ListUsersByMethod(accid string, method *pb.Method, startid str
 		if isinactive {
 			continue
 		}
-		if !scope.RequireMethod(usermethod, method) {
+		if !scope.RequireMethod(*usermethod, method) {
 			continue
 		}
 		ids = append(ids, id)
