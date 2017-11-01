@@ -5,19 +5,19 @@
   branch = "master"
   name = "bitbucket.org/subiz/auth"
   packages = ["scope"]
-  revision = "75dac0f5113766a593571da36e1fa778966477ff"
+  revision = "a5cf466be88dba5e3e9a3215a65fa725430ccf65"
 
 [[projects]]
   branch = "master"
   name = "bitbucket.org/subiz/gocommon"
   packages = ["."]
-  revision = "95e61ff6299776967b00e91e649d8a2c6fcd23c4"
+  revision = "5208a42446ba0ffc6e5ae30c5c932717e8ff125a"
 
 [[projects]]
   branch = "master"
   name = "bitbucket.org/subiz/header"
   packages = ["account","auth","client","common","content","conversation","event","lang","user"]
-  revision = "d457a84f8d88b128ed4579cfd9e5ed26da3b62f7"
+  revision = "118c54e7fd3c7e9264722c7cc6fc3d8c3c6a8435"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/gocql/gocql"
   packages = [".","internal/lru","internal/murmur","internal/streams"]
-  revision = "f5cee644705e9593c342bfabe667720580a5289f"
+  revision = "93711fb9002b469d61ae13ed615441c5e57c1da1"
 
 [[projects]]
   branch = "master"
