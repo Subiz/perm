@@ -37,7 +37,11 @@ func (me Perm) ListUsersByMethod(accid string, method auth.Method, startid strin
 	return me.db.ListUsersByMethod(accid, method, startid, limit)
 }
 
-func (me Perm) Check(cred auth.Credential, accid, issuer string, methods ...auth.Method) {
+func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...auth.Method) {
+	if cred == nil {
+		panic(common.New400(lang.T_invalid_credential))
+	}
+
 	if len(methods) == 0 {
 		panic(common.New500(lang.T_internal_error, "method should not be empty"))
 	}
