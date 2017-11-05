@@ -11,13 +11,13 @@
   branch = "master"
   name = "bitbucket.org/subiz/gocommon"
   packages = ["."]
-  revision = "5208a42446ba0ffc6e5ae30c5c932717e8ff125a"
+  revision = "5b66a81cf3caecfe86f6ba2c50e8d54597cccaf5"
 
 [[projects]]
   branch = "master"
   name = "bitbucket.org/subiz/header"
   packages = ["account","auth","client","common","content","conversation","event","lang","user"]
-  revision = "118c54e7fd3c7e9264722c7cc6fc3d8c3c6a8435"
+  revision = "28e5576aa0aa095bb67a6f764389d187cb6d0061"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -35,7 +35,7 @@
   branch = "master"
   name = "github.com/gocql/gocql"
   packages = [".","internal/lru","internal/murmur","internal/streams"]
-  revision = "93711fb9002b469d61ae13ed615441c5e57c1da1"
+  revision = "79434f238fe5c76efa88f8ed131adefe5b31a0d1"
 
 [[projects]]
   branch = "master"
@@ -53,7 +53,7 @@
   branch = "master"
   name = "github.com/gorilla/schema"
   packages = ["."]
-  revision = "693523c4a63442cd587a21af72c8741f7c01dcb7"
+  revision = "8b1100835db5bbdae88541510f70d114b91a7e4d"
 
 [[projects]]
   branch = "master"
@@ -119,19 +119,19 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "c73622c77280266305273cb545f54516ced95b93"
+  revision = "01c190206fbdffa42f334f4b2bf2220f50e64920"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "95c6576299259db960f6c5b9b69ea52422860fce"
+  revision = "8eb05f94d449fdf134ec24630ce69ada5b469c1c"
 
 [[projects]]
   name = "google.golang.org/grpc"
   packages = ["metadata"]
-  revision = "61d37c5d657a47e4404fd6823bd598341a2595de"
-  version = "v1.7.1"
+  revision = "5ffe3083946d5603a0578721101dc8165b1d5b5f"
+  version = "v1.7.2"
 
 [[projects]]
   name = "gopkg.in/inf.v0"
