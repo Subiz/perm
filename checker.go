@@ -10,7 +10,7 @@ import (
 
 type rule struct {
 	agentid string
-	method *auth.Method
+	method auth.Method
 }
 
 type Checker struct {
@@ -18,7 +18,7 @@ type Checker struct {
 	db DB
 }
 
-func (c *Checker) Or(agentid string, method *auth.Method) *Checker {
+func (c *Checker) Or(agentid string, method auth.Method) *Checker {
 	c.rules = append(c.rules, rule{
 		agentid: agentid,
 		method: method,
@@ -64,7 +64,7 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 			panic(common.New400(lang.T_wrong_user_in_credential))
 		}
 
-		if scope.RequireMethod(realmethod, *r.method) {
+		if scope.RequireMethod(realmethod, r.method) {
 			return
 		}
 	}
