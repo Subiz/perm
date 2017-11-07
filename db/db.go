@@ -35,7 +35,7 @@ func (me *PermDB) Config(seeds []string, keyspaceprefix string, repfactor int) {
 	me.createTables(cluster)
 }
 
-func (me PermDB) createTables(cluster *gocql.ClusterConfig) {
+func (me *PermDB) createTables(cluster *gocql.ClusterConfig) {
 	cluster.Keyspace = me.keyspace
 	var err error
 	me.session, err = cluster.CreateSession()
