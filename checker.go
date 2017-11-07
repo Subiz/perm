@@ -9,7 +9,7 @@ import (
 )
 
 type rule struct {
-	agentid string
+	issuer string
 	method auth.Method
 }
 
@@ -18,9 +18,9 @@ type Checker struct {
 	db DB
 }
 
-func (c *Checker) Or(agentid string, method auth.Method) *Checker {
+func (c *Checker) Or(issuer string, method auth.Method) *Checker {
 	c.rules = append(c.rules, rule{
-		agentid: agentid,
+		issuer: issuer,
 		method: method,
 	})
 	return c
@@ -55,14 +55,18 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 		panic(common.New400(lang.T_invalid_credential))
 	}
 
-	usermethod := c.db.Read(cred.GetAccountId(), issuer)
-	clientmethod := *cred.GetMethod()
-	realmethod := scope.IntersectMethod(clientmethod, usermethod)
-
 	for _, r := range c.rules {
-		if r.agentid != "" && r.agentid != issuer {
+		if r.issuer != "" && r.issuer != issuer {
 			panic(common.New400(lang.T_wrong_user_in_credential))
 		}
+
+		if r.method == (auth.Method{}) { // skip empty method
+			continue
+		}
+
+		usermethod := c.db.Read(cred.GetAccountId(), issuer)
+		clientmethod := *cred.GetMethod()
+		realmethod := scope.IntersectMethod(clientmethod, usermethod)
 
 		if scope.RequireMethod(realmethod, r.method) {
 			return

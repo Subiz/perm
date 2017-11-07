@@ -17,7 +17,7 @@
   branch = "master"
   name = "bitbucket.org/subiz/header"
   packages = ["account","auth","client","common","content","conversation","event","lang","user"]
-  revision = "28e5576aa0aa095bb67a6f764389d187cb6d0061"
+  revision = "a2f861ba90df8c6d6de00cc04fab182bf2c2313d"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -125,7 +125,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "8eb05f94d449fdf134ec24630ce69ada5b469c1c"
+  revision = "d4266bc12aae0b4128952c889b769442fce5d2f1"
 
 [[projects]]
   name = "google.golang.org/grpc"
