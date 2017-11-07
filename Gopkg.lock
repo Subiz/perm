@@ -5,7 +5,7 @@
   branch = "master"
   name = "bitbucket.org/subiz/auth"
   packages = ["scope"]
-  revision = "a5cf466be88dba5e3e9a3215a65fa725430ccf65"
+  revision = "501d2d5786cc1ed76be4ef3b419abbb71c37b8b4"
 
 [[projects]]
   branch = "master"

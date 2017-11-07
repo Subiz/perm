@@ -61,7 +61,11 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 		}
 
 		if r.method == (auth.Method{}) { // skip empty method
-			continue
+			if r.issuer == "" {
+				continue
+			} else {
+				return // passed
+			}
 		}
 
 		if cred.GetMethod() == nil {
@@ -70,9 +74,7 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 
 		usermethod := c.db.Read(cred.GetAccountId(), issuer)
 		clientmethod := *cred.GetMethod()
-		realmethod := scope.IntersectMethod(clientmethod, usermethod)
-
-		if scope.RequireMethod(realmethod, r.method) {
+		if scope.BothCoverMethod(usermethod, clientmethod, r.method) {
 			return
 		}
 	}
