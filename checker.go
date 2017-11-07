@@ -64,6 +64,10 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 			continue
 		}
 
+		if cred.GetMethod() == nil {
+			break
+		}
+
 		usermethod := c.db.Read(cred.GetAccountId(), issuer)
 		clientmethod := *cred.GetMethod()
 		realmethod := scope.IntersectMethod(clientmethod, usermethod)
