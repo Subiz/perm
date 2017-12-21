@@ -135,12 +135,6 @@ func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Meth
 // checkSpecialMethod returns error if client method don't have enought
 // rquired method
 func (me Perm) checkSpecialMethod(clientmethod, requiredmethod auth.Method) error {
-	if requiredmethod.GetCreateAccount() && !clientmethod.GetCreateAccount() {
-		return common.New400(lang.T_access_deny)
-	}
-	if requiredmethod.GetDeleteAccount() && !clientmethod.GetDeleteAccount() {
-		return common.New400(lang.T_access_deny)
-	}
 	if requiredmethod.GetResetPassword() && !clientmethod.GetResetPassword() {
 		return common.New400(lang.T_access_deny)
 	}
@@ -191,16 +185,11 @@ func False() *bool {
 // filterAccMethod return only acc method
 func filterAccMethod(method auth.Method) auth.Method {
 	accmethod := auth.Method{
-		InviteAgents: true,
 		UpdateAgents: true,
 		ReadAgents: true,
 		ReadAccount: true,
 		UpdateAgentsPermission: true,
 		UpdateAgentsState: true,
-		CreateAgentGroups: true,
-		DeleteAgentGroups: true,
-		ReadAgentGroups: true,
-		UpdateAgentGroups: true,
 	}
 	return scope.IntersectMethod(method, accmethod)
 }

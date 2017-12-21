@@ -5,19 +5,19 @@
   branch = "master"
   name = "bitbucket.org/subiz/auth"
   packages = ["scope"]
-  revision = "501d2d5786cc1ed76be4ef3b419abbb71c37b8b4"
+  revision = "cbb178440dc90a04fe7feab8e159deffb4f53111"
 
 [[projects]]
   branch = "master"
   name = "bitbucket.org/subiz/gocommon"
   packages = ["."]
-  revision = "5b66a81cf3caecfe86f6ba2c50e8d54597cccaf5"
+  revision = "adc7ff7447b14703cdabca9ddfaee18188a78b18"
 
 [[projects]]
   branch = "master"
   name = "bitbucket.org/subiz/header"
   packages = ["account","auth","client","common","content","conversation","event","lang","user"]
-  revision = "8fa15731a54420697f463ad244495bc4c534553c"
+  revision = "d7f350084f800d7f2e398e30584bc3ada8d3a4ca"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -40,7 +40,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/golang/protobuf"
-  packages = ["proto"]
+  packages = ["proto","ptypes","ptypes/any","ptypes/duration","ptypes/timestamp"]
   revision = "1643683e1b54a9e88ad26d98f81400c8c9d9f4f9"
 
 [[projects]]
@@ -64,8 +64,8 @@
 [[projects]]
   name = "github.com/hashicorp/consul"
   packages = ["api"]
-  revision = "51ea240df8476e02215d53fbfad5838bf0d44d21"
-  version = "v1.0.0"
+  revision = "9564c2978b59c060aed0657e662a4eb1c6f35356"
+  version = "v1.0.1"
 
 [[projects]]
   branch = "master"
@@ -107,7 +107,7 @@
   branch = "master"
   name = "github.com/orcaman/concurrent-map"
   packages = ["."]
-  revision = "d4c23bd0e01134806215ffe65ba3fd22ec6721f7"
+  revision = "2ae17bc4c860c83513ee50feb9746f3e50d7515d"
 
 [[projects]]
   branch = "master"
@@ -116,22 +116,46 @@
   revision = "d49c2bc1aa135aad0c6f4fc2056623ec78f5d5ac"
 
 [[projects]]
+  name = "github.com/thanhpk/goslice"
+  packages = ["."]
+  revision = "334b985c3c7768fc0c6b15c9b5f73ff47ca8a6a7"
+  version = "v1.0.0"
+
+[[projects]]
+  name = "github.com/thanhpk/stringf"
+  packages = ["."]
+  revision = "da3f5ab1dda9124262c257c0838c3f34bdb40209"
+  version = "v1.0.4"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["context"]
-  revision = "01c190206fbdffa42f334f4b2bf2220f50e64920"
+  packages = ["context","http2","http2/hpack","idna","internal/timeseries","lex/httplex","trace"]
+  revision = "d866cfc389cec985d6fda2859936a575a55a3ab6"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "d4266bc12aae0b4128952c889b769442fce5d2f1"
+  revision = "d818ba11af4465e00c1998bd3f8a55603b422290"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/text"
+  packages = ["collate","collate/build","internal/colltab","internal/gen","internal/tag","internal/triegen","internal/ucd","language","secure/bidirule","transform","unicode/bidi","unicode/cldr","unicode/norm","unicode/rangetable"]
+  revision = "eb22672bea55af56d225d4e35405f4d2e9f062a0"
+
+[[projects]]
+  branch = "master"
+  name = "google.golang.org/genproto"
+  packages = ["googleapis/rpc/status"]
+  revision = "f676e0f3ac6395ff1a529ae59a6670878a8371a6"
 
 [[projects]]
   name = "google.golang.org/grpc"
-  packages = ["metadata"]
-  revision = "5ffe3083946d5603a0578721101dc8165b1d5b5f"
-  version = "v1.7.2"
+  packages = [".","balancer","balancer/roundrobin","codes","connectivity","credentials","encoding","grpclb/grpc_lb_v1/messages","grpclog","internal","keepalive","metadata","naming","peer","resolver","resolver/dns","resolver/passthrough","stats","status","tap","transport"]
+  revision = "5a9f7b402fe85096d2e1d0383435ee1876e863d0"
+  version = "v1.8.0"
 
 [[projects]]
   name = "gopkg.in/inf.v0"
