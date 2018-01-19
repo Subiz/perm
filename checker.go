@@ -57,7 +57,7 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 
 	for _, r := range c.rules {
 		if r.issuer != "" && r.issuer != issuer {
-			panic(common.New400(lang.T_wrong_user_in_credential))
+			continue
 		}
 
 		if r.method == (auth.Method{}) { // skip empty method
