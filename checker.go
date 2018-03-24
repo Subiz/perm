@@ -35,8 +35,8 @@ func (me Perm) New() *Checker {
 
 func (c *Checker) Check(ctx context.Context, accid string) {
 	cred := common.GetCredential(ctx)
-	if cred.GetAccountId() == "" {
-		cred = nil
+	if cred == nil || cred.GetAccountId() == "" {
+		cred = common.FromGrpcCtx(ctx).GetCredential()
 	}
 	c.CheckCred(cred, accid)
 }

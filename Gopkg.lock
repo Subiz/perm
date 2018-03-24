@@ -11,7 +11,7 @@
   branch = "master"
   name = "bitbucket.org/subiz/gocommon"
   packages = ["."]
-  revision = "9637c4026d475b2394b14e400783d37eb04f07cf"
+  revision = "798b3e4fab9a22b0f02e82c2866053daae1e3806"
 
 [[projects]]
   branch = "master"
@@ -28,7 +28,7 @@
     "notibox",
     "user"
   ]
-  revision = "22bb6cfa50ef9d892de4039fe3a01aec4d9c8263"
+  revision = "9c753ee2b844061e458e587f37f5943717f6209a"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -150,8 +150,8 @@
 [[projects]]
   name = "github.com/thanhpk/stringf"
   packages = ["."]
-  revision = "7105a2ad97639a1bb87e9df7ac2536e3e65da3c7"
-  version = "v1.0.6"
+  revision = "bab82860abfe2e060a07fdd0a28c5e603e9a0eed"
+  version = "v1.0.7"
 
 [[projects]]
   branch = "master"
@@ -165,13 +165,13 @@
     "lex/httplex",
     "trace"
   ]
-  revision = "24dd3780ca4f75fed9f321890729414a4b5d3f13"
+  revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "01acb38716e021ed1fc03a602bdb5838e1358c5e"
+  revision = "91ee8cde435411ca3f1cd365e8f20131aed4d0a1"
 
 [[projects]]
   name = "golang.org/x/text"
