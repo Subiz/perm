@@ -38,6 +38,10 @@ func (me Perm) ListUsersByMethod(accid string, method auth.Method, startid strin
 }
 
 func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...auth.Method) {
+	if cred.GetAccountId() == "" {
+		panic(common.New400(lang.T_invalid_credential))
+	}
+
 	if cred == nil {
 		panic(common.New400(lang.T_invalid_credential))
 	}
