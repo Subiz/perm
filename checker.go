@@ -1,10 +1,10 @@
 package perm
 
 import (
-	"bitbucket.org/subiz/header/auth"
+	"git.subiz.net/header/auth"
 	"context"
 	"bitbucket.org/subiz/gocommon"
-	"bitbucket.org/subiz/header/lang"
+	"git.subiz.net/header/lang"
 	"bitbucket.org/subiz/auth/scope"
 )
 

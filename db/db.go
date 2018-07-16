@@ -2,13 +2,13 @@ package db
 
 import (
 	"github.com/gocql/gocql"
-	pb "bitbucket.org/subiz/header/auth"
+	pb "git.subiz.net/header/auth"
 	"time"
 	"fmt"
 	scope "bitbucket.org/subiz/auth/scope"
 	"bitbucket.org/subiz/gocommon"
 	"github.com/cenkalti/backoff"
-	"bitbucket.org/subiz/header/lang"
+	"git.subiz.net/header/lang"
 )
 
 const (
