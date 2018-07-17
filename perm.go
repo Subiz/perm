@@ -5,7 +5,7 @@ import (
 	"git.subiz.net/header/auth"
 	"bitbucket.org/subiz/gocommon"
 	scope "bitbucket.org/subiz/auth/scope"
-	"bitbucket.org/subiz/perm/db"
+	"git.subiz.net/perm/db"
 	"git.subiz.net/header/lang"
 )
 

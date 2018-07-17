@@ -5,7 +5,7 @@ package db_test
 
 import (
 	"testing"
-	. "bitbucket.org/subiz/perm/db"
+	. "git.subiz.net/perm/db"
 	pb "git.subiz.net/header/auth"
 	"time"
 	"fmt"

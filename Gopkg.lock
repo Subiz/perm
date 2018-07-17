@@ -5,7 +5,7 @@
   branch = "master"
   name = "bitbucket.org/subiz/auth"
   packages = ["scope"]
-  revision = "6a90157f6f3401650c2aa571dd57bdea22656058"
+  revision = "f3be175e23231a3950bfc09d47412e9ab006d43f"
 
 [[projects]]
   branch = "master"
@@ -29,7 +29,7 @@
     "payment",
     "user"
   ]
-  revision = "f5d7f5c7a587e79a04c4ba87a2eb5b3ebc331af4"
+  revision = "a346d256184ee67d6c19739743d81c4c9638214f"
 
 [[projects]]
   name = "github.com/cenkalti/backoff"
@@ -169,7 +169,7 @@
   branch = "master"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
-  revision = "e92b116572682a5b432ddd840aeaba2a559eeff1"
+  revision = "2731d4fa720b67f9fe38e9051a2a9b38e4609260"
 
 [[projects]]
   name = "google.golang.org/grpc"
