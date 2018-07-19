@@ -12,7 +12,6 @@ import (
 	"strings"
 	"strconv"
 	scope "bitbucket.org/subiz/auth/scope"
-	"bitbucket.org/subiz/gocommon"
 )
 
 func skipPermTest(t *testing.T) {

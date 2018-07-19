@@ -1,12 +1,18 @@
 package perm
 
 import (
-	"context"
-	"git.subiz.net/header/auth"
-	"bitbucket.org/subiz/gocommon"
 	scope "bitbucket.org/subiz/auth/scope"
-	"git.subiz.net/perm/db"
+	"context"
+	"git.subiz.net/errors"
+	"git.subiz.net/header/auth"
 	"git.subiz.net/header/lang"
+	"git.subiz.net/perm/db"
+)
+
+type key int
+
+const (
+	credential key = 0
 )
 
 // Perm manage user permission and provide some method for quick checking permission
@@ -39,23 +45,23 @@ func (me Perm) ListUsersByMethod(accid string, method auth.Method, startid strin
 
 func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...auth.Method) {
 	if cred.GetAccountId() == "" {
-		panic(common.New400(lang.T_invalid_credential))
+		panic(errors.New(400, lang.T_invalid_credential))
 	}
 
 	if cred == nil {
-		panic(common.New400(lang.T_invalid_credential))
+		panic(errors.New(400, lang.T_invalid_credential))
 	}
 
 	if len(methods) == 0 {
-		panic(common.New500(lang.T_internal_error, "method should not be empty"))
+		panic(errors.New(400, lang.T_internal_error, "method should not be empty"))
 	}
 
 	if accid != "" && cred.GetAccountId() != accid {
-		panic(common.New400(lang.T_wrong_account_in_credential))
+		panic(errors.New(400, lang.T_wrong_account_in_credential))
 	}
 
 	if issuer != "" && issuer != cred.GetIssuer() {
-		panic(common.New400(lang.T_wrong_user_in_credential))
+		panic(errors.New(400, lang.T_wrong_user_in_credential))
 	}
 
 	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
@@ -67,7 +73,7 @@ func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...aut
 			return
 		}
 	}
-	panic(common.New400(lang.T_access_deny))
+	panic(errors.New(400, lang.T_access_deny))
 }
 
 // Allow pass if credential have right to do accmethod OR usermethod on userid
@@ -101,15 +107,15 @@ func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...aut
 // There is none users have those, even account owners. Only some internal clients
 // are granted those methods
 func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Method) error {
-	cred := common.GetCredential(ctx)
+	cred := getCredential(ctx)
 	if cred == nil {
 		if !scope.IsNilMethod(method) {
 			return nil
 		}
-		return common.New400(lang.T_credential_not_set)
+		return errors.New(400, lang.T_credential_not_set)
 	}
 	if accid != "" && cred.GetAccountId() != accid {
-		return common.New400(lang.T_wrong_account_in_credential)
+		return errors.New(400, lang.T_wrong_account_in_credential)
 	}
 
 	accmethod := filterAccMethod(method)
@@ -127,11 +133,11 @@ func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Meth
 	}
 
 	if userid != cred.GetIssuer() {
-		return common.New400(lang.T_wrong_user_in_credential)
+		return errors.New(400, lang.T_wrong_user_in_credential)
 	}
 	agentmethod := filterAgentMethod(method)
 	if !scope.RequireMethod(realmethod, agentmethod) {
-		common.New400(lang.T_access_deny)
+		return errors.New(400, lang.T_access_deny)
 	}
 	return nil
 }
@@ -140,7 +146,7 @@ func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Meth
 // rquired method
 func (me Perm) checkSpecialMethod(clientmethod, requiredmethod auth.Method) error {
 	if requiredmethod.GetResetPassword() && !clientmethod.GetResetPassword() {
-		return common.New400(lang.T_access_deny)
+		return errors.New(400, lang.T_access_deny)
 	}
 	return nil
 }
@@ -151,14 +157,23 @@ func (me Perm) AllowByUser(accid, userid string, method auth.Method) error {
 	if scope.RequireMethod(usermethod, accmethod) {
 		return nil
 	}
-	return common.New400(lang.T_access_deny)
+	return errors.New(400, lang.T_access_deny)
+}
+
+// GetCredential extract credential from context
+func getCredential(ctx context.Context) *auth.Credential {
+	cred, ok := ctx.Value(credential).(*auth.Credential)
+	if !ok {
+		return &auth.Credential{}
+	}
+	return cred
 }
 
 // AllowOnlyAcc allow only account method to pass
 func (me Perm) AllowOnlyAcc(ctx context.Context, accid string, method auth.Method) error {
-	cred := common.GetCredential(ctx)
+	cred := getCredential(ctx)
 	if accid != "" && cred.GetAccountId() != accid {
-		return common.New400(lang.T_wrong_account_in_credential)
+		return errors.New(400, lang.T_wrong_account_in_credential)
 	}
 	clientmethod := cred.GetMethod()
 	err := me.checkSpecialMethod(*clientmethod, method)
@@ -173,27 +188,17 @@ func (me Perm) AllowOnlyAcc(ctx context.Context, accid string, method auth.Metho
 	if scope.RequireMethod(realmethod, accmethod) {
 		return nil
 	}
-	return common.New400(lang.T_access_deny)
-}
-
-// True return pointer to true
-func True() *bool {
-	return common.AmpB(true)
-}
-
-// False return pointer to false
-func False() *bool {
-	return common.AmpB(false)
+	return errors.New(400, lang.T_access_deny)
 }
 
 // filterAccMethod return only acc method
 func filterAccMethod(method auth.Method) auth.Method {
 	accmethod := auth.Method{
-		UpdateAgents: true,
-		ReadAgents: true,
-		ReadAccount: true,
+		UpdateAgents:           true,
+		ReadAgents:             true,
+		ReadAccount:            true,
 		UpdateAgentsPermission: true,
-		UpdateAgentsState: true,
+		UpdateAgentsState:      true,
 	}
 	return scope.IntersectMethod(method, accmethod)
 }

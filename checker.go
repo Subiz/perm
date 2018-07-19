@@ -1,11 +1,12 @@
 package perm
 
 import (
-	"git.subiz.net/header/auth"
-	"context"
-	"bitbucket.org/subiz/gocommon"
-	"git.subiz.net/header/lang"
 	"bitbucket.org/subiz/auth/scope"
+	"context"
+	"git.subiz.net/errors"
+	"git.subiz.net/goutils/grpc"
+	"git.subiz.net/header/auth"
+	"git.subiz.net/header/lang"
 )
 
 type rule struct {
@@ -15,7 +16,7 @@ type rule struct {
 
 type Checker struct {
 	rules []rule
-	db DB
+	db    DB
 }
 
 func (c *Checker) Or(issuer string, method auth.Method) *Checker {
@@ -29,30 +30,30 @@ func (c *Checker) Or(issuer string, method auth.Method) *Checker {
 func (me Perm) New() *Checker {
 	return &Checker{
 		rules: make([]rule, 0),
-		db: me.db,
+		db:    me.db,
 	}
 }
 
 func (c *Checker) Check(ctx context.Context, accid string) {
-	cred := common.GetCredential(ctx)
+	cred := getCredential(ctx)
 	if cred == nil || cred.GetAccountId() == "" {
-		cred = common.FromGrpcCtx(ctx).GetCredential()
+		cred = grpc.FromGrpcCtx(ctx).GetCredential()
 	}
 	c.CheckCred(cred, accid)
 }
 
 func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 	if cred == nil {
-		panic(common.New400(lang.T_invalid_credential))
+		panic(errors.New(400, lang.T_invalid_credential))
 	}
 
 	if accid != "" && cred.GetAccountId() != accid {
-		panic(common.New400(lang.T_wrong_account_in_credential))
+		panic(errors.New(400, lang.T_wrong_account_in_credential))
 	}
 
 	issuer := cred.GetIssuer()
 	if issuer == "" {
-		panic(common.New400(lang.T_invalid_credential))
+		panic(errors.New(400, lang.T_invalid_credential))
 	}
 
 	for _, r := range c.rules {
@@ -78,5 +79,5 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 			return
 		}
 	}
-	panic(common.New400(lang.T_access_deny))
+	panic(errors.New(400, lang.T_access_deny))
 }

@@ -31,7 +31,11 @@
 
 [[constraint]]
   branch = "master"
-  name = "bitbucket.org/subiz/gocommon"
+  name = "git.subiz.net/errors"
+
+[[constraint]]
+  branch = "master"
+  name = "git.subiz.net/goutils"
 
 [[constraint]]
   branch = "master"
@@ -44,6 +48,10 @@
 [[constraint]]
   branch = "master"
   name = "github.com/gocql/gocql"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/golang/protobuf"
 
 [prune]
   go-tests = true
