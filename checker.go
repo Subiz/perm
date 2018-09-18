@@ -1,8 +1,9 @@
 package perm
 
 import (
-	"bitbucket.org/subiz/auth/scope"
 	"context"
+
+	"bitbucket.org/subiz/auth/scope"
 	"git.subiz.net/errors"
 	"git.subiz.net/goutils/grpc"
 	"git.subiz.net/header/auth"
@@ -16,7 +17,7 @@ type rule struct {
 
 type Checker struct {
 	rules []rule
-	db    DB
+	c     auth.PermClient
 }
 
 func (c *Checker) Or(issuer string, method auth.Method) *Checker {
@@ -30,7 +31,7 @@ func (c *Checker) Or(issuer string, method auth.Method) *Checker {
 func (me Perm) New() *Checker {
 	return &Checker{
 		rules: make([]rule, 0),
-		db:    me.db,
+		c:     me.c,
 	}
 }
 
@@ -73,9 +74,13 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 			break
 		}
 
-		usermethod := c.db.Read(cred.GetAccountId(), issuer)
+		ctx := context.Background()
+		usermethod, err := c.c.Read(ctx, &auth.ReadPermRequest{AccountId: cred.GetAccountId(), UserId: issuer})
+		if err != nil {
+			panic(errors.New(500, lang.T_internal_error))
+		}
 		clientmethod := *cred.GetMethod()
-		if scope.BothCoverMethod(usermethod, clientmethod, r.method) {
+		if scope.BothCoverMethod(*usermethod, clientmethod, r.method) {
 			return
 		}
 	}

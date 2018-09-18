@@ -3,24 +3,31 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:7a7476c65a9a5267d296066c9088e64e8e1278637502bc110969264b0ebf893a"
   name = "bitbucket.org/subiz/auth"
   packages = ["scope"]
-  revision = "f3be175e23231a3950bfc09d47412e9ab006d43f"
+  pruneopts = "UT"
+  revision = "eef497715881466c4ea997f06c638319d952e40f"
 
 [[projects]]
   branch = "master"
+  digest = "1:bc603a7e2b792a625acc83f0acac1601940c22d8392c46b54c4700898a0ac515"
   name = "git.subiz.net/errors"
   packages = ["."]
-  revision = "f8a79a0c5e86274bf05bf9f29edb7f47f8736e1e"
+  pruneopts = "UT"
+  revision = "32a5cb3404e924b50a67c634e60a716c1860d48c"
 
 [[projects]]
   branch = "master"
+  digest = "1:0b90c5dbacf9061368c90376218e50afd54e06360434142f773fe099c59eca90"
   name = "git.subiz.net/goutils"
   packages = ["grpc"]
-  revision = "d4ee7c250ee0c607121e897e5f8de78098064726"
+  pruneopts = "UT"
+  revision = "fcf0d1e5e2f8627fc0aa21c3b1e680673b239dc2"
 
 [[projects]]
   branch = "master"
+  digest = "1:079299af36135857feac9d3644aac7cb3b09ee7eb6688818adf93f392c366feb"
   name = "git.subiz.net/header"
   packages = [
     "account",
@@ -33,81 +40,52 @@
     "lang",
     "notibox",
     "payment",
-    "user"
+    "user",
   ]
-  revision = "93e70670f14f104e5c7228a16d35c6a69c9b0686"
-
-[[projects]]
-  name = "github.com/cenkalti/backoff"
-  packages = ["."]
-  revision = "2ea60e5f094469f9e65adb9cd103795b73ae743e"
-  version = "v2.0.0"
+  pruneopts = "UT"
+  revision = "e9bde10892c924f00159fdbf9ff0b0712086f5ba"
 
 [[projects]]
   branch = "master"
-  name = "github.com/gocql/gocql"
-  packages = [
-    ".",
-    "internal/lru",
-    "internal/murmur",
-    "internal/streams"
-  ]
-  revision = "e06f8c1bcd787e6bf0608288b314522f08cc7848"
-
-[[projects]]
-  branch = "master"
+  digest = "1:659cd35fed4495485bbefe1e233b20a130335608923782013f9054c74907add2"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
-    "ptypes/timestamp"
+    "ptypes/timestamp",
   ]
-  revision = "14aad3d5ea4c323bcd7a2137e735da24a76e814c"
+  pruneopts = "UT"
+  revision = "a47340a8e42c4ceb44c00c2a05199e24b24fcaef"
 
 [[projects]]
   branch = "master"
-  name = "github.com/golang/snappy"
-  packages = ["."]
-  revision = "2e65f85255dbc3072edf28d6b5b8efc472979f5a"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/hailocab/go-hostpool"
-  packages = ["."]
-  revision = "e80d13ce29ede4452c43dea11e79b9bc8a15b478"
-
-[[projects]]
-  branch = "master"
+  digest = "1:f7aa53146bf79462509d4ce136826ebbd64907e4679e1b04e62758da6b68e589"
   name = "github.com/orcaman/concurrent-map"
   packages = ["."]
-  revision = "a05df785d2dcc16310fb997ee1702100d047cfe1"
+  pruneopts = "UT"
+  revision = "b28018939af9022337862b94a463abb18abb3e0e"
 
 [[projects]]
   branch = "master"
-  name = "github.com/pquerna/ffjson"
-  packages = [
-    "ffjson",
-    "fflib/v1",
-    "fflib/v1/internal"
-  ]
-  revision = "af8b230fcd2007c7095168ca8ab94c68b60840c6"
-
-[[projects]]
+  digest = "1:5529909de26c983cf86f52ab8184eebb8f2828bff1b3400149bfe7be6c850337"
   name = "github.com/thanhpk/goslice"
   packages = ["."]
+  pruneopts = "UT"
   revision = "956fa51c129e5f0fc21f7a0253f30a518e2d9c08"
-  version = "v1.0.1"
 
 [[projects]]
+  digest = "1:c6d2f2a6ae58d43de1871a8f9264bc2c0ba8c46357a25c3aa611eacff9b39991"
   name = "github.com/thanhpk/stringf"
   packages = ["."]
+  pruneopts = "UT"
   revision = "bab82860abfe2e060a07fdd0a28c5e603e9a0eed"
   version = "v1.0.7"
 
 [[projects]]
   branch = "master"
+  digest = "1:deafe4ab271911fec7de5b693d7faae3f38796d9eb8622e2b9e7df42bb3dfea9"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -116,11 +94,21 @@
     "http2/hpack",
     "idna",
     "internal/timeseries",
-    "trace"
+    "trace",
   ]
-  revision = "81d44fd177a98d09fe3bc40a5a78d495d3f042ea"
+  pruneopts = "UT"
+  revision = "26e67e76b6c3f6ce91f7c52def5af501b4e0f3a2"
 
 [[projects]]
+  branch = "master"
+  digest = "1:6eb2645d74b43d9c87b51947df39f7c668a4f422cd512053f7f6f75bfaad0197"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  pruneopts = "UT"
+  revision = "d0be0721c37eeb5299f245a996a483160fc36940"
+
+[[projects]]
+  digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -136,18 +124,22 @@
     "unicode/bidi",
     "unicode/cldr",
     "unicode/norm",
-    "unicode/rangetable"
+    "unicode/rangetable",
   ]
+  pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:4b89f7cb4fa89ee4b8ec3fff8e91105e7f1fee84761edcb063a738e376c53357"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
-  revision = "fedd2861243fd1a8152376292b921b394c7bef7e"
+  pruneopts = "UT"
+  revision = "4b56f30a1fd96a133a036b62cdd2a249883dd89b"
 
 [[projects]]
+  digest = "1:ab8e92d746fb5c4c18846b0879842ac8e53b3d352449423d0924a11f1020ae1b"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -163,7 +155,9 @@
     "internal",
     "internal/backoff",
     "internal/channelz",
+    "internal/envconfig",
     "internal/grpcrand",
+    "internal/transport",
     "keepalive",
     "metadata",
     "naming",
@@ -174,20 +168,21 @@
     "stats",
     "status",
     "tap",
-    "transport"
   ]
-  revision = "168a6198bcb0ef175f7dacec0b8691fc141dc9b8"
-  version = "v1.13.0"
-
-[[projects]]
-  name = "gopkg.in/inf.v0"
-  packages = ["."]
-  revision = "d2d2541c53f18d2a059457998ce2876cc8e67cbf"
-  version = "v0.9.1"
+  pruneopts = "UT"
+  revision = "8dea3dc473e90c8179e519d91302d0597c0ca1d1"
+  version = "v1.15.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ead9114565761fe8b1e9614ae4bd1ae47438a6b6d2a565ad06bc1c704935a08a"
+  input-imports = [
+    "bitbucket.org/subiz/auth/scope",
+    "git.subiz.net/errors",
+    "git.subiz.net/goutils/grpc",
+    "git.subiz.net/header/auth",
+    "git.subiz.net/header/lang",
+    "google.golang.org/grpc",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

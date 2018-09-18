@@ -1,12 +1,16 @@
 package perm
 
 import (
-	scope "bitbucket.org/subiz/auth/scope"
 	"context"
+	"log"
+	"time"
+
+	scope "bitbucket.org/subiz/auth/scope"
 	"git.subiz.net/errors"
 	"git.subiz.net/header/auth"
 	"git.subiz.net/header/lang"
-	"git.subiz.net/perm/db"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/naming"
 )
 
 type key int
@@ -17,30 +21,40 @@ const (
 
 // Perm manage user permission and provide some method for quick checking permission
 type Perm struct {
-	db DB
-}
-
-type DB interface {
-	Update(accid, userid string, method auth.Method)
-	UpdateState(accid, userid string, isactive bool)
-	Read(accid, userid string) auth.Method
-	ListUsersByMethod(accid string, method auth.Method, startid string, limit int) []string
+	c auth.PermClient
 }
 
 func (me Perm) Update(accid, userid string, method auth.Method) {
-	me.db.Update(accid, userid, method)
+	ctx := context.Background()
+	me.c.Update(ctx, &auth.UpdatePermRequest{AccountId: accid, UserId: userid, Method: &method})
 }
 
 func (me Perm) Read(accid, userid string) auth.Method {
-	return me.db.Read(accid, userid)
+	ctx := context.Background()
+	resp, err := me.c.Read(ctx, &auth.ReadPermRequest{AccountId: accid, UserId: userid})
+	if err != nil {
+		panic(errors.New(500, lang.T_internal_error))
+	}
+	return *resp
 }
 
 func (me Perm) UpdateState(accid, userid string, isactive bool) {
-	me.db.UpdateState(accid, userid, isactive)
+	ctx := context.Background()
+	me.c.UpdateState(ctx, &auth.UpdateStateRequest{AccountId: accid, UserId: userid, IsActive: isactive})
 }
 
 func (me Perm) ListUsersByMethod(accid string, method auth.Method, startid string, limit int) []string {
-	return me.db.ListUsersByMethod(accid, method, startid, limit)
+	ctx := context.Background()
+	resp, err := me.c.ListUsersByMethod(ctx, &auth.ListUsersRequest{
+		AccountId: accid,
+		Method:    &method,
+		StartId:   startid,
+		Limit:     int32(limit),
+	})
+	if err != nil {
+		panic(errors.New(500, lang.T_internal_error))
+	}
+	return resp.GetIds()
 }
 
 func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...auth.Method) {
@@ -64,9 +78,13 @@ func (me Perm) Check(cred *auth.Credential, accid, issuer string, methods ...aut
 		panic(errors.New(400, lang.T_wrong_user_in_credential))
 	}
 
-	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
+	ctx := context.Background()
+	usermethod, err := me.c.Read(ctx, &auth.ReadPermRequest{AccountId: cred.GetAccountId(), UserId: cred.GetIssuer()})
+	if err != nil {
+		panic(errors.New(500, lang.T_internal_error))
+	}
 	clientmethod := cred.GetMethod()
-	realmethod := scope.IntersectMethod(*clientmethod, usermethod)
+	realmethod := scope.IntersectMethod(*clientmethod, *usermethod)
 
 	for _, method := range methods {
 		if scope.RequireMethod(realmethod, method) {
@@ -119,15 +137,16 @@ func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Meth
 	}
 
 	accmethod := filterAccMethod(method)
-	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
+	ctx2 := context.Background()
+	usermethod, err := me.c.Read(ctx2, &auth.ReadPermRequest{AccountId: cred.GetAccountId(), UserId: cred.GetIssuer()})
 	clientmethod := cred.GetMethod()
-	realmethod := scope.IntersectMethod(*clientmethod, usermethod)
+	realmethod := scope.IntersectMethod(*clientmethod, *usermethod)
 
 	if !scope.IsNilMethod(accmethod) && scope.RequireMethod(realmethod, accmethod) {
 		return nil
 	}
 
-	err := me.checkSpecialMethod(*clientmethod, method)
+	err = me.checkSpecialMethod(*clientmethod, method)
 	if err != nil {
 		return err
 	}
@@ -152,9 +171,13 @@ func (me Perm) checkSpecialMethod(clientmethod, requiredmethod auth.Method) erro
 }
 
 func (me Perm) AllowByUser(accid, userid string, method auth.Method) error {
-	usermethod := me.db.Read(accid, userid)
+	ctx := context.Background()
+	usermethod, err := me.c.Read(ctx, &auth.ReadPermRequest{AccountId: accid, UserId: userid})
+	if err != nil {
+		panic(errors.New(500, lang.T_internal_error))
+	}
 	accmethod := filterAccMethod(method)
-	if scope.RequireMethod(usermethod, accmethod) {
+	if scope.RequireMethod(*usermethod, accmethod) {
 		return nil
 	}
 	return errors.New(400, lang.T_access_deny)
@@ -181,8 +204,9 @@ func (me Perm) AllowOnlyAcc(ctx context.Context, accid string, method auth.Metho
 		return err
 	}
 
-	usermethod := me.db.Read(cred.GetAccountId(), cred.GetIssuer())
-	realmethod := scope.IntersectMethod(*clientmethod, usermethod)
+	ctx2 := context.Background()
+	usermethod, err := me.c.Read(ctx2, &auth.ReadPermRequest{AccountId: cred.GetAccountId(), UserId: cred.GetIssuer()})
+	realmethod := scope.IntersectMethod(*clientmethod, *usermethod)
 
 	accmethod := filterAccMethod(method)
 	if scope.RequireMethod(realmethod, accmethod) {
@@ -208,8 +232,27 @@ func filterAgentMethod(method auth.Method) auth.Method {
 }
 
 // Config config perm
-func (me *Perm) Config(cassseeds []string, prefix string, replicafactor int) {
-	db := &db.PermDB{}
-	db.Config(cassseeds, prefix, replicafactor)
-	me.db = db
+func (me *Perm) Config(permAddress string) {
+	permConn, err := dialGrpc(permAddress)
+	if err != nil {
+		log.Println("unable to connect to :"+permAddress+" service", err)
+		return
+	}
+
+	me.c = auth.NewPermClient(permConn)
+}
+
+func dialGrpc(service string) (*grpc.ClientConn, error) {
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithInsecure())
+	// Enabling WithBlock tells the client to not give up trying to find a server
+	opts = append(opts, grpc.WithBlock())
+	// However, we're still setting a timeout so that if the server takes too long, we still give up
+	opts = append(opts, grpc.WithTimeout(10*time.Second))
+	res, err := naming.NewDNSResolverWithFreq(1 * time.Second)
+	if err != nil {
+		return nil, err
+	}
+	opts = append(opts, grpc.WithBalancer(grpc.RoundRobin(res)))
+	return grpc.Dial(service, opts...)
 }
