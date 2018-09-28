@@ -139,6 +139,10 @@ func (me Perm) Allow(ctx context.Context, accid, userid string, method auth.Meth
 	accmethod := filterAccMethod(method)
 	ctx2 := context.Background()
 	usermethod, err := me.c.Read(ctx2, &auth.ReadPermRequest{AccountId: cred.GetAccountId(), UserId: cred.GetIssuer()})
+	if err != nil {
+		return err
+	}
+
 	clientmethod := cred.GetMethod()
 	realmethod := scope.IntersectMethod(*clientmethod, *usermethod)
 
@@ -174,7 +178,7 @@ func (me Perm) AllowByUser(accid, userid string, method auth.Method) error {
 	ctx := context.Background()
 	usermethod, err := me.c.Read(ctx, &auth.ReadPermRequest{AccountId: accid, UserId: userid})
 	if err != nil {
-		panic(errors.New(500, lang.T_internal_error))
+		return err
 	}
 	accmethod := filterAccMethod(method)
 	if scope.RequireMethod(*usermethod, accmethod) {
@@ -206,6 +210,9 @@ func (me Perm) AllowOnlyAcc(ctx context.Context, accid string, method auth.Metho
 
 	ctx2 := context.Background()
 	usermethod, err := me.c.Read(ctx2, &auth.ReadPermRequest{AccountId: cred.GetAccountId(), UserId: cred.GetIssuer()})
+	if err != nil {
+		return err
+	}
 	realmethod := scope.IntersectMethod(*clientmethod, *usermethod)
 
 	accmethod := filterAccMethod(method)

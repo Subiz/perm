@@ -65,9 +65,9 @@ func (c *Checker) CheckCred(cred *auth.Credential, accid string) {
 		if r.method == (auth.Method{}) { // skip empty method
 			if r.issuer == "" {
 				continue
-			} else {
-				return // passed
 			}
+
+			return // passed
 		}
 
 		if cred.GetMethod() == nil {
