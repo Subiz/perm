@@ -41,6 +41,14 @@
   branch = "master"
   name = "git.subiz.net/header"
 
+[[constraint]]
+  branch = "master"
+  name = "github.com/golang/protobuf"
+
+[[constraint]]
+  name = "google.golang.org/grpc"
+  version = "1.15.0"
+
 [prune]
   go-tests = true
   unused-packages = true

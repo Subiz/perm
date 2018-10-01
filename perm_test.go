@@ -2,19 +2,19 @@ package perm
 
 import (
 	"git.subiz.net/goutils/grpc"
-	"testing"
 	"git.subiz.net/header/auth"
-cpb	"git.subiz.net/header/common"
+	cpb "git.subiz.net/header/common"
+	"testing"
 )
 
 func TestCheckPerm(t *testing.T) {
-	tcs := []struct{
-		desc string
-		perm *auth.Permission
-		ismine bool
+	tcs := []struct {
+		desc    string
+		perm    *auth.Permission
+		ismine  bool
 		isgroup bool
 		require *auth.RequirePerm
-		expect bool
+		expect  bool
 	}{{
 		"1",
 		nil,
@@ -22,28 +22,28 @@ func TestCheckPerm(t *testing.T) {
 		true,
 		nil,
 		true,
-	},{
+	}, {
 		"2",
 		&auth.Permission{},
 		true,
 		true,
 		&auth.RequirePerm{},
 		true,
-	},{
+	}, {
 		"my resource",
-		&auth.Permission{	Widget: ToPerm("u:c")},
+		&auth.Permission{Widget: ToPerm("u:c")},
 		true,
 		true,
 		&auth.RequirePerm{Widget: "u:c"},
 		true,
-	},{
+	}, {
 		"my resource deny",
 		&auth.Permission{Widget: ToPerm("u:u")},
 		true,
 		false,
 		&auth.RequirePerm{Widget: "u:r"},
 		false,
-	},{
+	}, {
 		"other resource",
 		&auth.Permission{Widget: ToPerm("s:u")},
 		false,
@@ -97,9 +97,9 @@ func TestCheckPerm(t *testing.T) {
 }
 
 func TestCheckToPerm(t *testing.T) {
-	tcs := []struct{
-		desc string
-		perms string
+	tcs := []struct {
+		desc   string
+		perms  string
 		expect int32
 	}{
 		{"1", "u:r", 0x4},
@@ -130,7 +130,6 @@ func TestIntersectPermission(t *testing.T) {
 		t.Error("err")
 	}
 
-
 	p = intersectPermission(nil, &auth.Permission{
 		Widget: ToPerm("s:cru a:c u:u"),
 	})
@@ -142,10 +141,10 @@ func TestIntersectPermission(t *testing.T) {
 }
 
 func TestFilterPerm(t *testing.T) {
-	tcs := []struct{
-		desc string
-		r string
-		perm *auth.Permission
+	tcs := []struct {
+		desc   string
+		r      string
+		perm   *auth.Permission
 		expect *auth.Permission
 	}{{
 		"1",
