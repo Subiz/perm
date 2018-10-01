@@ -1,17 +1,18 @@
 package perm
 
 import (
-	"context"
-	"log"
-	"time"
-
 	scope "bitbucket.org/subiz/auth/scope"
+	"context"
 	"git.subiz.net/errors"
 	"git.subiz.net/header/auth"
 	"git.subiz.net/header/lang"
+	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/naming"
+	"log"
+	"reflect"
 	"strings"
+	"time"
 )
 
 type key int
@@ -317,5 +318,39 @@ func ToPerm(p string) int32 {
 			continue
 		}
 	}
-	return strPermToInt(um) | strPermToInt(gm) << 4 | strPermToInt(om) << 8
+	return strPermToInt(um) | strPermToInt(gm)<<4 | strPermToInt(om)<<8
+}
+
+func equalPermission(a, b *auth.Permission) bool {
+	return proto.Equal(a, b)
+}
+
+func intersectPermission(a, b *auth.Permission) *auth.Permission {
+	var ret = &auth.Permission{}
+	if a == nil {
+		a = &auth.Permission{}
+	}
+
+	if b == nil {
+		b = &auth.Permission{}
+	}
+
+	var sa = reflect.ValueOf(*a)
+	var sb = reflect.ValueOf(*b)
+	var sret = reflect.ValueOf(ret).Elem()
+
+	for i := 0; i < sa.NumField(); i++ {
+		fa, ok := sa.Field(i).Interface().(int32)
+		if !ok {
+			continue
+		}
+		fb, ok := sb.Field(i).Interface().(int32)
+		if !ok {
+			continue
+		}
+
+		faandfb := fa & fb
+		sret.Field(i).Set(reflect.ValueOf(faandfb))
+	}
+	return ret
 }
