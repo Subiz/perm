@@ -4,7 +4,9 @@ import (
 	scope "bitbucket.org/subiz/auth/scope"
 	"context"
 	"git.subiz.net/errors"
+	ggrpc "git.subiz.net/goutils/grpc"
 	"git.subiz.net/header/auth"
+	cpb "git.subiz.net/header/common"
 	"git.subiz.net/header/lang"
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
@@ -198,6 +200,92 @@ func getCredential(ctx context.Context) *auth.Credential {
 	return cred
 }
 
+func getGrpcPerm(ctx context.Context) *auth.Permission {
+	return ggrpc.FromGrpcCtx(ctx).GetCredential().GetPerm()
+}
+
+func filterSinglePerm(r string, num int32) int32 {
+	if r == "u" {
+		num &= 0x000F
+	} else if r == "a" {
+		num &= 0x00F0
+	} else if r == "s" {
+		num &= 0x0F00
+	} else {
+		num = 0
+	}
+	return num
+}
+
+func filterPerm(r string, p *auth.Permission) *auth.Permission {
+	if p == nil {
+		p = &auth.Permission{}
+	}
+	ret := &auth.Permission{}
+	var sp = reflect.ValueOf(*p)
+	var sret = reflect.ValueOf(ret).Elem()
+
+	for i := 0; i < sp.NumField(); i++ {
+		num, ok := sp.Field(i).Interface().(int32)
+		if !ok {
+			continue
+		}
+
+		num = filterSinglePerm(r, num)
+		sret.Field(i).Set(reflect.ValueOf(num))
+
+	}
+	return ret
+}
+
+func findPerm(p reflect.Value, name string) int32 {
+	for i := 0; i < p.NumField(); i++ {
+		if p.Type().Field(i).Name == name {
+			num, _ := p.Field(i).Interface().(int32)
+			return num
+		}
+	}
+	return -1
+}
+
+func Check(ctx context.Context, ismine, isacc bool, require *auth.RequirePerm) error {
+	if require == nil {
+		require = &auth.RequirePerm{}
+	}
+	perm := getGrpcPerm(ctx)
+	if perm == nil {
+		perm = &auth.Permission{}
+	}
+
+	sreq, sperm := reflect.ValueOf(*require), reflect.ValueOf(*perm)
+
+	for i := 0; i < sreq.NumField(); i++ {
+		r, ok := sreq.Field(i).Interface().(string)
+		if !ok {
+			continue
+		}
+
+		if strings.TrimSpace(r) == "" {
+			continue
+		}
+
+		p := findPerm(sperm, sreq.Type().Field(i).Name)
+		rp := ToPerm(r)
+		if ismine {
+			rp = filterSinglePerm("u", rp)
+		} else if isacc {
+			rp = filterSinglePerm("a", rp)
+		} else {
+			rp = filterSinglePerm("s", rp)
+		}
+
+		if rp == 0 || rp&p != rp {
+			return errors.New(400, cpb.E_access_deny, "not enough permission, need %d on %s, got %d", rp, sreq.Type().Field(i).Name, p)
+		}
+	}
+	return nil
+}
+
 // AllowOnlyAcc allow only account method to pass
 func (me Perm) AllowOnlyAcc(ctx context.Context, accid string, method auth.Method) error {
 	cred := getCredential(ctx)
@@ -310,9 +398,9 @@ func ToPerm(p string) int32 {
 
 		if perm[0] == 'u' {
 			um = removeDuplicates(um + perm[1:])
-		} else if perm[0] == 'g' {
+		} else if perm[0] == 'a' {
 			gm = removeDuplicates(gm + perm[1:])
-		} else if perm[0] == 'o' {
+		} else if perm[0] == 's' {
 			om = removeDuplicates(om + perm[1:])
 		} else {
 			continue
