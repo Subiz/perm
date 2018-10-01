@@ -11,6 +11,7 @@ import (
 	"git.subiz.net/header/lang"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/naming"
+	"strings"
 )
 
 type key int
@@ -262,4 +263,59 @@ func dialGrpc(service string) (*grpc.ClientConn, error) {
 	}
 	opts = append(opts, grpc.WithBalancer(grpc.RoundRobin(res)))
 	return grpc.Dial(service, opts...)
+}
+
+func removeDuplicates(elements string) string {
+	encountered := map[rune]bool{}
+	result := ""
+	for _, v := range elements {
+		if encountered[v] == true {
+		} else {
+			encountered[v] = true
+			result += string(v)
+		}
+	}
+	return result
+}
+
+func strPermToInt(p string) int32 {
+	out := int32(0)
+	if strings.Contains(p, "c") {
+		out |= 8
+	}
+
+	if strings.Contains(p, "r") {
+		out |= 4
+	}
+
+	if strings.Contains(p, "u") {
+		out |= 2
+	}
+
+	if strings.Contains(p, "d") {
+		out |= 1
+	}
+	return out
+}
+
+func ToPerm(p string) int32 {
+	rawperms := strings.Split(strings.TrimSpace(p), " ")
+	um, gm, om := "", "", ""
+	for _, perm := range rawperms {
+		perm = strings.TrimSpace(strings.ToLower(perm))
+		if len(perm) < 2 {
+			continue
+		}
+
+		if perm[0] == 'u' {
+			um = removeDuplicates(um + perm[1:])
+		} else if perm[0] == 'g' {
+			gm = removeDuplicates(gm + perm[1:])
+		} else if perm[0] == 'o' {
+			om = removeDuplicates(om + perm[1:])
+		} else {
+			continue
+		}
+	}
+	return strPermToInt(um) | strPermToInt(gm) << 4 | strPermToInt(om) << 8
 }
