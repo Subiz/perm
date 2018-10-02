@@ -180,3 +180,152 @@ func TestFilterPerm(t *testing.T) {
 		}
 	}
 }
+
+func TestCheck(t *testing.T) {
+	tcs := []struct {
+		desc     string
+		funcname string
+		cred     *auth.Credential
+		accid    string
+		agids    []string
+		pass     bool
+	}{{
+		"nil check",
+		"CheckReadAutomation",
+		nil,
+		"ac1",
+		[]string{"ag1"},
+		false,
+	}, {
+		"user accept",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag1",
+			Perm:      &auth.Permission{Automation: ToPerm("u:r")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		true,
+	}, {
+		"account accept",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag2",
+			Perm:      &auth.Permission{Automation: ToPerm("a:r")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		true,
+	}, {
+		"subiz accept",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "acx",
+			Issuer:    "agx",
+			Perm:      &auth.Permission{Automation: ToPerm("s:r")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		true,
+	}, {
+		"user reject",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag1",
+			Perm:      &auth.Permission{Automation: ToPerm("u:w")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		false,
+	}, {
+		"account reject",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag1",
+			Perm:      &auth.Permission{Automation: ToPerm("a:w")},
+		},
+		"ac1",
+		[]string{"ag2"},
+		false,
+	}, {
+		"subiz reject",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "acx",
+			Issuer:    "agx",
+			Perm:      &auth.Permission{Automation: ToPerm("s:w")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		false,
+	}, {
+		"user reject 2",
+		"CheckReadAutomation",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag2",
+			Perm:      &auth.Permission{Automation: ToPerm("u:r")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		false,
+	}, {
+		"user reject by base",
+		"CheckDeleteAgent",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag2",
+			Perm:      &auth.Permission{Agent: ToPerm("u:d")},
+		},
+		"ac1",
+		[]string{"ag2"},
+		false,
+	}}
+
+	for _, tc := range tcs {
+		err := check(tc.funcname, tc.cred, tc.accid, tc.agids)
+		if err == nil != tc.pass {
+			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.pass, err)
+		}
+	}
+}
+
+func TestPerm(t *testing.T) {
+	var err error
+
+	err = CheckCreateAccount(&auth.Credential{
+		AccountId: "ac123",
+		Issuer:    "ag2",
+		Perm:      &auth.Permission{Account: ToPerm("u:c")},
+	}, "ac123", "ag1", "ag2")
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = CheckReadBasicScopePermission(&auth.Credential{
+		AccountId: "ac123",
+		Issuer:    "ag2",
+		Perm:      &auth.Permission{BasicScopePermission: ToPerm("u:r s:r a:r")},
+	}, "ac12", "ag5", "ag6")
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = CheckCreateAccount(nil, "ac123", "ag1", "ag2")
+	if err == nil {
+		t.Error("should be err")
+	}
+
+	err = CheckCreateAccount(&auth.Credential{
+		AccountId: "ac123",
+		Issuer:    "ag2",
+		Perm:      &auth.Permission{Widget: ToPerm("u:crud")},
+	}, "ac123", "ag2", "ag2")
+	if err == nil {
+		t.Error("expect error")
+	}
+}
