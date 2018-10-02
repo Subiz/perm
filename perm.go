@@ -1,9 +1,7 @@
 package perm
 
 import (
-	"context"
 	"git.subiz.net/errors"
-	"git.subiz.net/goutils/grpc"
 	"git.subiz.net/header/auth"
 	cpb "git.subiz.net/header/common"
 	"github.com/golang/protobuf/proto"
@@ -11,10 +9,6 @@ import (
 	"runtime"
 	"strings"
 )
-
-func getGrpcPerm(ctx context.Context) *auth.Permission {
-	return grpc.FromGrpcCtx(ctx).GetCredential().GetPerm()
-}
 
 func getPerm(r string, num int32) int32 {
 	if r == "u" {
@@ -114,44 +108,6 @@ func check(funcname string, cred *auth.Credential, accid string, agids []string)
 	isaccount := cred.GetAccountId() == accid
 
 	return C(p, bp, sp, ismine, isaccount)
-}
-
-func Check(ctx context.Context, ismine, isacc bool, require *auth.RequirePerm) error {
-	if require == nil {
-		require = &auth.RequirePerm{}
-	}
-	perm := getGrpcPerm(ctx)
-	if perm == nil {
-		perm = &auth.Permission{}
-	}
-
-	sreq, sperm := reflect.ValueOf(*require), reflect.ValueOf(*perm)
-
-	for i := 0; i < sreq.NumField(); i++ {
-		r, ok := sreq.Field(i).Interface().(string)
-		if !ok {
-			continue
-		}
-
-		if strings.TrimSpace(r) == "" {
-			continue
-		}
-
-		p := findPerm(sperm, sreq.Type().Field(i).Name)
-		rp := ToPerm(r)
-		if ismine {
-			rp = filterSinglePerm("u", rp)
-		} else if isacc {
-			rp = filterSinglePerm("a", rp)
-		} else {
-			rp = filterSinglePerm("s", rp)
-		}
-
-		if rp == 0 || rp&p != rp {
-			return errors.New(400, cpb.E_access_deny, "not enough permission, need %d on %s, got %d", rp, sreq.Type().Field(i).Name, p)
-		}
-	}
-	return nil
 }
 
 func removeDuplicates(elements string) string {
