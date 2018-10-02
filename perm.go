@@ -4,7 +4,6 @@ import (
 	"git.subiz.net/errors"
 	"git.subiz.net/header/auth"
 	cpb "git.subiz.net/header/common"
-	"github.com/golang/protobuf/proto"
 	"reflect"
 	"runtime"
 	"strings"
@@ -163,10 +162,6 @@ func ToPerm(p string) int32 {
 		}
 	}
 	return strPermToInt(um) | strPermToInt(gm)<<4 | strPermToInt(om)<<8
-}
-
-func equalPermission(a, b *auth.Permission) bool {
-	return proto.Equal(a, b)
 }
 
 func intersectPermission(a, b *auth.Permission) *auth.Permission {

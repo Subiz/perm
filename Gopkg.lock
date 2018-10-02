@@ -3,14 +3,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7a7476c65a9a5267d296066c9088e64e8e1278637502bc110969264b0ebf893a"
-  name = "bitbucket.org/subiz/auth"
-  packages = ["scope"]
-  pruneopts = "UT"
-  revision = "03b39e8731ad0365ff346c487f70937bd80fccf3"
-
-[[projects]]
-  branch = "master"
   digest = "1:66b95fae9fc33b7da7bcaf975750b7c072f9fd0213e4f0fa5fadbb4a41b4cd51"
   name = "git.subiz.net/errors"
   packages = ["."]
@@ -19,28 +11,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0b90c5dbacf9061368c90376218e50afd54e06360434142f773fe099c59eca90"
-  name = "git.subiz.net/goutils"
-  packages = ["grpc"]
-  pruneopts = "UT"
-  revision = "44c8d0e8e0e528a46e364ec717513197a170ebbc"
-
-[[projects]]
-  branch = "master"
-  digest = "1:5d9602d670aaad9a95fea8da15768b75deb605e45119cdc147358757ebdcd27a"
+  digest = "1:c557142faa867ca3dbce2f748dd3ea7de974401cfed7d3321cf354f04ff9730d"
   name = "git.subiz.net/header"
   packages = [
-    "account",
     "auth",
-    "client",
     "common",
-    "content",
-    "conversation",
-    "event",
     "lang",
-    "notibox",
-    "payment",
-    "user",
   ]
   pruneopts = "UT"
   revision = "b350d22760ae026b80543f54c5729cdbb0eb34dd"
@@ -58,30 +34,6 @@
   ]
   pruneopts = "UT"
   revision = "7011d38ac0d201eeddff4a4085a657c3da322d75"
-
-[[projects]]
-  branch = "master"
-  digest = "1:f7aa53146bf79462509d4ce136826ebbd64907e4679e1b04e62758da6b68e589"
-  name = "github.com/orcaman/concurrent-map"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "b28018939af9022337862b94a463abb18abb3e0e"
-
-[[projects]]
-  branch = "master"
-  digest = "1:5529909de26c983cf86f52ab8184eebb8f2828bff1b3400149bfe7be6c850337"
-  name = "github.com/thanhpk/goslice"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "956fa51c129e5f0fc21f7a0253f30a518e2d9c08"
-
-[[projects]]
-  digest = "1:c6d2f2a6ae58d43de1871a8f9264bc2c0ba8c46357a25c3aa611eacff9b39991"
-  name = "github.com/thanhpk/stringf"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "bab82860abfe2e060a07fdd0a28c5e603e9a0eed"
-  version = "v1.0.7"
 
 [[projects]]
   branch = "master"
@@ -177,15 +129,10 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "bitbucket.org/subiz/auth/scope",
     "git.subiz.net/errors",
-    "git.subiz.net/goutils/grpc",
     "git.subiz.net/header/auth",
     "git.subiz.net/header/common",
-    "git.subiz.net/header/lang",
     "github.com/golang/protobuf/proto",
-    "google.golang.org/grpc",
-    "google.golang.org/grpc/naming",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

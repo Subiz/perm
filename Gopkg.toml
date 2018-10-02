@@ -27,15 +27,7 @@
 
 [[constraint]]
   branch = "master"
-  name = "bitbucket.org/subiz/auth"
-
-[[constraint]]
-  branch = "master"
   name = "git.subiz.net/errors"
-
-[[constraint]]
-  branch = "master"
-  name = "git.subiz.net/goutils"
 
 [[constraint]]
   branch = "master"
@@ -44,10 +36,6 @@
 [[constraint]]
   branch = "master"
   name = "github.com/golang/protobuf"
-
-[[constraint]]
-  name = "google.golang.org/grpc"
-  version = "1.15.0"
 
 [prune]
   go-tests = true

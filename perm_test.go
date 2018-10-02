@@ -2,6 +2,7 @@ package perm
 
 import (
 	"git.subiz.net/header/auth"
+	"github.com/golang/protobuf/proto"
 	"testing"
 )
 
@@ -236,4 +237,8 @@ func TestPerm(t *testing.T) {
 	if err == nil {
 		t.Error("expect error")
 	}
+}
+
+func equalPermission(a, b *auth.Permission) bool {
+	return proto.Equal(a, b)
 }
