@@ -164,7 +164,7 @@ func ToPerm(p string) int32 {
 	return strPermToInt(um) | strPermToInt(gm)<<4 | strPermToInt(om)<<8
 }
 
-func intersectPermission(a, b *auth.Permission) *auth.Permission {
+func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 	var ret = &auth.Permission{}
 	if a == nil {
 		a = &auth.Permission{}

@@ -29,7 +29,7 @@ func TestCheckToPerm(t *testing.T) {
 }
 
 func TestIntersectPermission(t *testing.T) {
-	p := intersectPermission(&auth.Permission{
+	p := IntersectPermission(&auth.Permission{
 		Widget: ToPerm("s:rud a:c u:r"),
 	}, &auth.Permission{
 		Widget: ToPerm("s:cru a:c u:u"),
@@ -40,7 +40,7 @@ func TestIntersectPermission(t *testing.T) {
 		t.Error("err")
 	}
 
-	p = intersectPermission(nil, &auth.Permission{
+	p = IntersectPermission(nil, &auth.Permission{
 		Widget: ToPerm("s:cru a:c u:u"),
 	})
 	if equalPermission(p, &auth.Permission{
