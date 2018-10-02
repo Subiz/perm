@@ -198,11 +198,11 @@ func TestCheck(t *testing.T) {
 		false,
 	}, {
 		"user accept",
-		"CheckReadAutomation",
+		"CheckReadUser",
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
-			Perm:      &auth.Permission{Automation: ToPerm("u:r")},
+			Perm:      &auth.Permission{User: ToPerm("u:r")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -305,10 +305,10 @@ func TestPerm(t *testing.T) {
 		t.Error(err)
 	}
 
-	err = CheckReadBasicScopePermission(&auth.Credential{
+	err = CheckReadPermission(&auth.Credential{
 		AccountId: "ac123",
 		Issuer:    "ag2",
-		Perm:      &auth.Permission{BasicScopePermission: ToPerm("u:r s:r a:r")},
+		Perm:      &auth.Permission{Permission: ToPerm("u:r s:r a:r")},
 	}, "ac12", "ag5", "ag6")
 	if err != nil {
 		t.Error(err)
