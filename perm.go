@@ -432,7 +432,16 @@ func CheckUpdateWhitelistUser(cred *auth.Credential, acid string, agids ...strin
 func CheckDeleteWhitelistUser(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
-func CheckWhitelistDomain(cred *auth.Credential, acid string, agids ...string) error {
+func CheckReadWhitelistDomain(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckCreateWhitelistDomain(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckUpdateWhitelistDomain(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckDeleteWhitelistDomain(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
 func CheckCreateWidget(cred *auth.Credential, acid string, agids ...string) error {
