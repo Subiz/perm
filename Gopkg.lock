@@ -2,12 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
   digest = "1:7a7476c65a9a5267d296066c9088e64e8e1278637502bc110969264b0ebf893a"
   name = "bitbucket.org/subiz/auth"
   packages = ["scope"]
   pruneopts = "UT"
   revision = "03b39e8731ad0365ff346c487f70937bd80fccf3"
-  version = "v1.0"
 
 [[projects]]
   branch = "master"
@@ -27,7 +27,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:39b7a66fafe9ce8228beb021789d54bf4c03c6cdff04fc64a62ba103cb403c11"
+  digest = "1:423be02137de9022c0e73b2eb72258ff4f39f52367b942a988ce5ff53a6740a0"
   name = "git.subiz.net/header"
   packages = [
     "account",
@@ -43,7 +43,7 @@
     "user",
   ]
   pruneopts = "UT"
-  revision = "b7649b75c953eb870b63335bce58b15dda304757"
+  revision = "5e0351430fd6f5ae00031edcb095f788b4c3ceff"
 
 [[projects]]
   branch = "master"

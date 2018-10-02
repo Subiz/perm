@@ -296,7 +296,6 @@ func TestCheck(t *testing.T) {
 
 func TestPerm(t *testing.T) {
 	var err error
-
 	err = CheckCreateAccount(&auth.Credential{
 		AccountId: "ac123",
 		Issuer:    "ag2",
