@@ -101,7 +101,7 @@ func check(funcname string, cred *auth.Credential, accid string, agids []string)
 		perm = &auth.Permission{}
 	}
 	sperm := reflect.ValueOf(*perm)
-	bperm := reflect.ValueOf(makeBase())
+	bperm := reflect.ValueOf(MakeBase())
 
 	sp := findPerm(sperm, prop)
 	bp := findPerm(bperm, prop)
@@ -197,7 +197,7 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 	return ret
 }
 
-func makeBase() auth.Permission {
+func MakeBase() auth.Permission {
 	return auth.Permission{
 		Account:           ToPerm("o:-r-- u:cru- a:cru- s:cru-"),
 		Agent:             ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
