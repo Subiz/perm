@@ -220,6 +220,8 @@ func makeBase() auth.Permission {
 		PaymentComment:  ToPerm("o:---- u:---- a:---- s:crud"),
 		User:            ToPerm("o:---- u:crud a:crud s:cru-"),
 		Automation:      ToPerm("o:-r-- u:---- a:crud s:cr--"),
+		Ping:            ToPerm("o:---- u:crud a:crud s:----"),
+		Attribute:       ToPerm("o:---- u:---- a:crud s:-r---"),
 	}
 }
 
