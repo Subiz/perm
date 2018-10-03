@@ -194,6 +194,17 @@ func TestCheck(t *testing.T) {
 		"ac1",
 		[]string{"ag2"},
 		false,
+	}, {
+		"empty account id",
+		"CheckDeleteAttribute",
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag2",
+			Perm:      &auth.Permission{Agent: ToPerm("u:d")},
+		},
+		"",
+		[]string{"ag1"},
+		false,
 	}}
 
 	for _, tc := range tcs {

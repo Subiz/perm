@@ -69,6 +69,9 @@ func findPerm(p reflect.Value, name string) int32 {
 }
 
 func check(funcname string, cred *auth.Credential, accid string, agids []string) error {
+	if strings.TrimSpace(accid) == "" {
+		return errors.New(400, cpb.E_missing_account_id)
+	}
 	funcname = strings.TrimSpace(funcname)
 	if len(funcname) < 5 {
 		return errors.New(400, cpb.E_access_deny, "wrong perm check: "+funcname)
@@ -196,32 +199,33 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 
 func makeBase() auth.Permission {
 	return auth.Permission{
-		Account:         ToPerm("o:-r-- u:cru- a:cru- s:cru-"),
-		Agent:           ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
-		AgentPassword:   ToPerm("o:---- u:cru- a:c-u- s:cru-"),
-		Permission:      ToPerm("o:---- u:-r-- a:-ru- s:-ru-"),
-		AgentGroup:      ToPerm("o:---- u:---- a:crud s:-r--"),
-		Segmentation:    ToPerm("o:---- u:crud a:crud s:-r--"),
-		Client:          ToPerm("o:---- u:---- a:---- s:-r--"),
-		Rule:            ToPerm("o:---- u:---- a:crud s:-r--"),
-		Conversation:    ToPerm("o:---- u:cru- a:-ru- s:cr--"),
-		Integration:     ToPerm("o:---- u:crud a:crud s:cr--"),
-		CannedResponse:  ToPerm("o:---- u:crud a:crud s:cr--"),
-		Tag:             ToPerm("o:---- u:---- a:crud s:cr--"),
-		WhitelistIp:     ToPerm("o:---- u:---- a:crud s:cr--"),
-		WhitelistUser:   ToPerm("o:---- u:---- a:crud s:cr--"),
-		WhitelistDomain: ToPerm("o:---- u:---- a:crud s:cr--"),
-		Widget:          ToPerm("o:---- u:---- a:cru- s:cr--"),
-		Subscription:    ToPerm("o:---- u:---- a:cru- s:crud"),
-		Invoice:         ToPerm("o:---- u:---- a:-r-- s:cru-"),
-		PaymentMethod:   ToPerm("o:---- u:---- a:crud s:cru-"),
-		Bill:            ToPerm("o:---- u:---- a:cr-- s:crud"),
-		PaymentLog:      ToPerm("o:---- u:---- a:cru- s:cru-"),
-		PaymentComment:  ToPerm("o:---- u:---- a:---- s:crud"),
-		User:            ToPerm("o:---- u:crud a:crud s:cru-"),
-		Automation:      ToPerm("o:-r-- u:---- a:crud s:cr--"),
-		Ping:            ToPerm("o:---- u:crud a:crud s:----"),
-		Attribute:       ToPerm("o:---- u:---- a:crud s:-r---"),
+		Account:           ToPerm("o:-r-- u:cru- a:cru- s:cru-"),
+		Agent:             ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
+		AgentPassword:     ToPerm("o:---- u:cru- a:c-u- s:cru-"),
+		Permission:        ToPerm("o:---- u:-r-- a:-ru- s:-ru-"),
+		AgentGroup:        ToPerm("o:---- u:---- a:crud s:-r--"),
+		Segmentation:      ToPerm("o:---- u:crud a:crud s:-r--"),
+		Client:            ToPerm("o:---- u:---- a:---- s:-r--"),
+		Rule:              ToPerm("o:---- u:---- a:crud s:-r--"),
+		Conversation:      ToPerm("o:---- u:cru- a:-ru- s:cr--"),
+		Integration:       ToPerm("o:---- u:crud a:crud s:cr--"),
+		CannedResponse:    ToPerm("o:---- u:crud a:crud s:cr--"),
+		Tag:               ToPerm("o:---- u:---- a:crud s:cr--"),
+		WhitelistIp:       ToPerm("o:---- u:---- a:crud s:cr--"),
+		WhitelistUser:     ToPerm("o:---- u:---- a:crud s:cr--"),
+		WhitelistDomain:   ToPerm("o:---- u:---- a:crud s:cr--"),
+		Widget:            ToPerm("o:---- u:---- a:cru- s:cr--"),
+		Subscription:      ToPerm("o:---- u:---- a:cru- s:crud"),
+		Invoice:           ToPerm("o:---- u:---- a:-r-- s:cru-"),
+		PaymentMethod:     ToPerm("o:---- u:---- a:crud s:cru-"),
+		Bill:              ToPerm("o:---- u:---- a:cr-- s:crud"),
+		PaymentLog:        ToPerm("o:---- u:---- a:cru- s:cru-"),
+		PaymentComment:    ToPerm("o:---- u:---- a:---- s:crud"),
+		User:              ToPerm("o:---- u:crud a:crud s:cru-"),
+		Automation:        ToPerm("o:-r-- u:---- a:crud s:cr--"),
+		Ping:              ToPerm("o:---- u:crud a:crud s:----"),
+		Attribute:         ToPerm("o:---- u:---- a:crud s:-r--"),
+		AgentNotification: ToPerm("o:---- u:crud a:---- s:-r--"),
 	}
 }
 
@@ -552,5 +556,29 @@ func CheckUpdateAutomation(cred *auth.Credential, acid string, agids ...string) 
 	return check(getCurrentFunc(), cred, acid, agids)
 }
 func CheckDeleteAutomation(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckCreateAttribute(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckReadAttribute(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckUpdateAttribute(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckDeleteAttribute(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckCreateAgentNotification(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckReadAgentNotification(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckUpdateAgentNotification(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckDeleteAgentNotification(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
