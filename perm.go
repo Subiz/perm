@@ -112,19 +112,6 @@ func check(funcname string, cred *auth.Credential, accid string, agids []string)
 	return C(p, bp, sp, ismine, isaccount)
 }
 
-func removeDuplicates(elements string) string {
-	encountered := map[rune]bool{}
-	result := ""
-	for _, v := range elements {
-		if encountered[v] == true {
-		} else {
-			encountered[v] = true
-			result += string(v)
-		}
-	}
-	return result
-}
-
 func strPermToInt(p string) int32 {
 	out := int32(0)
 	if strings.Contains(p, "c") {
@@ -147,7 +134,7 @@ func strPermToInt(p string) int32 {
 
 func ToPerm(p string) int32 {
 	rawperms := strings.Split(strings.TrimSpace(p), " ")
-	um, gm, om := "", "", ""
+	um, am, sm := "", "", ""
 	for _, perm := range rawperms {
 		perm = strings.TrimSpace(strings.ToLower(perm))
 		if len(perm) < 2 {
@@ -155,16 +142,16 @@ func ToPerm(p string) int32 {
 		}
 
 		if perm[0] == 'u' {
-			um = removeDuplicates(um + perm[1:])
+			um += perm[1:]
 		} else if perm[0] == 'a' {
-			gm = removeDuplicates(gm + perm[1:])
+			am += perm[1:]
 		} else if perm[0] == 's' {
-			om = removeDuplicates(om + perm[1:])
+			sm += perm[1:]
 		} else {
 			continue
 		}
 	}
-	return strPermToInt(um) | strPermToInt(gm)<<4 | strPermToInt(om)<<8
+	return strPermToInt(um) | strPermToInt(am)<<4 | strPermToInt(sm)<<8
 }
 
 func IntersectPermission(a, b *auth.Permission) *auth.Permission {
