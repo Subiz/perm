@@ -132,6 +132,28 @@ func strPermToInt(p string) int32 {
 	return out
 }
 
+func Merge(a, b *auth.Permission) *auth.Permission {
+	if a == nil {
+		a = &auth.Permission{}
+	}
+
+	if b == nil {
+		b = &auth.Permission{}
+	}
+
+	ret := &auth.Permission{}
+	var sa = reflect.ValueOf(*a)
+	var sb = reflect.ValueOf(*b)
+	var sret = reflect.ValueOf(ret).Elem()
+
+	for i := 0; i < sa.NumField(); i++ {
+		numa, _ := sa.Field(i).Interface().(int32)
+		numb, _ := sb.Field(i).Interface().(int32)
+		sret.Field(i).Set(reflect.ValueOf(numa | numb))
+	}
+	return ret
+}
+
 func ToPerm(p string) int32 {
 	rawperms := strings.Split(strings.TrimSpace(p), " ")
 	um, am, sm := "", "", ""

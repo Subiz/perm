@@ -250,6 +250,48 @@ func TestPerm(t *testing.T) {
 	}
 }
 
+func TestMerge(t *testing.T) {
+	tcs := []struct {
+		desc         string
+		a, b, expect *auth.Permission
+	}{{
+		"0",
+		nil,
+		nil,
+		&auth.Permission{},
+	}, {
+		"1",
+		&auth.Permission{
+			Account: 0xF0,
+		},
+		&auth.Permission{
+			Account: 0x0F,
+		},
+		&auth.Permission{
+			Account: 0xFF,
+		},
+	}, {
+		"1",
+		&auth.Permission{
+			Account: 0xF0,
+		},
+		&auth.Permission{
+			Agent: 0x0F,
+		},
+		&auth.Permission{
+			Account: 0xF0,
+			Agent:   0x0F,
+		},
+	}}
+
+	for _, tc := range tcs {
+		out := Merge(tc.a, tc.b)
+		if !equalPermission(out, tc.expect) {
+			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.expect, out)
+		}
+	}
+}
+
 func equalPermission(a, b *auth.Permission) bool {
 	return proto.Equal(a, b)
 }
