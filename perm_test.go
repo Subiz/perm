@@ -220,8 +220,8 @@ func TestPerm(t *testing.T) {
 	err = CheckCreateAccount(&auth.Credential{
 		AccountId: "ac123",
 		Issuer:    "ag2",
-		Perm:      &auth.Permission{Account: ToPerm("u:c")},
-	}, "ac123", "ag1", "ag2")
+		Perm:      &auth.Permission{Account: ToPerm("s:c")},
+	}, "x", "ag1", "ag2")
 	if err != nil {
 		t.Error(err)
 	}

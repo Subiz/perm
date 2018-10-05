@@ -186,33 +186,34 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 
 func MakeBase() auth.Permission {
 	return auth.Permission{
-		Account:           ToPerm("o:-r-- u:cru- a:cru- s:cru-"),
-		Agent:             ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
-		AgentPassword:     ToPerm("o:---- u:cru- a:c-u- s:cru-"),
-		Permission:        ToPerm("o:---- u:-r-- a:-ru- s:-ru-"),
-		AgentGroup:        ToPerm("o:---- u:---- a:crud s:-r--"),
-		Segmentation:      ToPerm("o:---- u:crud a:crud s:-r--"),
-		Client:            ToPerm("o:---- u:---- a:---- s:-r--"),
-		Rule:              ToPerm("o:---- u:---- a:crud s:-r--"),
-		Conversation:      ToPerm("o:---- u:cru- a:-ru- s:cr--"),
-		Integration:       ToPerm("o:---- u:crud a:crud s:cr--"),
-		CannedResponse:    ToPerm("o:---- u:crud a:crud s:cr--"),
-		Tag:               ToPerm("o:---- u:---- a:crud s:cr--"),
-		WhitelistIp:       ToPerm("o:---- u:---- a:crud s:cr--"),
-		WhitelistUser:     ToPerm("o:---- u:---- a:crud s:cr--"),
-		WhitelistDomain:   ToPerm("o:---- u:---- a:crud s:cr--"),
-		Widget:            ToPerm("o:---- u:---- a:cru- s:cr--"),
-		Subscription:      ToPerm("o:---- u:---- a:cru- s:crud"),
-		Invoice:           ToPerm("o:---- u:---- a:-r-- s:cru-"),
-		PaymentMethod:     ToPerm("o:---- u:---- a:crud s:cru-"),
-		Bill:              ToPerm("o:---- u:---- a:cr-- s:crud"),
-		PaymentLog:        ToPerm("o:---- u:---- a:cru- s:cru-"),
-		PaymentComment:    ToPerm("o:---- u:---- a:---- s:crud"),
-		User:              ToPerm("o:---- u:crud a:crud s:cru-"),
-		Automation:        ToPerm("o:-r-- u:---- a:crud s:cr--"),
-		Ping:              ToPerm("o:---- u:crud a:crud s:----"),
-		Attribute:         ToPerm("o:---- u:---- a:crud s:-r--"),
-		AgentNotification: ToPerm("o:---- u:crud a:---- s:-r--"),
+		Account:            ToPerm("o:-r-- u:---- a:cru- s:cru-"),
+		Agent:              ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
+		AgentPassword:      ToPerm("o:---- u:cru- a:c-u- s:cru-"),
+		Permission:         ToPerm("o:---- u:-r-- a:-ru- s:-ru-"),
+		AgentGroup:         ToPerm("o:---- u:---- a:crud s:-r--"),
+		Segmentation:       ToPerm("o:---- u:crud a:crud s:-r--"),
+		Client:             ToPerm("o:---- u:---- a:---- s:-r--"),
+		Rule:               ToPerm("o:---- u:---- a:crud s:-r--"),
+		Conversation:       ToPerm("o:---- u:cru- a:-ru- s:cr--"),
+		Integration:        ToPerm("o:---- u:---- a:crud s:cr--"),
+		CannedResponse:     ToPerm("o:---- u:crud a:crud s:cr--"),
+		Tag:                ToPerm("o:---- u:---- a:crud s:cr--"),
+		WhitelistIp:        ToPerm("o:---- u:---- a:crud s:cr--"),
+		WhitelistUser:      ToPerm("o:---- u:---- a:crud s:cr--"),
+		WhitelistDomain:    ToPerm("o:---- u:---- a:crud s:cr--"),
+		Widget:             ToPerm("o:---- u:---- a:cru- s:cr--"),
+		Subscription:       ToPerm("o:---- u:---- a:cru- s:crud"),
+		Invoice:            ToPerm("o:---- u:---- a:-r-- s:cru-"),
+		PaymentMethod:      ToPerm("o:---- u:---- a:crud s:cru-"),
+		Bill:               ToPerm("o:---- u:---- a:-r-- s:cru-"),
+		PaymentLog:         ToPerm("o:---- u:---- a:-r-- s:-r--"),
+		PaymentComment:     ToPerm("o:---- u:---- a:---- s:cr--"),
+		User:               ToPerm("o:---- u:crud a:crud s:cru-"),
+		Automation:         ToPerm("o:-r-- u:---- a:crud s:cr--"),
+		Ping:               ToPerm("o:---- u:crud a:crud s:----"),
+		Attribute:          ToPerm("o:---- u:---- a:crud s:-r--"),
+		AgentNotification:  ToPerm("o:---- u:crud a:---- s:-r--"),
+		ConversationExport: ToPerm("o:---- u:---- a:c--- s:----"),
 	}
 }
 
@@ -239,7 +240,11 @@ func C(p string, rperm, callerperm int32, ismine, isaccount bool) error {
 	}
 	rperm = rperm & rp
 
-	if rperm == 0 || rperm&callerperm != rperm {
+	if rperm == 0 {
+		return errors.New(400, cpb.E_access_deny, "access to resource is prohibited")
+	}
+
+	if rperm&callerperm != rperm {
 		return errors.New(400, cpb.E_access_deny, "not enough permission, need %d, got %d", rperm, callerperm)
 	}
 
@@ -567,5 +572,8 @@ func CheckUpdateAgentNotification(cred *auth.Credential, acid string, agids ...s
 	return check(getCurrentFunc(), cred, acid, agids)
 }
 func CheckDeleteAgentNotification(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckCreateConversationExport(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
