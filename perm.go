@@ -214,6 +214,7 @@ func MakeBase() auth.Permission {
 		Attribute:          ToPerm("o:---- u:---- a:crud s:-r--"),
 		AgentNotification:  ToPerm("o:---- u:crud a:---- s:-r--"),
 		ConversationExport: ToPerm("o:---- u:---- a:c--- s:----"),
+		ConversationReport: ToPerm("o:---- u:---- a:-r-- s:-r--"),
 	}
 }
 
@@ -575,5 +576,8 @@ func CheckDeleteAgentNotification(cred *auth.Credential, acid string, agids ...s
 	return check(getCurrentFunc(), cred, acid, agids)
 }
 func CheckCreateConversationExport(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckReadConversationReport(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
