@@ -5,7 +5,7 @@ import (
 )
 
 func GetAccountSettingPerm() *auth.Permission {
-	return &auth.Permission{
+	return Merge(GetAgentPerm(), &auth.Permission{
 		Account:           ToPerm("a:cru-"),
 		Agent:             ToPerm("a:crud"),
 		Permission:        ToPerm("a:-ru-"),
@@ -32,7 +32,7 @@ func GetAccountSettingPerm() *auth.Permission {
 		Ping:              ToPerm("a:crud"),
 		Attribute:         ToPerm("a:crud"),
 		AgentNotification: ToPerm(""),
-	}
+	})
 }
 
 func GetAccountManagePerm() *auth.Permission {
@@ -47,8 +47,7 @@ func GetAccountManagePerm() *auth.Permission {
 }
 
 func GetOwnerPerm() *auth.Permission {
-	pe := Merge(GetAccountManagePerm(), GetAccountSettingPerm())
-	pe = Merge(pe, &auth.Permission{Conversation: ToPerm("a:-r--")})
+	pe := Merge(GetAccountManagePerm(), &auth.Permission{Conversation: ToPerm("a:-r--")})
 	pe.ConversationExport = ToPerm("a:cr--")
 	pe.ConversationReport = ToPerm("a:-r--")
 	return pe
