@@ -36,7 +36,7 @@ func GetAccountSettingPerm() *auth.Permission {
 }
 
 func GetAccountManagePerm() *auth.Permission {
-	return Merge(GetAccountManagePerm(), &auth.Permission{
+	return Merge(GetAccountSettingPerm(), &auth.Permission{
 		Subscription:   ToPerm("a:cru-"),
 		Invoice:        ToPerm("a:-r--"),
 		PaymentMethod:  ToPerm("a:crud"),
