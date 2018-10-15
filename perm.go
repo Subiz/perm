@@ -1,12 +1,13 @@
 package perm
 
 import (
-	"git.subiz.net/errors"
-	"git.subiz.net/header/auth"
-	cpb "git.subiz.net/header/common"
 	"reflect"
 	"runtime"
 	"strings"
+
+	"git.subiz.net/errors"
+	"git.subiz.net/header/auth"
+	cpb "git.subiz.net/header/common"
 )
 
 func getPerm(r string, num int32) int32 {
@@ -237,6 +238,7 @@ func MakeBase() auth.Permission {
 		AgentNotification:  ToPerm("o:---- u:crud a:---- s:-r--"),
 		ConversationExport: ToPerm("o:---- u:---- a:c--- s:----"),
 		ConversationReport: ToPerm("o:---- u:---- a:-r-- s:-r--"),
+		Content:            ToPerm("o:-ru- u:---- a:crud s:-r--"),
 	}
 }
 
@@ -601,5 +603,17 @@ func CheckCreateConversationExport(cred *auth.Credential, acid string, agids ...
 	return check(getCurrentFunc(), cred, acid, agids)
 }
 func CheckReadConversationReport(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckCreateContent(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckReadContent(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckUpdateContent(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckDeleteContent(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }

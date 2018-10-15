@@ -82,5 +82,6 @@ func GetAgentPerm() *auth.Permission {
 		Ping:              ToPerm("u:cru- a:cru-"),
 		Attribute:         ToPerm("a:-r--"),
 		AgentNotification: ToPerm("u:crud"),
+		Content:           ToPerm("a:crud"),
 	}
 }
