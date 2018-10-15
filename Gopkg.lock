@@ -11,7 +11,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:117f3dedf5464f1fa6779dae799b4eda676ee2294862841c4076f63c2870a356"
+  digest = "1:a7941e7cdf0b7debbb9894d25b85fe8a9528668964165d9af3ec5ea8a06f92d5"
   name = "git.subiz.net/header"
   packages = [
     "auth",
@@ -19,7 +19,7 @@
     "lang",
   ]
   pruneopts = "UT"
-  revision = "b03dcac78eb9f6ce9887841cbe9d982394a60d8c"
+  revision = "cd1f5c13c602cd14e1b88c9e62076e781e234585"
 
 [[projects]]
   branch = "master"
@@ -33,7 +33,7 @@
     "ptypes/timestamp",
   ]
   pruneopts = "UT"
-  revision = "31e0d063dd98c052257e5b69eeb006818133f45c"
+  revision = "ddf22928ea3c56eb4292a0adbbf5001b1e8e7d0d"
 
 [[projects]]
   branch = "master"
@@ -49,15 +49,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "68fc911561ed0cb104e22deafa05515909b706ab"
+  revision = "49bb7cea24b1df9410e1712aa6433dae904ff66a"
 
 [[projects]]
   branch = "master"
-  digest = "1:f7e5d74f094d44e931785fc1ebc887704953b6689c7d47fce9ff1a8647b83eb6"
+  digest = "1:0a40b0bdd57a93e741d8557465be3a2edeec408e9b6399586ad65bbe8e355796"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "8469e314837c2e2471561de5c47bbf8bfd0d9099"
+  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
