@@ -266,7 +266,7 @@ func C(p string, rperm, callerperm int32, ismine, isaccount bool) error {
 	rperm = rperm & rp
 
 	if rperm == 0 {
-		return errors.New(400, cpb.E_access_deny, "access to resource is prohibited")
+		return errors.New(400, cpb.E_access_deny, "access to resource is prohibited,", p, rperm)
 	}
 
 	if rperm&callerperm != rperm {
