@@ -11,7 +11,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a7941e7cdf0b7debbb9894d25b85fe8a9528668964165d9af3ec5ea8a06f92d5"
+  digest = "1:ddd013ed29a6e35d30372cbe5e4847dd3b32f446994711062c7386d5e486cb5b"
   name = "git.subiz.net/header"
   packages = [
     "auth",
@@ -19,7 +19,7 @@
     "lang",
   ]
   pruneopts = "UT"
-  revision = "cd1f5c13c602cd14e1b88c9e62076e781e234585"
+  revision = "548e53a5864d0fd5693ffa7ed090b7cf3bca8c76"
 
 [[projects]]
   branch = "master"
@@ -49,7 +49,7 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "49bb7cea24b1df9410e1712aa6433dae904ff66a"
+  revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
 
 [[projects]]
   branch = "master"
@@ -88,7 +88,7 @@
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "UT"
-  revision = "af9cb2a35e7f169ec875002c1829c9b315cddc04"
+  revision = "94acd270e44e65579b9ee3cdab25034d33fed608"
 
 [[projects]]
   digest = "1:ab8e92d746fb5c4c18846b0879842ac8e53b3d352449423d0924a11f1020ae1b"

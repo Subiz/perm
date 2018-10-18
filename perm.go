@@ -150,7 +150,12 @@ func Merge(a, b *auth.Permission) *auth.Permission {
 	for i := 0; i < sa.NumField(); i++ {
 		numa, _ := sa.Field(i).Interface().(int32)
 		numb, _ := sb.Field(i).Interface().(int32)
-		sret.Field(i).Set(reflect.ValueOf(numa | numb))
+		func() {
+			defer func() {
+				recover()
+			}()
+			sret.Field(i).Set(reflect.ValueOf(numa | numb))
+		}()
 	}
 	return ret
 }
