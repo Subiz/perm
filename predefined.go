@@ -32,6 +32,7 @@ func GetAccountSettingPerm() *auth.Permission {
 		Ping:              ToPerm("a:crud"),
 		Attribute:         ToPerm("a:crud"),
 		AgentNotification: ToPerm(""),
+		Pipeline:          ToPerm("a:crud"),
 	})
 }
 

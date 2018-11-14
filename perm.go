@@ -244,6 +244,7 @@ func MakeBase() auth.Permission {
 		ConversationExport: ToPerm("o:---- u:---- a:c--- s:----"),
 		ConversationReport: ToPerm("o:---- u:---- a:-r-- s:-r--"),
 		Content:            ToPerm("o:-ru- u:---- a:crud s:-r--"),
+		Pipeline:           ToPerm("o:---- u:---- a:crud s:-r--"),
 	}
 }
 
@@ -620,5 +621,17 @@ func CheckUpdateContent(cred *auth.Credential, acid string, agids ...string) err
 	return check(getCurrentFunc(), cred, acid, agids)
 }
 func CheckDeleteContent(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckCreatePipeline(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckReadPipeline(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckUpdatePipeline(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckDeletePipeline(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
