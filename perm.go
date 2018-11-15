@@ -245,6 +245,7 @@ func MakeBase() auth.Permission {
 		ConversationReport: ToPerm("o:---- u:---- a:-r-- s:-r--"),
 		Content:            ToPerm("o:-ru- u:---- a:crud s:-r--"),
 		Pipeline:           ToPerm("o:---- u:---- a:crud s:-r--"),
+		Currency:           ToPerm("o:---- u:---- a:crud s:-r--"),
 	}
 }
 
