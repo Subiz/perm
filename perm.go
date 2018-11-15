@@ -636,3 +636,15 @@ func CheckUpdatePipeline(cred *auth.Credential, acid string, agids ...string) er
 func CheckDeletePipeline(cred *auth.Credential, acid string, agids ...string) error {
 	return check(getCurrentFunc(), cred, acid, agids)
 }
+func CheckCreateCurrency(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckReadCurrency(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckUpdateCurrency(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
+func CheckDeleteCurrency(cred *auth.Credential, acid string, agids ...string) error {
+	return check(getCurrentFunc(), cred, acid, agids)
+}
