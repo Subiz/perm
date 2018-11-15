@@ -11,7 +11,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2695f2ee53dd3bb121ffa0a55bf8678538de98167b3529366c321d8194e43f36"
+  digest = "1:e8d52002aa8bb9143fb9db70d74d7ad5cb76e912183124e741d5fa38b6abed0e"
   name = "git.subiz.net/header"
   packages = [
     "auth",
@@ -19,7 +19,7 @@
     "lang",
   ]
   pruneopts = "UT"
-  revision = "fb4face53fe2f28d88090cfc93afad6457968cc6"
+  revision = "44f4e2ea72d9f9487548ce3e0fbcc6dddd7a2369"
 
 [[projects]]
   branch = "master"
