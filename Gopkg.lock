@@ -3,27 +3,23 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:66b95fae9fc33b7da7bcaf975750b7c072f9fd0213e4f0fa5fadbb4a41b4cd51"
+  digest = "1:84acd2ff8dd442a44c8bdec3bb855e4e88476deb8b9a8d94cd551786df906831"
   name = "git.subiz.net/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8c8c16c095170dd615496d36650b4d190f33540e"
+  revision = "4360317e8e599de8ff2724685f7075ed107a620a"
 
 [[projects]]
   branch = "master"
-  digest = "1:e8d52002aa8bb9143fb9db70d74d7ad5cb76e912183124e741d5fa38b6abed0e"
+  digest = "1:dabecc40600d8b1abf7ac3edb415dbd624eab09d2225405472cada1ae1c39f24"
   name = "git.subiz.net/header"
-  packages = [
-    "auth",
-    "common",
-    "lang",
-  ]
+  packages = ["auth"]
   pruneopts = "UT"
-  revision = "44f4e2ea72d9f9487548ce3e0fbcc6dddd7a2369"
+  revision = "1cb89727aa9c393fe68ab7752530585a4799424c"
 
 [[projects]]
   branch = "master"
-  digest = "1:397e028ef0b031ec509d76313edb47a37e5fd5676cea26cefa363248e2588a4d"
+  digest = "1:72b4f8943f00a19d0ec6b9118803edd5028268d433d14ef70d3d0d593601de41"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
@@ -33,7 +29,7 @@
     "ptypes/timestamp",
   ]
   pruneopts = "UT"
-  revision = "951a149f90371fb8858c6c979d03bb2583611052"
+  revision = "52132540909e117f2b98b0694383dc0ab1e1deca"
 
 [[projects]]
   branch = "master"
@@ -49,7 +45,7 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "88d92db4c548972d942ac2a3531a8a9a34c82ca6"
+  revision = "adae6a3d119ae4890b46832a2e88a95adc62b8e7"
 
 [[projects]]
   branch = "master"
@@ -131,7 +127,6 @@
   input-imports = [
     "git.subiz.net/errors",
     "git.subiz.net/header/auth",
-    "git.subiz.net/header/common",
     "github.com/golang/protobuf/proto",
   ]
   solver-name = "gps-cdcl"
