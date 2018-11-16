@@ -7,7 +7,6 @@ import (
 
 	"git.subiz.net/errors"
 	"git.subiz.net/header/auth"
-	cpb "git.subiz.net/header/common"
 )
 
 func getPerm(r string, num int32) int32 {
@@ -71,11 +70,11 @@ func findPerm(p reflect.Value, name string) int32 {
 
 func check(funcname string, cred *auth.Credential, accid string, agids []string) error {
 	if strings.TrimSpace(accid) == "" {
-		return errors.New(400, cpb.E_missing_account_id)
+		return errors.New(400, errors.E_missing_account_id)
 	}
 	funcname = strings.TrimSpace(funcname)
 	if len(funcname) < 5 {
-		return errors.New(400, cpb.E_access_deny, "wrong perm check: "+funcname)
+		return errors.New(400, errors.E_access_deny, "wrong perm check: "+funcname)
 	}
 
 	funcname = funcname[5:] // strip check
@@ -94,7 +93,7 @@ func check(funcname string, cred *auth.Credential, accid string, agids []string)
 		p = "d"
 		prop = funcname[6:]
 	} else {
-		return errors.New(400, cpb.E_access_deny, "wrong perm check: "+funcname)
+		return errors.New(400, errors.E_access_deny, "wrong perm check: "+funcname)
 	}
 
 	perm := cred.GetPerm()
@@ -273,11 +272,11 @@ func C(p string, rperm, callerperm int32, ismine, isaccount bool) error {
 	rperm = rperm & rp
 
 	if rperm == 0 {
-		return errors.New(400, cpb.E_access_deny, "access to resource is prohibited,", p, rperm)
+		return errors.New(400, errors.E_access_deny, "access to resource is prohibited,", p, rperm)
 	}
 
 	if rperm&callerperm != rperm {
-		return errors.New(400, cpb.E_access_deny, "not enough permission, need %d, got %d", rperm, callerperm)
+		return errors.New(400, errors.E_access_deny, "not enough permission, need %d, got %d", rperm, callerperm)
 	}
 
 	return nil
