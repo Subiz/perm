@@ -34,8 +34,8 @@
   name = "git.subiz.net/header"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/golang/protobuf"
+  version = "1.2.0"
 
 [prune]
   go-tests = true
