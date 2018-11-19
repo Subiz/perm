@@ -116,17 +116,23 @@ func (g *Generator) generate(src, typeName string) {
 		if !ok {
 			continue
 		}
+
 		if structDecl.Name.Name != typeName {
 			continue
 		}
 
 		fields := structDecl.Type.(*ast.StructType).Fields.List
 		for _, field := range fields {
+
 			nameExpr := field.Names[0]
 			start := nameExpr.Pos() - 1
 			end := nameExpr.End() - 1
 			// grab it in source
 			fieldName := src[start:end]
+
+			if strings.Contains(fieldName, "XXX") {
+				continue
+			}
 			fieldNames = append(fieldNames, fieldName)
 		}
 		break
