@@ -63,6 +63,16 @@ func main() {
 package perm
 
 import "git.subiz.net/header/auth"
+
+func contains(s string, ss []string) bool {
+	for _, i := range ss {
+		if i == s {
+			return true
+		}
+	}
+	return false
+}
+
 `)
 	src, err := ioutil.ReadFile(*fileName)
 	if err != nil {
@@ -178,33 +188,40 @@ func (g *Generator) buildMultipleRuns(fieldNames []string, typeName string) {
 
 	for _, name := range fieldNames {
 		g.Printf(`func CheckCreate%s(cred *auth.Credential, accid string, agids ...string) error {
-	p := "c"
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	return C2(p, base, callerperm, cred, accid, agids...)
+	required := strPermToInt("c")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
 
 func CheckRead%s(cred *auth.Credential, accid string, agids ...string) error {
-	p := "r"
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	return C2(p, base, callerperm, cred, accid, agids...)
+	required := strPermToInt("r")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdate%s(cred *auth.Credential, accid string, agids ...string) error {
-	p := "u"
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	return C2(p, base, callerperm, cred, accid, agids...)
+	required := strPermToInt("u")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
 
 func CheckDelete%s(cred *auth.Credential, accid string, agids ...string) error {
-	p := "d"
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	return C2(p, base, callerperm, cred, accid, agids...)
+	required := strPermToInt("d")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
-
 `, name, name, name, name, name, name, name, name, name, name, name, name)
 	}
 }
