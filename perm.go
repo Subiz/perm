@@ -25,83 +25,30 @@ func getPerm(r string, num int32) int32 {
 	return num
 }
 
-func filterSinglePerm(r string, num int32) int32 {
-	if r == "u" {
-		num &= 0x000F
-	} else if r == "a" {
-		num &= 0x00F0
-	} else if r == "s" {
-		num &= 0x0F00
-	} else {
-		num = 0
-	}
-	return num
-}
-
-func filterPerm(r string, p *auth.Permission) *auth.Permission {
-	if p == nil {
-		p = &auth.Permission{}
-	}
-	ret := &auth.Permission{}
-	var sp = reflect.ValueOf(*p)
-	var sret = reflect.ValueOf(ret).Elem()
-
-	for i := 0; i < sp.NumField(); i++ {
-		num, ok := sp.Field(i).Interface().(int32)
-		if !ok {
-			continue
-		}
-
-		num = filterSinglePerm(r, num)
-		sret.Field(i).Set(reflect.ValueOf(num))
-
-	}
-	return ret
-}
-
-func findPerm(p reflect.Value, name string) int32 {
-	for i := 0; i < p.NumField(); i++ {
-		if p.Type().Field(i).Name == name {
-			num, _ := p.Field(i).Interface().(int32)
-			return num
-		}
-	}
-	return -1
-}
-
-func C2(p string, base, callerperm int32, cred *auth.Credential, accid string, agids ...string) error {
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-
-	rp := strPermToInt(p)
+// required: the required permission
+func checkPerm(required, base, callerperm int32, ismine, isaccount bool) error {
+	resourceowner := "s"
 	if ismine {
-		base = getPerm("u", base)
-		callerperm = getPerm("u", callerperm)
+		resourceowner = "u"
 	} else if isaccount {
-		base = getPerm("a", base)
-		callerperm = getPerm("a", callerperm)
-	} else {
-		base = getPerm("s", base)
-		callerperm = getPerm("s", callerperm)
-	}
-	base = base & rp
-
-	if base == 0 {
-		return errors.New(400, errors.E_access_deny, "access to resource is prohibited,", p, base)
+		resourceowner = "a"
 	}
 
-	if base&callerperm != base {
+	// only consider
+	base = getPerm(resourceowner, base)
+	callerperm = getPerm(resourceowner, callerperm)
+
+	if base&required == 0 {
+		return errors.New(400, errors.E_access_deny, "access to resource is prohibited,", required, base)
+	}
+
+	required = required & base
+
+	if required&callerperm != required {
 		return errors.New(400, errors.E_access_deny, "not enough permission, need %d, got %d", base, callerperm)
 	}
 
 	return nil
-}
-
-func checkCreateCurrency(cred *auth.Credential, accid string, agids ...string) error {
-	p := "c"
-	callerperm := cred.GetPerm().GetCurrency()
-	base := Base.GetCurrency()
-	return C2(p, base, callerperm, cred, accid, agids...)
 }
 
 func strPermToInt(p string) int32 {
@@ -124,6 +71,7 @@ func strPermToInt(p string) int32 {
 	return out
 }
 
+// Merge returns a new permission which contain a and b
 func Merge(a, b *auth.Permission) *auth.Permission {
 	if a == nil {
 		a = &auth.Permission{}
@@ -151,6 +99,10 @@ func Merge(a, b *auth.Permission) *auth.Permission {
 	return ret
 }
 
+// ToPerm converts permission in string representation to integer representation
+// examples:
+//   ToPerm("u:-ru-")   0x6
+//   ToPerm("u:r u:u")  0x6
 func ToPerm(p string) int32 {
 	rawperms := strings.Split(strings.TrimSpace(p), " ")
 	um, am, sm := "", "", ""
@@ -173,6 +125,7 @@ func ToPerm(p string) int32 {
 	return strPermToInt(um) | strPermToInt(am)<<4 | strPermToInt(sm)<<8
 }
 
+// IntersectPermission finds the intersection of permission a and permission b
 func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 	var ret = &auth.Permission{}
 	if a == nil {
@@ -203,6 +156,9 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 	return ret
 }
 
+// Base is the biggest possible permission that is valid
+// it is often used with IntersectPermission method to correct mal-granted
+// permissions
 var Base = auth.Permission{
 	Account:            ToPerm("o:-r-- u:---- a:cru- s:cru-"),
 	Agent:              ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
@@ -238,13 +194,5 @@ var Base = auth.Permission{
 	Currency:           ToPerm("o:---- u:---- a:crud s:-r--"),
 }
 
+// MakeBase returns copy of Base permission
 func MakeBase() auth.Permission { return Base }
-
-func contains(s string, ss []string) bool {
-	for _, i := range ss {
-		if i == s {
-			return true
-		}
-	}
-	return false
-}

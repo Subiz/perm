@@ -50,47 +50,6 @@ func TestIntersectPermission(t *testing.T) {
 	}
 }
 
-func TestFilterPerm(t *testing.T) {
-	tcs := []struct {
-		desc   string
-		r      string
-		perm   *auth.Permission
-		expect *auth.Permission
-	}{{
-		"1",
-		"u",
-		&auth.Permission{Widget: ToPerm("s:crud u:crud")},
-		&auth.Permission{Widget: ToPerm("u:crud")},
-	}, {
-		"2",
-		"s",
-		&auth.Permission{Widget: ToPerm("s:cud u:crud")},
-		&auth.Permission{Widget: ToPerm("s:cud")},
-	}, {
-		"3",
-		"a",
-		&auth.Permission{Widget: ToPerm("s:cud u:crud")},
-		&auth.Permission{Widget: ToPerm("")},
-	}, {
-		"4",
-		"o",
-		nil,
-		&auth.Permission{},
-	}, {
-		"5",
-		"x",
-		&auth.Permission{Widget: ToPerm("s:cud u:crud")},
-		&auth.Permission{},
-	}}
-
-	for _, tc := range tcs {
-		out := filterPerm(tc.r, tc.perm)
-		if !equalPermission(out, tc.expect) {
-			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.expect, out)
-		}
-	}
-}
-
 func TestCheck(t *testing.T) {
 	tcs := []struct {
 		desc      string
