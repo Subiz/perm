@@ -93,22 +93,22 @@ func TestFilterPerm(t *testing.T) {
 
 func TestCheck(t *testing.T) {
 	tcs := []struct {
-		desc     string
-		funcname string
-		cred     *auth.Credential
-		accid    string
-		agids    []string
-		pass     bool
+		desc      string
+		checkFunc func(cred *auth.Credential, accid string, agids ...string) error
+		cred      *auth.Credential
+		accid     string
+		agids     []string
+		pass      bool
 	}{{
 		"nil check",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		nil,
 		"ac1",
 		[]string{"ag1"},
 		false,
 	}, {
 		"user accept",
-		"CheckReadUser",
+		CheckReadUser,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
@@ -119,7 +119,7 @@ func TestCheck(t *testing.T) {
 		true,
 	}, {
 		"account accept",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
@@ -130,7 +130,7 @@ func TestCheck(t *testing.T) {
 		true,
 	}, {
 		"subiz accept",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		&auth.Credential{
 			AccountId: "acx",
 			Issuer:    "agx",
@@ -141,7 +141,7 @@ func TestCheck(t *testing.T) {
 		true,
 	}, {
 		"user reject",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
@@ -152,7 +152,7 @@ func TestCheck(t *testing.T) {
 		false,
 	}, {
 		"account reject",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
@@ -163,7 +163,7 @@ func TestCheck(t *testing.T) {
 		false,
 	}, {
 		"subiz reject",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		&auth.Credential{
 			AccountId: "acx",
 			Issuer:    "agx",
@@ -174,7 +174,7 @@ func TestCheck(t *testing.T) {
 		false,
 	}, {
 		"user reject 2",
-		"CheckReadAutomation",
+		CheckReadAutomation,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
@@ -185,7 +185,7 @@ func TestCheck(t *testing.T) {
 		false,
 	}, {
 		"user reject by base",
-		"CheckDeleteAgent",
+		CheckDeleteAgent,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
@@ -196,7 +196,7 @@ func TestCheck(t *testing.T) {
 		false,
 	}, {
 		"empty account id",
-		"CheckDeleteAttribute",
+		CheckDeleteAttribute,
 		&auth.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
@@ -208,7 +208,7 @@ func TestCheck(t *testing.T) {
 	}}
 
 	for _, tc := range tcs {
-		err := check(tc.funcname, tc.cred, tc.accid, tc.agids)
+		err := tc.checkFunc(tc.cred, tc.accid, tc.agids...)
 		if err == nil != tc.pass {
 			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.pass, err)
 		}
