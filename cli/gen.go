@@ -152,6 +152,7 @@ func (g *Generator) generate(src, typeName string) {
 		log.Fatalf("no fields defined for type %s", typeName)
 	}
 	g.buildMultipleRuns(fieldNames, typeName)
+	g.buildIntersectPermission(fieldNames, typeName)
 }
 
 // format returns the gofmt-ed contents of the Generator's buffer.
@@ -165,19 +166,6 @@ func (g *Generator) format() []byte {
 		return g.buf.Bytes()
 	}
 	return src
-}
-
-// Value represents a declared constant.
-type Value struct {
-	name string // The name of the constant.
-	// The value is stored as a bit pattern alone. The boolean tells us
-	// whether to interpret it as an int64 or a uint64; the only place
-	// this matters is when sorting.
-	// Much of the time the str field is all we need; it is printed
-	// by Value.String.
-	value  uint64 // Will be converted to int64 when needed.
-	signed bool   // Whether the constant is a signed type.
-	str    string // The string representation given by the "go/constant" package.
 }
 
 // buildMultipleRuns generates the variables and String method for multiple runs of contiguous values.
@@ -224,4 +212,31 @@ func CheckDelete%s(cred *auth.Credential, accid string, agids ...string) error {
 }
 `, name, name, name, name, name, name, name, name, name, name, name, name)
 	}
+}
+
+func (g *Generator) buildIntersectPermission(fieldNames []string, typeName string) {
+	fields := ""
+	for _, name := range fieldNames {
+		fields += fmt.Sprintf(`%s: a.Get%s() & b.Get%s(),`+"\n", name, name, name)
+	}
+
+	g.Printf(`
+	func pInt32(i int32) *int32 {
+		return &i
+	}
+
+	// IntersectPermission finds the intersection of permission a and permission b
+	func IntersectPermission(a, b *auth.Permission) *auth.Permission {
+		if a == nil {
+			a = &auth.Permission{}
+		}
+
+		if b == nil {
+			b = &auth.Permission{}
+		}
+
+		return &auth.Permission{
+			%s
+		}
+	}`, fields)
 }

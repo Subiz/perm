@@ -125,37 +125,6 @@ func ToPerm(p string) int32 {
 	return strPermToInt(um) | strPermToInt(am)<<4 | strPermToInt(sm)<<8
 }
 
-// IntersectPermission finds the intersection of permission a and permission b
-func IntersectPermission(a, b *auth.Permission) *auth.Permission {
-	var ret = &auth.Permission{}
-	if a == nil {
-		a = &auth.Permission{}
-	}
-
-	if b == nil {
-		b = &auth.Permission{}
-	}
-
-	var sa = reflect.ValueOf(*a)
-	var sb = reflect.ValueOf(*b)
-	var sret = reflect.ValueOf(ret).Elem()
-
-	for i := 0; i < sa.NumField(); i++ {
-		fa, ok := sa.Field(i).Interface().(int32)
-		if !ok {
-			continue
-		}
-		fb, ok := sb.Field(i).Interface().(int32)
-		if !ok {
-			continue
-		}
-
-		faandfb := fa & fb
-		sret.Field(i).Set(reflect.ValueOf(faandfb))
-	}
-	return ret
-}
-
 // Base is the biggest possible permission that is valid
 // it is often used with IntersectPermission method to correct mal-granted
 // permissions

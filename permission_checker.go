@@ -1168,3 +1168,54 @@ func CheckDeleteServiceLevelAgreement(cred *auth.Credential, accid string, agids
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
+
+func pInt32(i int32) *int32 {
+	return &i
+}
+
+// IntersectPermission finds the intersection of permission a and permission b
+func IntersectPermission(a, b *auth.Permission) *auth.Permission {
+	if a == nil {
+		a = &auth.Permission{}
+	}
+
+	if b == nil {
+		b = &auth.Permission{}
+	}
+
+	return &auth.Permission{
+		Account:               a.GetAccount() & b.GetAccount(),
+		Agent:                 a.GetAgent() & b.GetAgent(),
+		AgentPassword:         a.GetAgentPassword() & b.GetAgentPassword(),
+		Permission:            a.GetPermission() & b.GetPermission(),
+		AgentGroup:            a.GetAgentGroup() & b.GetAgentGroup(),
+		Segmentation:          a.GetSegmentation() & b.GetSegmentation(),
+		Client:                a.GetClient() & b.GetClient(),
+		Rule:                  a.GetRule() & b.GetRule(),
+		Conversation:          a.GetConversation() & b.GetConversation(),
+		Integration:           a.GetIntegration() & b.GetIntegration(),
+		CannedResponse:        a.GetCannedResponse() & b.GetCannedResponse(),
+		Tag:                   a.GetTag() & b.GetTag(),
+		WhitelistIp:           a.GetWhitelistIp() & b.GetWhitelistIp(),
+		WhitelistUser:         a.GetWhitelistUser() & b.GetWhitelistUser(),
+		WhitelistDomain:       a.GetWhitelistDomain() & b.GetWhitelistDomain(),
+		Widget:                a.GetWidget() & b.GetWidget(),
+		Subscription:          a.GetSubscription() & b.GetSubscription(),
+		Invoice:               a.GetInvoice() & b.GetInvoice(),
+		PaymentMethod:         a.GetPaymentMethod() & b.GetPaymentMethod(),
+		Bill:                  a.GetBill() & b.GetBill(),
+		PaymentLog:            a.GetPaymentLog() & b.GetPaymentLog(),
+		PaymentComment:        a.GetPaymentComment() & b.GetPaymentComment(),
+		User:                  a.GetUser() & b.GetUser(),
+		Automation:            a.GetAutomation() & b.GetAutomation(),
+		Ping:                  a.GetPing() & b.GetPing(),
+		Attribute:             a.GetAttribute() & b.GetAttribute(),
+		AgentNotification:     a.GetAgentNotification() & b.GetAgentNotification(),
+		ConversationExport:    a.GetConversationExport() & b.GetConversationExport(),
+		ConversationReport:    a.GetConversationReport() & b.GetConversationReport(),
+		Content:               a.GetContent() & b.GetContent(),
+		Pipeline:              a.GetPipeline() & b.GetPipeline(),
+		Currency:              a.GetCurrency() & b.GetCurrency(),
+		ServiceLevelAgreement: a.GetServiceLevelAgreement() & b.GetServiceLevelAgreement(),
+	}
+}

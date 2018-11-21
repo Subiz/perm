@@ -1,9 +1,10 @@
 package perm
 
 import (
+	"testing"
+
 	"git.subiz.net/header/auth"
 	"github.com/golang/protobuf/proto"
-	"testing"
 )
 
 func TestCheckToPerm(t *testing.T) {
@@ -253,4 +254,11 @@ func TestMerge(t *testing.T) {
 
 func equalPermission(a, b *auth.Permission) bool {
 	return proto.Equal(a, b)
+}
+
+func BenchmarkIntersectPermission(b *testing.B) {
+	base := MakeBase()
+	for i := 0; i < b.N; i++ {
+		IntersectPermission(&base, &base)
+	}
 }
