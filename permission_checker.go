@@ -1133,3 +1133,38 @@ func CheckDeleteCurrency(cred *auth.Credential, accid string, agids ...string) e
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
+func CheckCreateServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetServiceLevelAgreement()
+	base := Base.GetServiceLevelAgreement()
+	required := strPermToInt("c")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckReadServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetServiceLevelAgreement()
+	base := Base.GetServiceLevelAgreement()
+	required := strPermToInt("r")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckUpdateServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetServiceLevelAgreement()
+	base := Base.GetServiceLevelAgreement()
+	required := strPermToInt("u")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckDeleteServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetServiceLevelAgreement()
+	base := Base.GetServiceLevelAgreement()
+	required := strPermToInt("d")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}

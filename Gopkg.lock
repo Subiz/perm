@@ -11,11 +11,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:083ccf66e5bedf99da9f895afcea82a5e2db3a17a947a44012a7df1441e1f6b7"
+  digest = "1:b5b6ef771c5858c7a10e5f357b4113bd5142c467008a769df39dde569b15df0f"
   name = "git.subiz.net/header"
   packages = ["auth"]
   pruneopts = "UT"
-  revision = "c9c36d61f1b1a6af8a4b376fde638a22714d7934"
+  revision = "0bc4eef60b010ca574a7d2d3a93adb1ac94dd014"
 
 [[projects]]
   digest = "1:4c0989ca0bcd10799064318923b9bc2db6b4d6338dd75f3f2d86c3511aaaf5cf"
