@@ -162,6 +162,7 @@ var Base = auth.Permission{
 	Pipeline:              ToPerm("o:---- u:---- a:crud s:-r--"),
 	Currency:              ToPerm("o:---- u:---- a:crud s:-r--"),
 	ServiceLevelAgreement: ToPerm("o:---- u:---- a:crud s:-r--"),
+	MessageTemplate:       ToPerm("o:---- u:crud a:crud s:-r--"),
 }
 
 // MakeBase returns copy of Base permission

@@ -35,6 +35,7 @@ func GetAccountSettingPerm() *auth.Permission {
 		Pipeline:              ToPerm("a:crud"),
 		Currency:              ToPerm("a:crud"),
 		ServiceLevelAgreement: ToPerm("a:crud"),
+		MessageTemplate:       ToPerm("a:crud"),
 	})
 }
 
@@ -86,5 +87,6 @@ func GetAgentPerm() *auth.Permission {
 		Attribute:         ToPerm("a:-r--"),
 		AgentNotification: ToPerm("u:crud"),
 		Content:           ToPerm("a:crud"),
+		MessageTemplate:   ToPerm("u:crud a:-r--"),
 	}
 }

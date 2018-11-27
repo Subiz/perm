@@ -1168,6 +1168,111 @@ func CheckDeleteServiceLevelAgreement(cred *auth.Credential, accid string, agids
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
+func CheckCreateMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetMessageTemplate()
+	base := Base.GetMessageTemplate()
+	required := strPermToInt("c")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckReadMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetMessageTemplate()
+	base := Base.GetMessageTemplate()
+	required := strPermToInt("r")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckUpdateMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetMessageTemplate()
+	base := Base.GetMessageTemplate()
+	required := strPermToInt("u")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckDeleteMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetMessageTemplate()
+	base := Base.GetMessageTemplate()
+	required := strPermToInt("d")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+func CheckCreateAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPresence()
+	base := Base.GetAgentPresence()
+	required := strPermToInt("c")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckReadAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPresence()
+	base := Base.GetAgentPresence()
+	required := strPermToInt("r")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckUpdateAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPresence()
+	base := Base.GetAgentPresence()
+	required := strPermToInt("u")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckDeleteAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPresence()
+	base := Base.GetAgentPresence()
+	required := strPermToInt("d")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+func CheckCreateAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPreference()
+	base := Base.GetAgentPreference()
+	required := strPermToInt("c")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckReadAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPreference()
+	base := Base.GetAgentPreference()
+	required := strPermToInt("r")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckUpdateAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPreference()
+	base := Base.GetAgentPreference()
+	required := strPermToInt("u")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckDeleteAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetAgentPreference()
+	base := Base.GetAgentPreference()
+	required := strPermToInt("d")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
 
 func pInt32(i int32) *int32 {
 	return &i
@@ -1217,5 +1322,8 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 		Pipeline:              a.GetPipeline() & b.GetPipeline(),
 		Currency:              a.GetCurrency() & b.GetCurrency(),
 		ServiceLevelAgreement: a.GetServiceLevelAgreement() & b.GetServiceLevelAgreement(),
+		MessageTemplate:       a.GetMessageTemplate() & b.GetMessageTemplate(),
+		AgentPresence:         a.GetAgentPresence() & b.GetAgentPresence(),
+		AgentPreference:       a.GetAgentPreference() & b.GetAgentPreference(),
 	}
 }
