@@ -3,19 +3,19 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3e7de97389c6920478ddfe32b4e6830bed002018acd6c2fc0cbf41e837303a89"
+  digest = "1:6b6bcb9531861e45ac8e927589dcf73f57691c36768ea69e68801b46c41c03e6"
   name = "git.subiz.net/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "6e4d5c7fa88d2408d479a83795b81ec714846102"
+  revision = "e680b56fc269065514af586d8b2915e0b7112477"
 
 [[projects]]
   branch = "master"
-  digest = "1:b5b6ef771c5858c7a10e5f357b4113bd5142c467008a769df39dde569b15df0f"
+  digest = "1:7504a02b102e8ebd751121bdfd0c7446cded4493ee259dd13228c9198558b5b7"
   name = "git.subiz.net/header"
   packages = ["auth"]
   pruneopts = "UT"
-  revision = "0bc4eef60b010ca574a7d2d3a93adb1ac94dd014"
+  revision = "03a93aabb3e35c1c8e6be3f1e8caf7e62c2a05b9"
 
 [[projects]]
   digest = "1:4c0989ca0bcd10799064318923b9bc2db6b4d6338dd75f3f2d86c3511aaaf5cf"
@@ -49,11 +49,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a62e80faf19c93dcbd7954a26fdb51acbfcb4b7161966adf1de531e593c4834a"
+  digest = "1:225564f71149334315118db714e1ea87513e4a11cf4acb27e26bc7577cebfa0b"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "93218def8b18e66adbdab3eca8ec334700329f1f"
+  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
