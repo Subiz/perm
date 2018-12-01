@@ -158,7 +158,7 @@ var Base = auth.Permission{
 	AgentNotification:     ToPerm("o:---- u:crud a:---- s:-r--"),
 	ConversationExport:    ToPerm("o:---- u:---- a:c--- s:----"),
 	ConversationReport:    ToPerm("o:---- u:---- a:-r-- s:-r--"),
-	Content:               ToPerm("o:-ru- u:---- a:crud s:-r--"),
+	Content:               ToPerm("o:-ru- u:---- a:crud s:crud"),
 	Pipeline:              ToPerm("o:---- u:---- a:crud s:-r--"),
 	Currency:              ToPerm("o:---- u:---- a:crud s:-r--"),
 	ServiceLevelAgreement: ToPerm("o:---- u:---- a:crud s:-r--"),
