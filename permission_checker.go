@@ -1273,6 +1273,41 @@ func CheckDeleteAgentPreference(cred *auth.Credential, accid string, agids ...st
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(required, base, callerperm, ismine, isaccount)
 }
+func CheckCreatePromotionCode(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetPromotionCode()
+	base := Base.GetPromotionCode()
+	required := strPermToInt("c")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckReadPromotionCode(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetPromotionCode()
+	base := Base.GetPromotionCode()
+	required := strPermToInt("r")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckUpdatePromotionCode(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetPromotionCode()
+	base := Base.GetPromotionCode()
+	required := strPermToInt("u")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
+
+func CheckDeletePromotionCode(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetPromotionCode()
+	base := Base.GetPromotionCode()
+	required := strPermToInt("d")
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(required, base, callerperm, ismine, isaccount)
+}
 
 func pInt32(i int32) *int32 {
 	return &i
@@ -1325,5 +1360,6 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 		MessageTemplate:       a.GetMessageTemplate() & b.GetMessageTemplate(),
 		AgentPresence:         a.GetAgentPresence() & b.GetAgentPresence(),
 		AgentPreference:       a.GetAgentPreference() & b.GetAgentPreference(),
+		PromotionCode:         a.GetPromotionCode() & b.GetPromotionCode(),
 	}
 }
