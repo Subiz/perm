@@ -1,6 +1,8 @@
 package perm
 
 import (
+	"encoding/hex"
+	"fmt"
 	"testing"
 
 	"git.subiz.net/header/auth"
@@ -261,4 +263,33 @@ func BenchmarkIntersectPermission(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		IntersectPermission(&base, &base)
 	}
+}
+
+func TestAgentPerm(t *testing.T) {
+	permb, err := hex.DecodeString("10e01f18f61f208e1e306438f01f50ff1f60f01f68f01f70ee1e78f01f8001ff1f8801f01fa001f01fa801f01fb001f01fb801e01fc001e01fc801c01ed001f01fd801c01ee001c01ee801801ef001ff1ff801f01f8002fe1f8802f01f90028f1e9802c01fa002c01ea802f001c8024f")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pe := &auth.Permission{}
+	if err := proto.Unmarshal(permb, pe); err != nil {
+		panic(err)
+	}
+
+	pe = Merge(pe, GetAgentPerm())
+	println(ToPerm("a:--u-"), pe.GetSubscription())
+	if proto.Equal(&auth.Permission{
+		Subscription: ToPerm("a:--u-"),
+	}, IntersectPermission(pe, &auth.Permission{
+		Subscription: ToPerm("a:--u-"),
+	})) { // account manage
+		pe = Merge(pe, GetAccountManagePerm())
+		fmt.Println("got account manage")
+	}
+
+	if proto.Equal(pe, IntersectPermission(pe, &auth.Permission{
+			Permission: ToPerm("a:-ru-"),
+		})) { // account setting
+			pe = Merge(pe, GetAccountSettingPerm())
+			fmt.Println("got account setting")
+		}
 }
