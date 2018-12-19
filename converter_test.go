@@ -1,8 +1,8 @@
 package perm
 
 import (
-	"git.subiz.net/header/auth"
 	"github.com/golang/protobuf/proto"
+	"github.com/subiz/header/auth"
 	"testing"
 )
 

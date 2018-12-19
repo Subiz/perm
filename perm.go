@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"strings"
 
-	"git.subiz.net/errors"
-	"git.subiz.net/header/auth"
+	"github.com/subiz/errors"
+	"github.com/subiz/header/auth"
 )
 
 func getPerm(r string, num int32) int32 {

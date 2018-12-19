@@ -27,15 +27,19 @@
 
 [[constraint]]
   branch = "master"
-  name = "git.subiz.net/errors"
-
-[[constraint]]
-  branch = "master"
   name = "git.subiz.net/header"
 
 [[constraint]]
   name = "github.com/golang/protobuf"
   version = "1.2.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/subiz/errors"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/subiz/header"
 
 [prune]
   go-tests = true

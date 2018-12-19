@@ -1,7 +1,7 @@
 package perm
 
 import (
-	"git.subiz.net/header/auth"
+	"github.com/subiz/header/auth"
 )
 
 func MethodToPerm(m *auth.Method) *auth.Permission {
