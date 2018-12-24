@@ -62,7 +62,7 @@ func main() {
 	g.Printf(`
 package perm
 
-import "git.subiz.net/header/auth"
+import "github.com/subiz/header/auth"
 
 func contains(s string, ss []string) bool {
 	for _, i := range ss {

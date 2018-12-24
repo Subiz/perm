@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"git.subiz.net/header/auth"
 	"github.com/golang/protobuf/proto"
+	"github.com/subiz/header/auth"
 )
 
 func TestCheckToPerm(t *testing.T) {
@@ -287,9 +287,9 @@ func TestAgentPerm(t *testing.T) {
 	}
 
 	if proto.Equal(pe, IntersectPermission(pe, &auth.Permission{
-			Permission: ToPerm("a:-ru-"),
-		})) { // account setting
-			pe = Merge(pe, GetAccountSettingPerm())
-			fmt.Println("got account setting")
-		}
+		Permission: ToPerm("a:-ru-"),
+	})) { // account setting
+		pe = Merge(pe, GetAccountSettingPerm())
+		fmt.Println("got account setting")
+	}
 }
