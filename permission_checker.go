@@ -2,7 +2,7 @@
 
 package perm
 
-import "github.com/subiz/header/auth"
+import "git.subiz.net/header/auth"
 
 func contains(s string, ss []string) bool {
 	for _, i := range ss {
