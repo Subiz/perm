@@ -163,7 +163,7 @@ var Base = auth.Permission{
 	Currency:              ToPerm("o:---- u:---- a:crud s:-r--"),
 	ServiceLevelAgreement: ToPerm("o:---- u:---- a:crud s:-r--"),
 	MessageTemplate:       ToPerm("o:---- u:crud a:crud s:-r--"),
-	PromotionCode:         ToPerm("o:---- u:---- a:-ru- s:crud"),
+	PromotionCode:         ToPerm("o:---- u:crud a:---- s:crud"),
 }
 
 // MakeBase returns copy of Base permission
