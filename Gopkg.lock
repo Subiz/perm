@@ -2,14 +2,6 @@
 
 
 [[projects]]
-  branch = "master"
-  digest = "1:0824087effc89072b752df6f28ecd45992165f764055b75b23c5036327ca2996"
-  name = "git.subiz.net/header"
-  packages = ["auth"]
-  pruneopts = "UT"
-  revision = "84f7b97c7ae51677f5d736e0e789229a519fe278"
-
-[[projects]]
   digest = "1:4c0989ca0bcd10799064318923b9bc2db6b4d6338dd75f3f2d86c3511aaaf5cf"
   name = "github.com/golang/protobuf"
   packages = [
@@ -38,19 +30,19 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:12e04d91b6db9898c73ba79a8b224c8bb11c8c4146f4a1200fc11b50d51f8744"
+  digest = "1:fade3228acf7353e7626c2578ce02fc9c88fd0a3b3b04ec027df996d6c56153d"
   name = "github.com/subiz/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "408233fac4f61bb89d87fdd41ae480642c792e9c"
+  revision = "99618761420a5bae436ce9ed6ec5ca85c71d9291"
 
 [[projects]]
   branch = "master"
-  digest = "1:0824087effc89072b752df6f28ecd45992165f764055b75b23c5036327ca2996"
+  digest = "1:13a05f77a5921dc673a5e51f9fd15b6dcea6e47a944e0daaa42cd6477399f750"
   name = "github.com/subiz/header"
   packages = ["auth"]
   pruneopts = "UT"
-  revision = "84f7b97c7ae51677f5d736e0e789229a519fe278"
+  revision = "3865255b028545b46ae983ffb40809b882520048"
 
 [[projects]]
   branch = "master"
@@ -70,11 +62,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:71f29ade3ca8b29a03a0506acdaddb46060a1f36389ff62b7f873caaeb582b8f"
+  digest = "1:ab01052262e2ef935fdec4632b4029e56e7efbc96a569feebdcdc67fd84a9b5b"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "b00e65af1da0681cde6c8227839a0ca53bbf16bb"
+  revision = "1775db3f06b568179d273425900dd09125831dd5"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -105,7 +97,7 @@
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "UT"
-  revision = "a1fde740824669f161e97af4237fb80b8734444d"
+  revision = "bd9b4fb69e2ffd37621a6caa54dcbead29b546f2"
 
 [[projects]]
   digest = "1:9edd250a3c46675d0679d87540b30c9ed253b19bd1fd1af08f4f5fb3c79fc487"
@@ -151,7 +143,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "git.subiz.net/header/auth",
     "github.com/golang/protobuf/proto",
     "github.com/subiz/errors",
     "github.com/subiz/header/auth",
