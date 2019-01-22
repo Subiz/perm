@@ -13,1300 +13,1157 @@ func contains(s string, ss []string) bool {
 	return false
 }
 
+var CREATEPERM = strPermToInt("c")
+var READPERM = strPermToInt("r")
+var UPDATEPERM = strPermToInt("u")
+var DELETEPERM = strPermToInt("d")
+
 func CheckCreateAccount(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAccount()
 	base := Base.GetAccount()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAccount(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAccount()
 	base := Base.GetAccount()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAccount(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAccount()
 	base := Base.GetAccount()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAccount(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAccount()
 	base := Base.GetAccount()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAgent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgent()
 	base := Base.GetAgent()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAgent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgent()
 	base := Base.GetAgent()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAgent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgent()
 	base := Base.GetAgent()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAgent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgent()
 	base := Base.GetAgent()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAgentPassword(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPassword()
 	base := Base.GetAgentPassword()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAgentPassword(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPassword()
 	base := Base.GetAgentPassword()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAgentPassword(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPassword()
 	base := Base.GetAgentPassword()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAgentPassword(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPassword()
 	base := Base.GetAgentPassword()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePermission(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPermission()
 	base := Base.GetPermission()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPermission(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPermission()
 	base := Base.GetPermission()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePermission(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPermission()
 	base := Base.GetPermission()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePermission(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPermission()
 	base := Base.GetPermission()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAgentGroup(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentGroup()
 	base := Base.GetAgentGroup()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAgentGroup(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentGroup()
 	base := Base.GetAgentGroup()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAgentGroup(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentGroup()
 	base := Base.GetAgentGroup()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAgentGroup(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentGroup()
 	base := Base.GetAgentGroup()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateSegmentation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSegmentation()
 	base := Base.GetSegmentation()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadSegmentation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSegmentation()
 	base := Base.GetSegmentation()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateSegmentation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSegmentation()
 	base := Base.GetSegmentation()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteSegmentation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSegmentation()
 	base := Base.GetSegmentation()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateClient(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetClient()
 	base := Base.GetClient()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadClient(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetClient()
 	base := Base.GetClient()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateClient(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetClient()
 	base := Base.GetClient()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteClient(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetClient()
 	base := Base.GetClient()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateRule(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetRule()
 	base := Base.GetRule()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadRule(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetRule()
 	base := Base.GetRule()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateRule(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetRule()
 	base := Base.GetRule()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteRule(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetRule()
 	base := Base.GetRule()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateConversation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversation()
 	base := Base.GetConversation()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadConversation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversation()
 	base := Base.GetConversation()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateConversation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversation()
 	base := Base.GetConversation()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteConversation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversation()
 	base := Base.GetConversation()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateIntegration(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetIntegration()
 	base := Base.GetIntegration()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadIntegration(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetIntegration()
 	base := Base.GetIntegration()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateIntegration(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetIntegration()
 	base := Base.GetIntegration()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteIntegration(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetIntegration()
 	base := Base.GetIntegration()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateCannedResponse(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCannedResponse()
 	base := Base.GetCannedResponse()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadCannedResponse(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCannedResponse()
 	base := Base.GetCannedResponse()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateCannedResponse(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCannedResponse()
 	base := Base.GetCannedResponse()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteCannedResponse(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCannedResponse()
 	base := Base.GetCannedResponse()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateTag(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetTag()
 	base := Base.GetTag()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadTag(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetTag()
 	base := Base.GetTag()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateTag(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetTag()
 	base := Base.GetTag()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteTag(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetTag()
 	base := Base.GetTag()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateWhitelistIp(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistIp()
 	base := Base.GetWhitelistIp()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadWhitelistIp(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistIp()
 	base := Base.GetWhitelistIp()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateWhitelistIp(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistIp()
 	base := Base.GetWhitelistIp()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteWhitelistIp(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistIp()
 	base := Base.GetWhitelistIp()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateWhitelistUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistUser()
 	base := Base.GetWhitelistUser()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadWhitelistUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistUser()
 	base := Base.GetWhitelistUser()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateWhitelistUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistUser()
 	base := Base.GetWhitelistUser()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteWhitelistUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistUser()
 	base := Base.GetWhitelistUser()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateWhitelistDomain(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistDomain()
 	base := Base.GetWhitelistDomain()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadWhitelistDomain(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistDomain()
 	base := Base.GetWhitelistDomain()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateWhitelistDomain(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistDomain()
 	base := Base.GetWhitelistDomain()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteWhitelistDomain(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWhitelistDomain()
 	base := Base.GetWhitelistDomain()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateWidget(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWidget()
 	base := Base.GetWidget()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadWidget(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWidget()
 	base := Base.GetWidget()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateWidget(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWidget()
 	base := Base.GetWidget()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteWidget(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetWidget()
 	base := Base.GetWidget()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateSubscription(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSubscription()
 	base := Base.GetSubscription()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadSubscription(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSubscription()
 	base := Base.GetSubscription()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateSubscription(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSubscription()
 	base := Base.GetSubscription()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteSubscription(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetSubscription()
 	base := Base.GetSubscription()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateInvoice(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetInvoice()
 	base := Base.GetInvoice()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadInvoice(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetInvoice()
 	base := Base.GetInvoice()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateInvoice(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetInvoice()
 	base := Base.GetInvoice()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteInvoice(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetInvoice()
 	base := Base.GetInvoice()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePaymentMethod(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentMethod()
 	base := Base.GetPaymentMethod()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPaymentMethod(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentMethod()
 	base := Base.GetPaymentMethod()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePaymentMethod(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentMethod()
 	base := Base.GetPaymentMethod()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePaymentMethod(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentMethod()
 	base := Base.GetPaymentMethod()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateBill(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetBill()
 	base := Base.GetBill()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadBill(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetBill()
 	base := Base.GetBill()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateBill(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetBill()
 	base := Base.GetBill()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteBill(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetBill()
 	base := Base.GetBill()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePaymentLog(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentLog()
 	base := Base.GetPaymentLog()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPaymentLog(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentLog()
 	base := Base.GetPaymentLog()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePaymentLog(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentLog()
 	base := Base.GetPaymentLog()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePaymentLog(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentLog()
 	base := Base.GetPaymentLog()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePaymentComment(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentComment()
 	base := Base.GetPaymentComment()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPaymentComment(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentComment()
 	base := Base.GetPaymentComment()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePaymentComment(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentComment()
 	base := Base.GetPaymentComment()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePaymentComment(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPaymentComment()
 	base := Base.GetPaymentComment()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetUser()
 	base := Base.GetUser()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetUser()
 	base := Base.GetUser()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetUser()
 	base := Base.GetUser()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteUser(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetUser()
 	base := Base.GetUser()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAutomation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAutomation()
 	base := Base.GetAutomation()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAutomation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAutomation()
 	base := Base.GetAutomation()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAutomation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAutomation()
 	base := Base.GetAutomation()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAutomation(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAutomation()
 	base := Base.GetAutomation()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePing(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPing()
 	base := Base.GetPing()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPing(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPing()
 	base := Base.GetPing()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePing(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPing()
 	base := Base.GetPing()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePing(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPing()
 	base := Base.GetPing()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAttribute(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAttribute()
 	base := Base.GetAttribute()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAttribute(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAttribute()
 	base := Base.GetAttribute()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAttribute(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAttribute()
 	base := Base.GetAttribute()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAttribute(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAttribute()
 	base := Base.GetAttribute()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAgentNotification(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentNotification()
 	base := Base.GetAgentNotification()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAgentNotification(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentNotification()
 	base := Base.GetAgentNotification()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAgentNotification(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentNotification()
 	base := Base.GetAgentNotification()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAgentNotification(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentNotification()
 	base := Base.GetAgentNotification()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateConversationExport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationExport()
 	base := Base.GetConversationExport()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadConversationExport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationExport()
 	base := Base.GetConversationExport()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateConversationExport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationExport()
 	base := Base.GetConversationExport()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteConversationExport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationExport()
 	base := Base.GetConversationExport()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateConversationReport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationReport()
 	base := Base.GetConversationReport()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadConversationReport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationReport()
 	base := Base.GetConversationReport()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateConversationReport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationReport()
 	base := Base.GetConversationReport()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteConversationReport(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetConversationReport()
 	base := Base.GetConversationReport()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateContent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetContent()
 	base := Base.GetContent()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadContent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetContent()
 	base := Base.GetContent()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateContent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetContent()
 	base := Base.GetContent()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteContent(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetContent()
 	base := Base.GetContent()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePipeline(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPipeline()
 	base := Base.GetPipeline()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPipeline(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPipeline()
 	base := Base.GetPipeline()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePipeline(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPipeline()
 	base := Base.GetPipeline()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePipeline(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPipeline()
 	base := Base.GetPipeline()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateCurrency(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCurrency()
 	base := Base.GetCurrency()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadCurrency(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCurrency()
 	base := Base.GetCurrency()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateCurrency(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCurrency()
 	base := Base.GetCurrency()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteCurrency(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetCurrency()
 	base := Base.GetCurrency()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetServiceLevelAgreement()
 	base := Base.GetServiceLevelAgreement()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetServiceLevelAgreement()
 	base := Base.GetServiceLevelAgreement()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetServiceLevelAgreement()
 	base := Base.GetServiceLevelAgreement()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteServiceLevelAgreement(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetServiceLevelAgreement()
 	base := Base.GetServiceLevelAgreement()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetMessageTemplate()
 	base := Base.GetMessageTemplate()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetMessageTemplate()
 	base := Base.GetMessageTemplate()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetMessageTemplate()
 	base := Base.GetMessageTemplate()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteMessageTemplate(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetMessageTemplate()
 	base := Base.GetMessageTemplate()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPresence()
 	base := Base.GetAgentPresence()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPresence()
 	base := Base.GetAgentPresence()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPresence()
 	base := Base.GetAgentPresence()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAgentPresence(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPresence()
 	base := Base.GetAgentPresence()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreateAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPreference()
 	base := Base.GetAgentPreference()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPreference()
 	base := Base.GetAgentPreference()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdateAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPreference()
 	base := Base.GetAgentPreference()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeleteAgentPreference(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAgentPreference()
 	base := Base.GetAgentPreference()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 func CheckCreatePromotionCode(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPromotionCode()
 	base := Base.GetPromotionCode()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckReadPromotionCode(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPromotionCode()
 	base := Base.GetPromotionCode()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdatePromotionCode(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPromotionCode()
 	base := Base.GetPromotionCode()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDeletePromotionCode(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetPromotionCode()
 	base := Base.GetPromotionCode()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 
 func pInt32(i int32) *int32 {

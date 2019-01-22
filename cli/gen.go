@@ -173,42 +173,45 @@ func (g *Generator) format() []byte {
 func (g *Generator) buildMultipleRuns(fieldNames []string, typeName string) {
 
 	g.Printf("\n")
+	g.Printf(`
+	var CREATEPERM = strPermToInt("c")
+	var READPERM = strPermToInt("r")
+	var UPDATEPERM = strPermToInt("u")
+	var DELETEPERM = strPermToInt("d")
+
+`)
 
 	for _, name := range fieldNames {
 		g.Printf(`func CheckCreate%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	required := strPermToInt("c")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckRead%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	required := strPermToInt("r")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckUpdate%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	required := strPermToInt("u")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
 }
 
 func CheckDelete%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	base := Base.Get%s()
-	required := strPermToInt("d")
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(required, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
 `, name, name, name, name, name, name, name, name, name, name, name, name)
 	}
