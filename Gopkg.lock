@@ -30,23 +30,23 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:fade3228acf7353e7626c2578ce02fc9c88fd0a3b3b04ec027df996d6c56153d"
+  digest = "1:e392cd37dcb9d538180133e0526e02eca4b7b64875508bc8386cd1cc81f7a1d0"
   name = "github.com/subiz/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "99618761420a5bae436ce9ed6ec5ca85c71d9291"
+  revision = "0514db0a0000c7a95228a727d2e75985909fa453"
 
 [[projects]]
   branch = "master"
-  digest = "1:13a05f77a5921dc673a5e51f9fd15b6dcea6e47a944e0daaa42cd6477399f750"
+  digest = "1:8e46ca405412c51e4a6d469a48035df2d6762ae503f326a58a5a825c0f636087"
   name = "github.com/subiz/header"
   packages = ["auth"]
   pruneopts = "UT"
-  revision = "3865255b028545b46ae983ffb40809b882520048"
+  revision = "18f2d74f3d46a91ddffe608dd522c7a4280c760b"
 
 [[projects]]
   branch = "master"
-  digest = "1:89a0cb976397aa9157a45bb2b896d0bcd07ee095ac975e0f03c53250c402265e"
+  digest = "1:fc7b6b4384e1e849d99eab58eca4f8c0a76bad4699117d5077a9a5c3c83e289e"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -58,15 +58,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "927f97764cc334a6575f4b7a1584a147864d5723"
+  revision = "ed066c81e75eba56dd9bd2139ade88125b855585"
 
 [[projects]]
   branch = "master"
-  digest = "1:ab01052262e2ef935fdec4632b4029e56e7efbc96a569feebdcdc67fd84a9b5b"
+  digest = "1:64ec1e1de5cec5e1579df2ff7ac10b20e3bf1cb4393846f631fb204dd9cb44f6"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "1775db3f06b568179d273425900dd09125831dd5"
+  revision = "054c452bb702e465e95ce8e7a3d9a6cf0cd1188d"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -97,10 +97,10 @@
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "UT"
-  revision = "bd9b4fb69e2ffd37621a6caa54dcbead29b546f2"
+  revision = "db91494dd46c1fdcbbde05e5ff5eb56df8f7d79a"
 
 [[projects]]
-  digest = "1:9edd250a3c46675d0679d87540b30c9ed253b19bd1fd1af08f4f5fb3c79fc487"
+  digest = "1:9ab5a33d8cb5c120602a34d2e985ce17956a4e8c2edce7e6961568f95e40c09a"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -136,8 +136,8 @@
     "tap",
   ]
   pruneopts = "UT"
-  revision = "df014850f6dee74ba2fc94874043a9f3f75fbfd8"
-  version = "v1.17.0"
+  revision = "a02b0774206b209466313a0b525d2c738fe407eb"
+  version = "v1.18.0"
 
 [solve-meta]
   analyzer-name = "dep"
