@@ -212,6 +212,48 @@ func TestPerm(t *testing.T) {
 	}
 }
 
+func TestIntersect(t *testing.T) {
+	tcs := []struct {
+		desc         string
+		a, b, expect *auth.Permission
+	}{{
+		"0",
+		nil,
+		nil,
+		&auth.Permission{},
+	}, {
+		"1",
+		&auth.Permission{
+			Account: 0xF0,
+		},
+		&auth.Permission{
+			Account: 0x0F,
+		},
+		&auth.Permission{
+			Account: 0x00,
+		},
+	}, {
+		"1",
+		&auth.Permission{
+			Account: 0xF0,
+		},
+		&auth.Permission{
+			Account: 0xF0,
+			Agent: 0x0F,
+		},
+		&auth.Permission{
+			Account: 0xF0,
+		},
+	}}
+
+	for _, tc := range tcs {
+		out := Intersect(tc.a, tc.b)
+		if !equalPermission(out, tc.expect) {
+			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.expect, out)
+		}
+	}
+}
+
 func TestMerge(t *testing.T) {
 	tcs := []struct {
 		desc         string
