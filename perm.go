@@ -192,6 +192,7 @@ var Base = auth.Permission{
 	ServiceLevelAgreement: ToPerm("o:---- u:---- a:crud s:-r--"),
 	MessageTemplate:       ToPerm("o:---- u:crud a:crud s:-r--"),
 	PromotionCode:         ToPerm("o:---- u:---- a:---- s:crud"),
+	Referral:              ToPerm("o:---- u:crud a:---- s:crud"),
 }
 
 // MakeBase returns copy of Base permission

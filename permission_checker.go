@@ -1165,6 +1165,37 @@ func CheckDeletePromotionCode(cred *auth.Credential, accid string, agids ...stri
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
 }
+func CheckCreateReferral(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetReferral()
+	base := Base.GetReferral()
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
+}
+
+func CheckReadReferral(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetReferral()
+	base := Base.GetReferral()
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
+}
+
+func CheckUpdateReferral(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetReferral()
+	base := Base.GetReferral()
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
+}
+
+func CheckDeleteReferral(cred *auth.Credential, accid string, agids ...string) error {
+	callerperm := cred.GetPerm().GetReferral()
+	base := Base.GetReferral()
+	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
+	isaccount := cred.GetAccountId() == accid
+	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
+}
 
 func pInt32(i int32) *int32 {
 	return &i
@@ -1218,5 +1249,6 @@ func IntersectPermission(a, b *auth.Permission) *auth.Permission {
 		AgentPresence:         a.GetAgentPresence() & b.GetAgentPresence(),
 		AgentPreference:       a.GetAgentPreference() & b.GetAgentPreference(),
 		PromotionCode:         a.GetPromotionCode() & b.GetPromotionCode(),
+		Referral:              a.GetReferral() & b.GetReferral(),
 	}
 }
