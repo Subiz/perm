@@ -30,19 +30,19 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e392cd37dcb9d538180133e0526e02eca4b7b64875508bc8386cd1cc81f7a1d0"
+  digest = "1:863bc962342e813063d07df17aef61079127bc7118fc767360fc1320847e168f"
   name = "github.com/subiz/errors"
   packages = ["."]
   pruneopts = "UT"
-  revision = "0514db0a0000c7a95228a727d2e75985909fa453"
+  revision = "09cb44817ac5c10c19fd28a9622d8b5c23558bbf"
 
 [[projects]]
   branch = "master"
-  digest = "1:2718c67dee6acf8bcdad89d1e55762983eba0fb5dcfb8a873edf962ead4e3084"
+  digest = "1:106cefd348b2fcc0aa6d401a08677095b9871b3418c6e037b1451336a24a72c3"
   name = "github.com/subiz/header"
   packages = ["auth"]
   pruneopts = "UT"
-  revision = "a8c5b3f927aae44003d15dbbeaa34b927232ad0f"
+  revision = "f006788fafa138a743989c61c9c09bd983d4f0f8"
 
 [[projects]]
   branch = "master"
@@ -58,15 +58,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "ed066c81e75eba56dd9bd2139ade88125b855585"
+  revision = "d26f9f9a57f3fab6a695bec0d84433c2c50f8bbf"
 
 [[projects]]
   branch = "master"
-  digest = "1:64ec1e1de5cec5e1579df2ff7ac10b20e3bf1cb4393846f631fb204dd9cb44f6"
+  digest = "1:7c3cf8f9e513ba8a0bd2f2c694646397a45e9d7458e61fabd774abb0f6149372"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "054c452bb702e465e95ce8e7a3d9a6cf0cd1188d"
+  revision = "302c3dd5f1cc82baae8e44d9c3178e89b6e2b345"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -97,7 +97,7 @@
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "UT"
-  revision = "db91494dd46c1fdcbbde05e5ff5eb56df8f7d79a"
+  revision = "8ac453e89fca495c0d17f98932642f392e2a11f3"
 
 [[projects]]
   digest = "1:9ab5a33d8cb5c120602a34d2e985ce17956a4e8c2edce7e6961568f95e40c09a"
