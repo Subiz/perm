@@ -157,7 +157,7 @@ func ToPerm(p string) int32 {
 // it is often used with IntersectPermission method to correct mal-granted
 // permissions
 var Base = auth.Permission{
-	Account:               ToPerm("o:-r-- u:---- a:cru- s:cru-"),
+	Account:               ToPerm("o:---- u:---- a:cru- s:cru-"),
 	Agent:                 ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
 	AgentPassword:         ToPerm("o:---- u:cru- a:c-u- s:cru-"),
 	Permission:            ToPerm("o:---- u:-r-- a:-ru- s:-ru-"),
