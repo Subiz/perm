@@ -175,7 +175,7 @@ var Base = auth.Permission{
 	Widget:                ToPerm("o:---- u:---- a:cru- s:cr--"),
 	Subscription:          ToPerm("o:---- u:---- a:cru- s:crud"),
 	Invoice:               ToPerm("o:---- u:---- a:cru- s:cru-"),
-	PaymentMethod:         ToPerm("o:---- u:---- a:crud s:cru-"),
+	PaymentMethod:         ToPerm("o:---- u:---- a:crud s:crud"),
 	Bill:                  ToPerm("o:---- u:---- a:-r-- s:cru-"),
 	PaymentLog:            ToPerm("o:---- u:---- a:-r-- s:-r--"),
 	PaymentComment:        ToPerm("o:---- u:---- a:---- s:cr--"),
