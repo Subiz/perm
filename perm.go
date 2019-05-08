@@ -34,16 +34,21 @@ func checkPerm(required, base, callerperm int32, ismine, isaccount bool) error {
 		resourceowner = "a"
 	}
 
-	base = getPerm(resourceowner, base)
-	callerperm = getPerm(resourceowner, callerperm)
+	// check super perm first
 	superperm := getPerm("s", callerperm)
-
-	if base&required == 0 {
-		return errors.New(400, errors.E_access_deny, "access to resource is prohibited,", required, base)
+	superbase := getPerm("s", base)
+	if superbase&required != 0 && required&superperm == required {
+		return nil
 	}
 
+	base = getPerm(resourceowner, base)
+	callerperm = getPerm(resourceowner, callerperm)
+
+	if base&required == 0 {
+		return errors.New(400, errors.E_access_deny, "access to resource is prohibited")
+	}
 	required = required & base
-	if required&superperm != required && required&callerperm != required {
+	if required&callerperm != required {
 		return errors.New(400, errors.E_access_deny, "not enough permission, need %d, got %d", base, callerperm)
 	}
 
@@ -173,7 +178,7 @@ var Base = auth.Permission{
 	WhitelistDomain:       ToPerm("o:---- u:---- a:crud s:cr--"),
 	Widget:                ToPerm("o:---- u:---- a:cru- s:cr--"),
 	Subscription:          ToPerm("o:---- u:---- a:cru- s:crud"),
-	Invoice:               ToPerm("o:---- u:---- a:cru- s:cru-"),
+	Invoice:               ToPerm("o:---- u:---- a:---- s:cru-"),
 	PaymentMethod:         ToPerm("o:---- u:---- a:crud s:crud"),
 	Bill:                  ToPerm("o:---- u:---- a:-r-- s:cru-"),
 	PaymentLog:            ToPerm("o:---- u:---- a:-r-- s:-r--"),
