@@ -167,6 +167,28 @@ func TestCheck(t *testing.T) {
 		"",
 		[]string{"ag1"},
 		false,
+	}, {
+		"check super perm same account but has super",
+		CheckCreateInvoice,
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag2",
+			Perm:      &auth.Permission{Invoice: ToPerm("s:c")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		true,
+	}, {
+		"check super perm same account but doesn't have super",
+		CheckCreateInvoice,
+		&auth.Credential{
+			AccountId: "ac1",
+			Issuer:    "ag2",
+			Perm:      &auth.Permission{Invoice: ToPerm("a:c")},
+		},
+		"ac1",
+		[]string{"ag1"},
+		false,
 	}}
 
 	for _, tc := range tcs {
@@ -239,7 +261,7 @@ func TestIntersect(t *testing.T) {
 		},
 		&auth.Permission{
 			Account: 0xF0,
-			Agent: 0x0F,
+			Agent:   0x0F,
 		},
 		&auth.Permission{
 			Account: 0xF0,
