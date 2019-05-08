@@ -34,17 +34,16 @@ func checkPerm(required, base, callerperm int32, ismine, isaccount bool) error {
 		resourceowner = "a"
 	}
 
-	// only consider
 	base = getPerm(resourceowner, base)
 	callerperm = getPerm(resourceowner, callerperm)
+	superperm := getPerm("s", callerperm)
 
 	if base&required == 0 {
 		return errors.New(400, errors.E_access_deny, "access to resource is prohibited,", required, base)
 	}
 
 	required = required & base
-
-	if required&callerperm != required {
+	if required&superperm != required && required&callerperm != required {
 		return errors.New(400, errors.E_access_deny, "not enough permission, need %d, got %d", base, callerperm)
 	}
 
@@ -178,7 +177,7 @@ var Base = auth.Permission{
 	PaymentMethod:         ToPerm("o:---- u:---- a:crud s:crud"),
 	Bill:                  ToPerm("o:---- u:---- a:-r-- s:cru-"),
 	PaymentLog:            ToPerm("o:---- u:---- a:-r-- s:-r--"),
-	PaymentComment:        ToPerm("o:---- u:---- a:---- s:cr--"),
+	PaymentComment:        ToPerm("o:---- u:---- a:---- s:crud"),
 	User:                  ToPerm("o:---- u:crud a:crud s:cru-"),
 	Automation:            ToPerm("o:-r-- u:---- a:crud s:cr--"),
 	Ping:                  ToPerm("o:---- u:crud a:crud s:----"),
