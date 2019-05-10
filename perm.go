@@ -178,7 +178,7 @@ var Base = auth.Permission{
 	WhitelistDomain:       ToPerm("o:---- u:---- a:crud s:cr--"),
 	Widget:                ToPerm("o:---- u:---- a:cru- s:cr--"),
 	Subscription:          ToPerm("o:---- u:---- a:cru- s:crud"),
-	Invoice:               ToPerm("o:---- u:---- a:---- s:cru-"),
+	Invoice:               ToPerm("o:---- u:-r-- a:-r-- s:cru-"),
 	PaymentMethod:         ToPerm("o:---- u:---- a:crud s:crud"),
 	Bill:                  ToPerm("o:---- u:---- a:-r-- s:cru-"),
 	PaymentLog:            ToPerm("o:---- u:---- a:-r-- s:-r--"),
