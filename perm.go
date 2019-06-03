@@ -26,33 +26,28 @@ func getPerm(r string, num int32) int32 {
 }
 
 // required: the required permission
-func checkPerm(required, base, callerperm int32, ismine, isaccount bool) error {
-	resourceowner := "s"
-	if ismine {
-		resourceowner = "u"
-	} else if isaccount {
-		resourceowner = "a"
-	}
-
+func checkPerm(required, callerperm int32, ismine, sameaccount bool) error {
 	// check super perm first
-	superperm := getPerm("s", callerperm)
-	superbase := getPerm("s", base)
-	if superbase&required != 0 && required&superperm == required {
+	if required&getPerm("s", callerperm) == required {
 		return nil
 	}
 
-	base = getPerm(resourceowner, base)
-	callerperm = getPerm(resourceowner, callerperm)
-
-	if base&required == 0 {
-		return errors.New(400, errors.E_access_deny, "access to resource is prohibited")
-	}
-	required = required & base
-	if required&callerperm != required {
-		return errors.New(400, errors.E_access_deny, "not enough permission, need %d, got %d", base, callerperm)
+	if !sameaccount {
+		return errors.New(400, errors.E_access_deny, "not enought permission")
 	}
 
-	return nil
+	// check my resource permission
+	if ismine {
+		if required&getPerm("u", callerperm) == required {
+			return nil
+		}
+	}
+
+	if required&getPerm("a", callerperm) == required {
+		return nil
+	}
+
+	return errors.New(400, errors.E_access_deny, "not enough permission")
 }
 
 func strPermToInt(p string) int32 {
