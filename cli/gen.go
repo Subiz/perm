@@ -184,36 +184,32 @@ func (g *Generator) buildMultipleRuns(fieldNames []string, typeName string) {
 	for _, name := range fieldNames {
 		g.Printf(`func CheckCreate%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
-	base := Base.Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(CREATEPERM, base, callerperm, ismine, isaccount)
+	return checkPerm(CREATEPERM, callerperm, ismine, isaccount)
 }
 
 func CheckRead%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
-	base := Base.Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(READPERM, base, callerperm, ismine, isaccount)
+	return checkPerm(READPERM, callerperm, ismine, isaccount)
 }
 
 func CheckUpdate%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
-	base := Base.Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(UPDATEPERM, base, callerperm, ismine, isaccount)
+	return checkPerm(UPDATEPERM, callerperm, ismine, isaccount)
 }
 
 func CheckDelete%s(cred *auth.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
-	base := Base.Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
-	return checkPerm(DELETEPERM, base, callerperm, ismine, isaccount)
+	return checkPerm(DELETEPERM, callerperm, ismine, isaccount)
 }
-`, name, name, name, name, name, name, name, name, name, name, name, name)
+`, name, name, name, name, name, name, name, name)
 	}
 }
 
