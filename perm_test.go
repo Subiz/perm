@@ -146,17 +146,6 @@ func TestCheck(t *testing.T) {
 		[]string{"ag1"},
 		false,
 	}, {
-		"user reject by base",
-		CheckDeleteAgent,
-		&auth.Credential{
-			AccountId: "ac1",
-			Issuer:    "ag2",
-			Perm:      &auth.Permission{Agent: ToPerm("u:d")},
-		},
-		"ac1",
-		[]string{"ag2"},
-		false,
-	}, {
 		"empty account id",
 		CheckDeleteAttribute,
 		&auth.Credential{
@@ -178,23 +167,12 @@ func TestCheck(t *testing.T) {
 		"ac1",
 		[]string{"ag1"},
 		true,
-	}, {
-		"check super perm same account but doesn't have super",
-		CheckCreateInvoice,
-		&auth.Credential{
-			AccountId: "ac1",
-			Issuer:    "ag2",
-			Perm:      &auth.Permission{Invoice: ToPerm("a:c")},
-		},
-		"ac1",
-		[]string{"ag1"},
-		false,
 	}}
 
 	for _, tc := range tcs {
 		err := tc.checkFunc(tc.cred, tc.accid, tc.agids...)
 		if err == nil != tc.pass {
-			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.pass, err)
+			t.Errorf("[%s] expect pass: %v, but got err %v", tc.desc, tc.pass, err)
 		}
 	}
 }
