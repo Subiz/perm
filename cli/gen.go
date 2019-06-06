@@ -62,7 +62,7 @@ func main() {
 	g.Printf(`
 package perm
 
-import "github.com/subiz/header/auth"
+import "github.com/subiz/header/common"
 
 func contains(s string, ss []string) bool {
 	for _, i := range ss {
@@ -182,28 +182,28 @@ func (g *Generator) buildMultipleRuns(fieldNames []string, typeName string) {
 `)
 
 	for _, name := range fieldNames {
-		g.Printf(`func CheckCreate%s(cred *auth.Credential, accid string, agids ...string) error {
+		g.Printf(`func CheckCreate%s(cred *common.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(CREATEPERM, callerperm, ismine, isaccount)
 }
 
-func CheckRead%s(cred *auth.Credential, accid string, agids ...string) error {
+func CheckRead%s(cred *common.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(READPERM, callerperm, ismine, isaccount)
 }
 
-func CheckUpdate%s(cred *auth.Credential, accid string, agids ...string) error {
+func CheckUpdate%s(cred *common.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
 	return checkPerm(UPDATEPERM, callerperm, ismine, isaccount)
 }
 
-func CheckDelete%s(cred *auth.Credential, accid string, agids ...string) error {
+func CheckDelete%s(cred *common.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().Get%s()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
 	isaccount := cred.GetAccountId() == accid
@@ -225,16 +225,16 @@ func (g *Generator) buildIntersectPermission(fieldNames []string, typeName strin
 	}
 
 	// IntersectPermission finds the intersection of permission a and permission b
-	func IntersectPermission(a, b *auth.Permission) *auth.Permission {
+	func IntersectPermission(a, b *common.Permission) *common.Permission {
 		if a == nil {
-			a = &auth.Permission{}
+			a = &common.Permission{}
 		}
 
 		if b == nil {
-			b = &auth.Permission{}
+			b = &common.Permission{}
 		}
 
-		return &auth.Permission{
+		return &common.Permission{
 			%s
 		}
 	}`, fields)
