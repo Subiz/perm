@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/subiz/header/common"
 	"github.com/subiz/errors"
-	"github.com/subiz/header/auth"
 )
 
 func getPerm(r string, num int32) int32 {
@@ -71,16 +71,16 @@ func strPermToInt(p string) int32 {
 }
 
 // Intersect returns a strongest permission which both a and b contains
-func Intersect(a, b *auth.Permission) *auth.Permission {
+func Intersect(a, b *common.Permission) *common.Permission {
 	if a == nil {
-		a = &auth.Permission{}
+		a = &common.Permission{}
 	}
 
 	if b == nil {
-		b = &auth.Permission{}
+		b = &common.Permission{}
 	}
 
-	ret := &auth.Permission{}
+	ret := &common.Permission{}
 	var sa = reflect.ValueOf(*a)
 	var sb = reflect.ValueOf(*b)
 	var sret = reflect.ValueOf(ret).Elem()
@@ -99,16 +99,16 @@ func Intersect(a, b *auth.Permission) *auth.Permission {
 }
 
 // Merge returns a new permission which contain a and b
-func Merge(a, b *auth.Permission) *auth.Permission {
+func Merge(a, b *common.Permission) *common.Permission {
 	if a == nil {
-		a = &auth.Permission{}
+		a = &common.Permission{}
 	}
 
 	if b == nil {
-		b = &auth.Permission{}
+		b = &common.Permission{}
 	}
 
-	ret := &auth.Permission{}
+	ret := &common.Permission{}
 	var sa = reflect.ValueOf(*a)
 	var sb = reflect.ValueOf(*b)
 	var sret = reflect.ValueOf(ret).Elem()
@@ -155,7 +155,7 @@ func ToPerm(p string) int32 {
 // Base is the biggest possible permission that is valid
 // it is often used with IntersectPermission method to correct mal-granted
 // permissions
-var Base = auth.Permission{
+var Base = common.Permission{
 	Account:               ToPerm("o:---- u:---- a:cru- s:cru-"),
 	Agent:                 ToPerm("o:-r-- u:-ru- a:crud s:-r-d"),
 	AgentPassword:         ToPerm("o:---- u:cru- a:c-u- s:cru-"),
@@ -195,4 +195,4 @@ var Base = auth.Permission{
 }
 
 // MakeBase returns copy of Base permission
-func MakeBase() auth.Permission { return Base }
+func MakeBase() common.Permission { return Base }

@@ -1,22 +1,22 @@
 package perm
 
 import (
-	"github.com/subiz/header/auth"
+	"github.com/subiz/header/common"
 	epb "github.com/subiz/header/event"
 	"strings"
 )
 
 // Contains definition of all subiz oauth scopes
 // DO NOT modify these values in runtime
-var SCOPEM = map[string]auth.Scope{
-	"all": auth.Scope{
+var SCOPEM = map[string]common.Scope{
+	"all": common.Scope{
 		Description:    "all permissions",
 		ReviewRequired: true,
 		Permission:     &Base,
 	},
-	"bot": auth.Scope{
+	"bot": common.Scope{
 		ReviewRequired: true,
-		Permission: &auth.Permission{
+		Permission: &common.Permission{
 			Account:               ToPerm("u:r"),
 			Agent:                 ToPerm("u:r"),
 			AgentGroup:            ToPerm("u:r"),
@@ -49,9 +49,9 @@ var SCOPEM = map[string]auth.Scope{
 			epb.ConvoType_conversation_postbacked.String(),
 		},
 	},
-	"connector": auth.Scope{
+	"connector": common.Scope{
 		ReviewRequired: true,
-		Permission: &auth.Permission{
+		Permission: &common.Permission{
 			Account:         ToPerm("u:r"),
 			Agent:           ToPerm("u:r a:r"), // list all agent in account
 			AgentGroup:      ToPerm("u:r a:r"), // list all group in account

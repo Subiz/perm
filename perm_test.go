@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/subiz/header/common"
 	"github.com/golang/protobuf/proto"
-	"github.com/subiz/header/auth"
 )
 
 func TestCheckToPerm(t *testing.T) {
@@ -32,21 +32,21 @@ func TestCheckToPerm(t *testing.T) {
 }
 
 func TestIntersectPermission(t *testing.T) {
-	p := IntersectPermission(&auth.Permission{
+	p := IntersectPermission(&common.Permission{
 		Widget: ToPerm("s:rud a:c u:r"),
-	}, &auth.Permission{
+	}, &common.Permission{
 		Widget: ToPerm("s:cru a:c u:u"),
 	})
-	if equalPermission(p, &auth.Permission{
+	if equalPermission(p, &common.Permission{
 		Widget: ToPerm("u:ru a:c"),
 	}) {
 		t.Error("err")
 	}
 
-	p = IntersectPermission(nil, &auth.Permission{
+	p = IntersectPermission(nil, &common.Permission{
 		Widget: ToPerm("s:cru a:c u:u"),
 	})
-	if equalPermission(p, &auth.Permission{
+	if equalPermission(p, &common.Permission{
 		Widget: ToPerm("u:ru a:c"),
 	}) {
 		t.Error("err")
@@ -56,8 +56,8 @@ func TestIntersectPermission(t *testing.T) {
 func TestCheck(t *testing.T) {
 	tcs := []struct {
 		desc      string
-		checkFunc func(cred *auth.Credential, accid string, agids ...string) error
-		cred      *auth.Credential
+		checkFunc func(cred *common.Credential, accid string, agids ...string) error
+		cred      *common.Credential
 		accid     string
 		agids     []string
 		pass      bool
@@ -71,10 +71,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"user accept",
 		CheckReadUser,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
-			Perm:      &auth.Permission{User: ToPerm("u:r")},
+			Perm:      &common.Permission{User: ToPerm("u:r")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -82,10 +82,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"account accept",
 		CheckReadAutomation,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
-			Perm:      &auth.Permission{Automation: ToPerm("a:r")},
+			Perm:      &common.Permission{Automation: ToPerm("a:r")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -93,10 +93,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"subiz accept",
 		CheckReadAutomation,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "acx",
 			Issuer:    "agx",
-			Perm:      &auth.Permission{Automation: ToPerm("s:r")},
+			Perm:      &common.Permission{Automation: ToPerm("s:r")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -104,10 +104,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"user reject",
 		CheckReadAutomation,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
-			Perm:      &auth.Permission{Automation: ToPerm("u:w")},
+			Perm:      &common.Permission{Automation: ToPerm("u:w")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -115,10 +115,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"account reject",
 		CheckReadAutomation,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag1",
-			Perm:      &auth.Permission{Automation: ToPerm("a:w")},
+			Perm:      &common.Permission{Automation: ToPerm("a:w")},
 		},
 		"ac1",
 		[]string{"ag2"},
@@ -126,10 +126,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"subiz reject",
 		CheckReadAutomation,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "acx",
 			Issuer:    "agx",
-			Perm:      &auth.Permission{Automation: ToPerm("s:w")},
+			Perm:      &common.Permission{Automation: ToPerm("s:w")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -137,10 +137,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"user reject 2",
 		CheckReadAutomation,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
-			Perm:      &auth.Permission{Automation: ToPerm("u:r")},
+			Perm:      &common.Permission{Automation: ToPerm("u:r")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -148,10 +148,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"empty account id",
 		CheckDeleteAttribute,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
-			Perm:      &auth.Permission{Agent: ToPerm("u:d")},
+			Perm:      &common.Permission{Agent: ToPerm("u:d")},
 		},
 		"",
 		[]string{"ag1"},
@@ -159,10 +159,10 @@ func TestCheck(t *testing.T) {
 	}, {
 		"check super perm same account but has super",
 		CheckCreateInvoice,
-		&auth.Credential{
+		&common.Credential{
 			AccountId: "ac1",
 			Issuer:    "ag2",
-			Perm:      &auth.Permission{Invoice: ToPerm("s:c")},
+			Perm:      &common.Permission{Invoice: ToPerm("s:c")},
 		},
 		"ac1",
 		[]string{"ag1"},
@@ -179,19 +179,19 @@ func TestCheck(t *testing.T) {
 
 func TestPerm(t *testing.T) {
 	var err error
-	err = CheckCreateAccount(&auth.Credential{
+	err = CheckCreateAccount(&common.Credential{
 		AccountId: "ac123",
 		Issuer:    "ag2",
-		Perm:      &auth.Permission{Account: ToPerm("s:c")},
+		Perm:      &common.Permission{Account: ToPerm("s:c")},
 	}, "x", "ag1", "ag2")
 	if err != nil {
 		t.Error(err)
 	}
 
-	err = CheckReadPermission(&auth.Credential{
+	err = CheckReadPermission(&common.Credential{
 		AccountId: "ac123",
 		Issuer:    "ag2",
-		Perm:      &auth.Permission{Permission: ToPerm("u:r s:r a:r")},
+		Perm:      &common.Permission{Permission: ToPerm("u:r s:r a:r")},
 	}, "ac12", "ag5", "ag6")
 	if err != nil {
 		t.Error(err)
@@ -202,10 +202,10 @@ func TestPerm(t *testing.T) {
 		t.Error("should be err")
 	}
 
-	err = CheckCreateAccount(&auth.Credential{
+	err = CheckCreateAccount(&common.Credential{
 		AccountId: "ac123",
 		Issuer:    "ag2",
-		Perm:      &auth.Permission{Widget: ToPerm("u:crud")},
+		Perm:      &common.Permission{Widget: ToPerm("u:crud")},
 	}, "ac123", "ag2", "ag2")
 	if err == nil {
 		t.Error("expect error")
@@ -215,33 +215,33 @@ func TestPerm(t *testing.T) {
 func TestIntersect(t *testing.T) {
 	tcs := []struct {
 		desc         string
-		a, b, expect *auth.Permission
+		a, b, expect *common.Permission
 	}{{
 		"0",
 		nil,
 		nil,
-		&auth.Permission{},
+		&common.Permission{},
 	}, {
 		"1",
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0x0F,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0x00,
 		},
 	}, {
 		"1",
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 			Agent:   0x0F,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 		},
 	}}
@@ -257,32 +257,32 @@ func TestIntersect(t *testing.T) {
 func TestMerge(t *testing.T) {
 	tcs := []struct {
 		desc         string
-		a, b, expect *auth.Permission
+		a, b, expect *common.Permission
 	}{{
 		"0",
 		nil,
 		nil,
-		&auth.Permission{},
+		&common.Permission{},
 	}, {
 		"1",
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0x0F,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xFF,
 		},
 	}, {
 		"1",
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Agent: 0x0F,
 		},
-		&auth.Permission{
+		&common.Permission{
 			Account: 0xF0,
 			Agent:   0x0F,
 		},
@@ -296,7 +296,7 @@ func TestMerge(t *testing.T) {
 	}
 }
 
-func equalPermission(a, b *auth.Permission) bool {
+func equalPermission(a, b *common.Permission) bool {
 	return proto.Equal(a, b)
 }
 
@@ -312,23 +312,23 @@ func TestAgentPerm(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pe := &auth.Permission{}
+	pe := &common.Permission{}
 	if err := proto.Unmarshal(permb, pe); err != nil {
 		panic(err)
 	}
 
 	pe = Merge(pe, GetAgentPerm())
 	println(ToPerm("a:--u-"), pe.GetSubscription())
-	if proto.Equal(&auth.Permission{
+	if proto.Equal(&common.Permission{
 		Subscription: ToPerm("a:--u-"),
-	}, IntersectPermission(pe, &auth.Permission{
+	}, IntersectPermission(pe, &common.Permission{
 		Subscription: ToPerm("a:--u-"),
 	})) { // account manage
 		pe = Merge(pe, GetAccountManagePerm())
 		fmt.Println("got account manage")
 	}
 
-	if proto.Equal(pe, IntersectPermission(pe, &auth.Permission{
+	if proto.Equal(pe, IntersectPermission(pe, &common.Permission{
 		Permission: ToPerm("a:-ru-"),
 	})) { // account setting
 		pe = Merge(pe, GetAccountSettingPerm())

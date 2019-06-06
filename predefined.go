@@ -1,11 +1,9 @@
 package perm
 
-import (
-	"github.com/subiz/header/auth"
-)
+import "github.com/subiz/header/common"
 
-func GetAccountSettingPerm() *auth.Permission {
-	return Merge(GetAgentPerm(), &auth.Permission{
+func GetAccountSettingPerm() *common.Permission {
+	return Merge(GetAgentPerm(), &common.Permission{
 		Account:               ToPerm("a:cru-"),
 		Agent:                 ToPerm("a:crud"),
 		Permission:            ToPerm("a:-ru-"),
@@ -39,8 +37,8 @@ func GetAccountSettingPerm() *auth.Permission {
 	})
 }
 
-func GetAccountManagePerm() *auth.Permission {
-	return Merge(GetAccountSettingPerm(), &auth.Permission{
+func GetAccountManagePerm() *common.Permission {
+	return Merge(GetAccountSettingPerm(), &common.Permission{
 		Subscription:   ToPerm("a:cru-"),
 		Invoice:        ToPerm("a:-r--"),
 		PaymentMethod:  ToPerm("a:crud"),
@@ -50,15 +48,15 @@ func GetAccountManagePerm() *auth.Permission {
 	})
 }
 
-func GetOwnerPerm() *auth.Permission {
-	pe := Merge(GetAccountManagePerm(), &auth.Permission{Conversation: ToPerm("a:-r--")})
+func GetOwnerPerm() *common.Permission {
+	pe := Merge(GetAccountManagePerm(), &common.Permission{Conversation: ToPerm("a:-r--")})
 	pe.ConversationExport = ToPerm("a:cr--")
 	pe.ConversationReport = ToPerm("a:-r--")
 	return pe
 }
 
-func GetAgentPerm() *auth.Permission {
-	return &auth.Permission{
+func GetAgentPerm() *common.Permission {
+	return &common.Permission{
 		Account:           ToPerm("a:-r--"),
 		Agent:             ToPerm("u:-ru- a:-r--"),
 		AgentPassword:     ToPerm("u:cru-"),
