@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/subiz/header/common"
 	"github.com/subiz/errors"
+	"github.com/subiz/header/common"
 )
 
 func getPerm(r string, num int32) int32 {
@@ -86,6 +86,11 @@ func Intersect(a, b *common.Permission) *common.Permission {
 	var sret = reflect.ValueOf(ret).Elem()
 
 	for i := 0; i < sa.NumField(); i++ {
+		// only bother exported fields
+		if !sa.Field(i).CanSet() {
+			continue
+		}
+
 		numa, _ := sa.Field(i).Interface().(int32)
 		numb, _ := sb.Field(i).Interface().(int32)
 		func() {
@@ -114,6 +119,11 @@ func Merge(a, b *common.Permission) *common.Permission {
 	var sret = reflect.ValueOf(ret).Elem()
 
 	for i := 0; i < sa.NumField(); i++ {
+		// only bother exported fields
+		if !sa.Field(i).CanSet() {
+			continue
+		}
+
 		numa, _ := sa.Field(i).Interface().(int32)
 		numb, _ := sb.Field(i).Interface().(int32)
 		func() {
