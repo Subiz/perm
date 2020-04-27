@@ -133,12 +133,16 @@ func (g *Generator) generate(src, typeName string) {
 
 		fields := structDecl.Type.(*ast.StructType).Fields.List
 		for _, field := range fields {
-
 			nameExpr := field.Names[0]
+
 			start := nameExpr.Pos() - 1
 			end := nameExpr.End() - 1
 			// grab it in source
 			fieldName := src[start:end]
+
+			if !ast.IsExported(fieldName) {
+				continue
+			}
 
 			if strings.Contains(fieldName, "XXX") {
 				continue

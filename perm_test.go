@@ -275,7 +275,7 @@ func TestMerge(t *testing.T) {
 			Account: 0xFF,
 		},
 	}, {
-		"1",
+		"2",
 		&common.Permission{
 			Account: 0xF0,
 		},

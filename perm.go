@@ -87,7 +87,7 @@ func Intersect(a, b *common.Permission) *common.Permission {
 
 	for i := 0; i < sa.NumField(); i++ {
 		// only bother exported fields
-		if !sa.Field(i).CanSet() {
+		if !sa.Field(i).CanInterface() {
 			continue
 		}
 
@@ -120,7 +120,7 @@ func Merge(a, b *common.Permission) *common.Permission {
 
 	for i := 0; i < sa.NumField(); i++ {
 		// only bother exported fields
-		if !sa.Field(i).CanSet() {
+		if !sa.Field(i).CanInterface() {
 			continue
 		}
 

@@ -18,87 +18,6 @@ var READPERM = strPermToInt("r")
 var UPDATEPERM = strPermToInt("u")
 var DELETEPERM = strPermToInt("d")
 
-func CheckCreatestate(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().Getstate()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(CREATEPERM, callerperm, ismine, isaccount)
-}
-
-func CheckReadstate(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().Getstate()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(READPERM, callerperm, ismine, isaccount)
-}
-
-func CheckUpdatestate(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().Getstate()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(UPDATEPERM, callerperm, ismine, isaccount)
-}
-
-func CheckDeletestate(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().Getstate()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(DELETEPERM, callerperm, ismine, isaccount)
-}
-func CheckCreatesizeCache(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetsizeCache()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(CREATEPERM, callerperm, ismine, isaccount)
-}
-
-func CheckReadsizeCache(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetsizeCache()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(READPERM, callerperm, ismine, isaccount)
-}
-
-func CheckUpdatesizeCache(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetsizeCache()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(UPDATEPERM, callerperm, ismine, isaccount)
-}
-
-func CheckDeletesizeCache(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetsizeCache()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(DELETEPERM, callerperm, ismine, isaccount)
-}
-func CheckCreateunknownFields(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetunknownFields()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(CREATEPERM, callerperm, ismine, isaccount)
-}
-
-func CheckReadunknownFields(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetunknownFields()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(READPERM, callerperm, ismine, isaccount)
-}
-
-func CheckUpdateunknownFields(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetunknownFields()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(UPDATEPERM, callerperm, ismine, isaccount)
-}
-
-func CheckDeleteunknownFields(cred *common.Credential, accid string, agids ...string) error {
-	callerperm := cred.GetPerm().GetunknownFields()
-	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
-	isaccount := cred.GetAccountId() == accid
-	return checkPerm(DELETEPERM, callerperm, ismine, isaccount)
-}
 func CheckCreateAccount(cred *common.Credential, accid string, agids ...string) error {
 	callerperm := cred.GetPerm().GetAccount()
 	ismine := cred.GetAccountId() == accid && contains(cred.GetIssuer(), agids)
@@ -1141,9 +1060,6 @@ func IntersectPermission(a, b *common.Permission) *common.Permission {
 	}
 
 	return &common.Permission{
-		state:                 a.Getstate() & b.Getstate(),
-		sizeCache:             a.GetsizeCache() & b.GetsizeCache(),
-		unknownFields:         a.GetunknownFields() & b.GetunknownFields(),
 		Account:               a.GetAccount() & b.GetAccount(),
 		Agent:                 a.GetAgent() & b.GetAgent(),
 		AgentPassword:         a.GetAgentPassword() & b.GetAgentPassword(),
