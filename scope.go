@@ -1,8 +1,8 @@
 package perm
 
 import (
+	"github.com/subiz/header"
 	"github.com/subiz/header/common"
-	epb "github.com/subiz/header/event"
 	"strings"
 )
 
@@ -36,17 +36,17 @@ var SCOPEM = map[string]common.Scope{
 			MessageTemplate:       ToPerm("u:r"),
 		},
 		AvailableEvents: []string{
-			epb.RealtimeType_message_sent.String(),
-			epb.RealtimeType_conversation_state_updated.String(),
-			epb.RealtimeType_conversation_joined.String(),
-			epb.RealtimeType_conversation_left.String(),
-			epb.RealtimeType_conversation_tagged.String(),
-			epb.RealtimeType_conversation_untagged.String(),
-			epb.RealtimeType_conversation_typing.String(),
-			epb.RealtimeType_message_received.String(),
-			epb.RealtimeType_message_ack.String(),
-			epb.RealtimeType_message_seen.String(),
-			epb.RealtimeType_conversation_postbacked.String(),
+			header.RealtimeType_message_sent.String(),
+			header.RealtimeType_conversation_state_updated.String(),
+			header.RealtimeType_conversation_joined.String(),
+			header.RealtimeType_conversation_left.String(),
+			header.RealtimeType_conversation_tagged.String(),
+			header.RealtimeType_conversation_untagged.String(),
+			header.RealtimeType_conversation_typing.String(),
+			header.RealtimeType_message_received.String(),
+			header.RealtimeType_message_ack.String(),
+			header.RealtimeType_message_seen.String(),
+			header.RealtimeType_conversation_postbacked.String(),
 		},
 	},
 	"connector": common.Scope{
@@ -66,13 +66,13 @@ var SCOPEM = map[string]common.Scope{
 			MessageTemplate: ToPerm("a:r"),
 		},
 		AvailableEvents: []string{
-			epb.RealtimeType_message_sent.String(),
-			epb.RealtimeType_conversation_state_updated.String(),
-			epb.RealtimeType_conversation_joined.String(),
-			epb.RealtimeType_conversation_left.String(),
-			epb.RealtimeType_message_received.String(),
-			epb.RealtimeType_message_ack.String(),
-			epb.RealtimeType_message_seen.String(),
+			header.RealtimeType_message_sent.String(),
+			header.RealtimeType_conversation_state_updated.String(),
+			header.RealtimeType_conversation_joined.String(),
+			header.RealtimeType_conversation_left.String(),
+			header.RealtimeType_message_received.String(),
+			header.RealtimeType_message_ack.String(),
+			header.RealtimeType_message_seen.String(),
 		},
 	},
 }
