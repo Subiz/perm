@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/subiz/header/common"
 	"github.com/golang/protobuf/proto"
+	"github.com/subiz/header/common"
 )
 
 func TestCheckToPerm(t *testing.T) {
@@ -27,6 +27,24 @@ func TestCheckToPerm(t *testing.T) {
 		out := ToPerm(tc.perms)
 		if out != tc.expect {
 			t.Errorf("[%s] expect %d, got %d", tc.desc, tc.expect, out)
+		}
+	}
+}
+
+func TestPrettyPerm(t *testing.T) {
+	tcs := []struct {
+		perm   string
+		pretty string
+	}{
+		{"user:r   tag:r w    conversation: r tag:e", "user:r tag:re"},
+		{makeScopeMap()["agent"], "rule:r integration:r message_template:wr tag:r user:wr attribute:r permission:r agent_group:r whitelist_user:r whitelist_domain:r widget:r invoice:r conversation:wr whitelist_ip:r subscription:r"},
+		{makeScopeMap()["all"], "attribute:wr payment_method:wr conversation:wr permission:wr tag:wr whitelist_ip:wr other_message_template:wr user:wr agent_group:wr rule:wr integration:wr widget:wr subscription:wr invoice:r message_template:wr whitelist_user:wr whitelist_domain:wr"},
+	}
+
+	for _, tc := range tcs {
+		out := prettyPerm(tc.perm)
+		if out != tc.pretty {
+			t.Errorf("[%s] expect %s, got %s", tc.perm, tc.pretty, out)
 		}
 	}
 }

@@ -206,3 +206,86 @@ var Base = common.Permission{
 
 // MakeBase returns copy of Base permission
 func MakeBase() common.Permission { return Base }
+
+func makeScopeMap() map[string]string {
+	// scope => permission
+	var m = map[string]string{
+		"agent": `
+conversation:rw
+permission:r
+agent_group:r
+rule:r
+integration:r
+message_template:rw
+tag:r
+whitelist_ip:r
+whitelist_user:r
+whitelist_domain:r
+widget:r
+subscription:r
+invoice:r
+user:rw
+attribute:r`,
+		"view_other_convos": "other_conversation:r",
+		"export_user":       "user:e", // export
+	}
+	m["account_setting"] = m["agent"] + `
+permission:rw
+agent_group:w
+rule:w
+integration:w
+other_message_template:rw
+tag:w
+whitelist_ip:w
+whitelist_user:w
+whitelist_domain:w
+widget:w
+attribute:w`
+	m["account_manage"] = m["account_setting"] + " subscription:rw payment_method:rw"
+	m["owner"] = m["account_manage"]
+	m["all"] = m["account_manage"]
+	return m
+}
+
+func prettyPerm(perm string) string {
+	perms := strings.FieldsFunc(perm, func(r rune) bool {
+		return r == ' ' || r == ';' || r == ',' || r == '\n'
+	})
+	permM := make(map[string]string)
+	for _, p := range perms {
+		p = strings.TrimSpace(p)
+
+		psplit := strings.Split(p, ":")
+		if len(psplit) != 2 {
+			continue
+		}
+		permM[psplit[0]] += psplit[1]
+	}
+
+	out := ""
+	for k, v := range permM {
+		ppp := ""
+		if strings.Contains(v, "w") {
+			ppp += "w"
+		}
+		if strings.Contains(v, "r") {
+			ppp += "r"
+		}
+		if strings.Contains(v, "e") {
+			ppp += "e"
+		}
+		if strings.Contains(v, "p") {
+			ppp += "p"
+		}
+		if ppp != "" {
+			out += strings.TrimSpace(k) + ":" + ppp + " "
+		}
+	}
+	return strings.TrimSpace(out)
+}
+
+// []string{"all", "agent"}, "conversation:r tag:wr" => true
+// []string{"agent"}, "tag:wr" => false
+func CheckPerm(scopes []string, perm string) bool {
+	return false
+}
