@@ -9,6 +9,29 @@ import (
 	"github.com/subiz/header/common"
 )
 
+func TestAccess(t *testing.T) {
+	tcs := []struct {
+		desc   string
+		scopes []string
+		perm   string
+		expect bool
+	}{
+		{"1", []string{"account_setting"}, "message_template:rw", true},
+		{"2", []string{"agent"}, "payment_method:rw", false},
+		{"3", []string{"account_setting"}, "payment_method:rw", false},
+		{"4", []string{"owner", "account_setting"}, "payment_method:rw", true},
+		{"5", []string{"agent"}, "attribute:r attribute:r subscription:r", true},
+		{"6", []string{"agent"}, "attribute:r attribute:r rule:w", false},
+	}
+
+	for _, tc := range tcs {
+		out := Access(tc.scopes, tc.perm)
+		if out != tc.expect {
+			t.Errorf("[%s] expect %v, got %v", tc.desc, tc.expect, out)
+		}
+	}
+}
+
 func TestCheckToPerm(t *testing.T) {
 	tcs := []struct {
 		desc   string

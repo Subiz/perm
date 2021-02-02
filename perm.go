@@ -207,6 +207,8 @@ var Base = common.Permission{
 // MakeBase returns copy of Base permission
 func MakeBase() common.Permission { return Base }
 
+var Scopes = makeScopeMap()
+
 func makeScopeMap() map[string]string {
 	// scope => permission
 	var m = map[string]string{
@@ -286,6 +288,37 @@ func prettyPerm(perm string) string {
 
 // []string{"all", "agent"}, "conversation:r tag:wr" => true
 // []string{"agent"}, "tag:wr" => false
-func CheckPerm(scopes []string, perm string) bool {
-	return false
+func Access(scopes []string, perm string) bool {
+	// make availabe perm map by joining all permision in scopes
+	availableperm := make(map[string]string) // {"conversation" => "cr", "user" => "u"}
+	joinperm := ""
+	for _, scope := range scopes {
+		joinperm += " " + Scopes[strings.TrimSpace(scope)]
+	}
+
+	joinperm = prettyPerm(joinperm)
+	joinpermsplit := strings.Split(joinperm, " ")
+	for _, joinpermitem := range joinpermsplit {
+		joinpermitemsplit := strings.Split(joinpermitem, ":")
+		if len(joinpermitemsplit) != 2 {
+			continue
+		}
+		availableperm[joinpermitemsplit[0]] = joinpermitemsplit[1]
+	}
+
+	perm = prettyPerm(perm)
+	perms := strings.Split(perm, " ")
+	for _, p := range perms {
+		ps := strings.Split(p, ":") // conversation:rw
+		if len(ps) != 2 {
+			continue
+		}
+
+		for _, p := range ps[1] {
+			if !strings.Contains(availableperm[ps[0]], string(p)) {
+				return false
+			}
+		}
+	}
+	return true
 }
